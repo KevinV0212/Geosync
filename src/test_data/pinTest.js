@@ -1,7 +1,13 @@
 // test data for map pins
+// data is for Vatican city
+
+// Coordinates
+const mapLong = 41.9029;
+const mapLat = 12.4534;
+
+// pins for each letter of PMESII
 const testPins = [];
 // political
-
 testPins.push({
   Id: 1,
   Country: "Vatican City",
@@ -17,8 +23,8 @@ testPins.push({
   Information: false,
   Infrastructure: false,
 });
-// Military
 
+// Military
 testPins.push({
   Id: 2,
   Country: "Vatican City",
@@ -36,7 +42,6 @@ testPins.push({
 });
 
 // Economic
-
 testPins.push({
   Id: 2,
   Country: "Vatican City",
@@ -103,5 +108,7 @@ testPins.push({
 });
 
 module.exports = {
+  mapLong,
+  mapLat,
   testPins,
 };
