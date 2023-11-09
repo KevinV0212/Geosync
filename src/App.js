@@ -1,6 +1,7 @@
 import './App.css';
 import Navbar from './components/navbar';
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+import Map from './components/map';
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
           <Routes>
           </Routes>
       </Router>
+      <Map/>
     </div>
   );
 }
