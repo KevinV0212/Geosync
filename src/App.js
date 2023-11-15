@@ -1,6 +1,5 @@
 import './App.css';
 import Navbar from './components/navbar';
-import Home from './pages/Home';
 import Contact from './fragments/Contact';
 import Documents from './fragments/Documents';
 import FAQ from './fragments/FAQ';
