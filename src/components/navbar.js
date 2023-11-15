@@ -18,10 +18,10 @@ function Navbar() {
                 <Link to="/documents" className="nav-links" >Documents</Link>
               </li>
               <li className="nav-item">
-                <Link to="/contact-us" className="nav-links" >Contact Us</Link>
+                <Link to="/contact" className="nav-links" >Contact Us</Link>
               </li>
               <li className="nav-item">
-                <Link to="/FAQ" className="nav-links" >FAQs</Link>
+                <Link to="/faq" className="nav-links" >FAQs</Link>
               </li>
             </ul>
           </div>
