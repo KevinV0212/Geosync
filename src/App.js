@@ -1,12 +1,11 @@
 import './App.css';
 import Navbar from './components/navbar';
-import Contact from './fragments/Contact';
-import Documents from './fragments/Documents';
-import FAQ from './fragments/FAQ';
-import Map from './fragments/Map';
-import Wiki from './fragments/Wiki';
+import Contact from './components/fragments/Contact';
+import Documents from './components/fragments/Documents';
+import FAQ from './components/fragments/FAQ';
+import Map from './components/fragments/Map';
+import Wiki from './components/fragments/Wiki';
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
-import Map from './components/map';
 
 function App() {
   return (
@@ -21,7 +20,6 @@ function App() {
             <Route exact path="/wiki" element={<Wiki/>}></Route>
           </Routes>
       </Router>
-      <Map/>
     </div>
   );
 }
