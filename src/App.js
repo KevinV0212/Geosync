@@ -6,6 +6,7 @@ import FAQ from './fragments/FAQ';
 import Map from './fragments/Map';
 import Wiki from './fragments/Wiki';
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+import Map from './components/map';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
             <Route exact path="/wiki" element={<Wiki/>}></Route>
           </Routes>
       </Router>
+      <Map/>
     </div>
   );
 }
