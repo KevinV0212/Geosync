@@ -1,7 +1,49 @@
-import React from 'react'
+import './App.css';
+import { useState } from 'react';
+import Level1 from './Level1';
 
-export default function Wiki() {
-  return (
-    <div>wiki</div>
-  )
+function Wiki() {    
+
+    const [toggled, setToggled] = useState([false, false, false, false, false, false]);
+    const PMESII = ["Political",  "Military", "Economic", "Social", "Information", "Infrastructure"]; 
+
+    function toggle (i){
+      const updated = toggled.map((item, index) => {
+        if(index === i) {
+            return !item;
+        } else {
+            return item;
+        }
+      });
+      setToggled(updated);
+    }
+
+    return (
+        <div className = 'wrapper'>
+            <div className = 'accordian'>
+                {PMESII.map((item, i) => (
+                        <div>
+                            <div className='title' onClick = {() => toggle(i)}>
+                                <h2><b>{item}</b></h2>
+                                <span>{toggled[i] === true ? '-' : '+'}</span>
+                            </div>
+                            <div className={toggled[i] === true ? 'content show' : 'content'}>
+                                <Level1 current = {item}/>
+                            </div>
+                        </div>
+                )
+                )}
+            </div>
+            
+        
+        </div>
+    )
+
+   
+ 
+ 
 }
+
+
+
+export default Wiki;
