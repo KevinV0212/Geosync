@@ -9,7 +9,10 @@ function Navbar() {
             <Link to="/" className="navbar-logo" >GeoSync</Link>
             <ul className="nav-menu">
               <li className="nav-item">
-                <Link to="/" className="nav-links" >Map</Link>
+                <Link to="/" className="nav-links" >Home</Link>
+              </li>
+              <li className="nav-item">
+                <Link to="/map" className="nav-links" >Map</Link>
               </li>
               <li className="nav-item">
                 <Link to="/wiki" className="nav-links" >Wiki</Link>
