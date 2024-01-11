@@ -1,7 +1,16 @@
-import React from 'react'
+import Test from './WikiSection/Level0';
+import Nav from './Nav';
 
-export default function Wiki() {
-  return (
-    <div>wiki</div>
-  )
+
+function Wiki() {
+
+    return (
+        <div>
+            <Nav />
+            <Test />
+        
+        </div>
+    )
 }
+
+export default Wiki;
