@@ -1,7 +1,12 @@
 import React from 'react'
 
-export default function Documents() {
+function Documents() {
   return (
-    <div>Documents</div>
+    <div>
+      <h1>Mission Statement</h1>
+      <h1>Tasks</h1>
+    </div>
   )
 }
+
+export default Documents
