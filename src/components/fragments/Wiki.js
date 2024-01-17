@@ -1,4 +1,4 @@
-import Test from './WikiSection/Level0';
+import Level0 from './WikiSection/Level0';
 import Nav from './Nav';
 
 
@@ -7,7 +7,7 @@ function Wiki() {
     return (
         <div>
             <Nav />
-            <Test />
+            <Level0 />
         
         </div>
     )

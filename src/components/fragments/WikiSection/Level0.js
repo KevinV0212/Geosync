@@ -2,10 +2,9 @@ import { useState} from 'react';
 import Level1 from './Level1';
 import "./List.css";
 import { FaCheck } from "react-icons/fa6";
-import "./List.css"
 import './Sidebar.css';
 
-function Test() {    
+function Level0() {    
 
     const [toggled, setToggled] = useState([true, true, true, true, true, true]);
     const PMESII = ["Political",  "Military", "Economic", "Social", "Information", "Infrastructure"]; 
@@ -122,4 +121,4 @@ function Test() {
 
 
 
-export default Test;
+export default Level0;

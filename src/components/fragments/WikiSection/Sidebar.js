@@ -1,7 +1,5 @@
 import "./Sidebar.css";
 import { useState } from 'react';
-import { FaCheck } from "react-icons/fa6";
-import AscopeFilter from "./AscopeFilter";
 
 function Sidebar() {
 
@@ -41,5 +39,4 @@ function Sidebar() {
   )
 }
 
-//export {currentSelected};
 export default Sidebar;

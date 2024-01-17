@@ -2,7 +2,6 @@ import '../App.css';
 import { useState } from 'react';
 import Level1 from './Level1';
 import "./List.css";
-import {currentSelected} from './Sidebar';
 
 function List() {    
 
@@ -46,13 +45,10 @@ function List() {
             
             </div>
         </section>
-    )
-
-   
+    ) 
  
  
 }
-
 
 
 export default List;
