@@ -1,5 +1,5 @@
 import React from "react";
-import testEntries from ".../test_data/wikiTest";
+import {testEntries} from "../../../test_data/wikiTest";
 
 //Passing in PMESII and ASCOPE
 function Level2 (props) {
