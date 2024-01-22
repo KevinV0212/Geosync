@@ -1,27 +1,27 @@
 .columns {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    height: 85vh;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  height: 85vh;
 }
 
 .map-img {
-    background-image: url("/src/components/home_map.png");
-    height: 100%;
-    width: 100%;
-    zoom: 70%;
-    background-repeat: no-repeat;
+  background-image: url("/src/components/home_map.png");
+  height: 100%;
+  width: 100%;
+  zoom: 70%;
+  background-repeat: no-repeat;
 }
 
 .map-img:hover {
-    opacity: 65%;
+  opacity: 65%;
 }
 
 .map-img:hover::after {
-    content: "Open interactive map";
-    position: relative;
-    text-align: center;
-    top: 50%;
-    color: black;
-    font-size: 18px;
-    font-weight: bold;
+  content: "Open interactive map";
+  position: relative;
+  text-align: center;
+  top: 50%;
+  color: black;
+  font-size: 18px;
+  font-weight: bold;
 }
