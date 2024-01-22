@@ -35,7 +35,7 @@ function Map() {
                 view = null;
             }
         }
-    })
+    }, [])
 
     // PMESII-PT filters
     const [checkboxes, setCheckboxes] = useState({
