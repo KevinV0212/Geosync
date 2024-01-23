@@ -60,7 +60,7 @@ function Map() {
             <div className="filters-container">
                 <h3>PMESII Filters</h3>
                 <form className="filters-form">
-                    <div className="filter">
+                    <div className="filterPMESII">
                         <label>
                             <input
                             type="checkbox"
@@ -70,7 +70,7 @@ function Map() {
                             Political
                         </label>
                     </div>
-                    <div className="filter">
+                    <div className="filterPMESII">
                         <label>
                             <input
                             type="checkbox"
@@ -80,7 +80,7 @@ function Map() {
                             Military
                         </label>
                     </div>
-                    <div className="filter">
+                    <div className="filterPMESII">
                         <label>
                             <input
                             type="checkbox"
@@ -90,7 +90,7 @@ function Map() {
                             Economic
                         </label>
                     </div>
-                    <div className="filter">
+                    <div className="filterPMESII">
                         <label>
                             <input
                             type="checkbox"
@@ -100,7 +100,7 @@ function Map() {
                             Social
                         </label>
                     </div>
-                    <div className="filter">
+                    <div className="filterPMESII">
                         <label>
                             <input
                             type="checkbox"
@@ -110,7 +110,7 @@ function Map() {
                             Information
                         </label>
                     </div>
-                    <div className="filter">
+                    <div className="filterPMESII">
                         <label>
                             <input
                             type="checkbox"

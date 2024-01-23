@@ -5,7 +5,7 @@ import { FaPlus } from "react-icons/fa";
 function Nav() {
 
   return (
-    <nav>
+    <nav className="wiki-nav">
         <div className="nav-container">
             <input 
             type="text" 

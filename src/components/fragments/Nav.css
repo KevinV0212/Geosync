@@ -1,4 +1,4 @@
-nav {
+.wiki-nav {
     border-bottom: 2px solid #f3f3f3;
     justify-content: space-around;
     align-items: center;
@@ -9,7 +9,7 @@ nav {
     min-height: 4rem;
 }
 
-input {
+.search-input {
     padding: 12px 20px;
     border: none;
     background: #f7f6f6;
