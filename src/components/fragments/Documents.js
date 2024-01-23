@@ -1,8 +1,11 @@
 import React from 'react';
-import "./Documents.css"
+import "./Documents.css";
+import Button from '@mui/material/Button';
 
 function Documents() {
   return (
+    <div>
+    <Button variant="outlined" size="small" sx={{marginTop: 1, marginLeft: -148}}>Edit</Button>  
     <div className="lists-container">
       <div className="list-container">
         <h2>Mission Statement</h2>
@@ -20,6 +23,7 @@ function Documents() {
           <li><a href="#">Task 3</a></li>
         </ul>
       </div>
+  </div>
   </div>
   )
 }
