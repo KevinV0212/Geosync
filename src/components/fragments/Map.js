@@ -3,6 +3,7 @@ import {loadModules} from 'esri-loader';
 import Select from 'react-select';
 import countryList from 'react-select-country-list';
 import './Map.css';
+import Button from '@mui/material/Button';
 
 function Map() {
     // Country selector
@@ -58,6 +59,7 @@ function Map() {
     return (
         <div className="home">
             <div className="filters-container">
+                <Button variant="outlined" size="small" sx={{marginTop: 1, marginLeft: -8}}>Edit</Button>  
                 <h3>PMESII Filters</h3>
                 <form className="filters-form">
                     <div className="filterPMESII">
@@ -119,7 +121,7 @@ function Map() {
                             />
                             Infrastructure
                         </label>         
-                    </div>       
+                    </div>     
                 </form>
             </div>
             <div className="map-container">
