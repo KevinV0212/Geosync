@@ -1,16 +1,48 @@
 import React, { useState, useMemo, useRef, useEffect } from "react";
 import { loadModules } from "esri-loader";
 import Select from "react-select";
-import countryList from "react-select-country-list";
 import "./Map.css";
+import countryList from "react-select-country-list";
+import buildPath from "../Path.js";
+import axios from "axios";
 
 function Map() {
    // Country selector
    const [value, setValue] = useState("");
-   const options = useMemo(() => countryList().getData(), []);
+   const [countries, setCountries] = useState([]);
 
    const changeHandler = (value) => {
       setValue(value);
+   };
+
+   // Loads list of countries
+   const loadCountries = async () => {
+      let url = buildPath("/all_countries");
+      axios
+         .get(url, {
+            headers: {
+               "Access-Control-Allow-Origin": "*",
+               "Access-Control-Allow-Headers":
+                  "Origin, X-Requested-With, Content-Type, Accept",
+            },
+         })
+         .then(function (res) {
+            if (res.error) {
+               console.log(res.error);
+            } else {
+               // convert list of country objects to an of country names (strings)
+               let countries = res.data;
+               let countryNames = countries.map((country) => ({
+                  value: country.countryName,
+                  label: country.countryName,
+               }));
+
+               setCountries(countryNames);
+            }
+         })
+         .catch(function (error) {
+            console.log(error);
+         });
    };
 
    // Map
@@ -31,6 +63,7 @@ function Map() {
             });
          }
       );
+      loadCountries();
       return () => {
          if (!!view) {
             view.destroy();
@@ -126,7 +159,7 @@ function Map() {
          <div className="map-container">
             <Select
                placeholder="Select a Country"
-               options={options}
+               options={countries}
                value={value}
                onChange={changeHandler}
             />
