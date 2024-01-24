@@ -1,52 +1,17 @@
-import React, { useState, useMemo, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { loadModules } from "esri-loader";
 import Select from "react-select";
 import "./Map.css";
-import countryList from "react-select-country-list";
 import buildPath from "../Path.js";
 import axios from "axios";
-
+import { useLocalStorage } from "usehooks-ts";
 function Map() {
    // Country selector
-   const [value, setValue] = useState("");
+   const [currentCountry, setCurrentCountry] = useLocalStorage(
+      "current_country",
+      ""
+   );
    const [countries, setCountries] = useState([]);
-
-   const changeHandler = (value) => {
-      setValue(value);
-   };
-
-   // Loads list of countries
-   const loadCountries = async () => {
-      let url = buildPath("/all_countries");
-      axios
-         .get(url, {
-            headers: {
-               "Access-Control-Allow-Origin": "*",
-               "Access-Control-Allow-Headers":
-                  "Origin, X-Requested-With, Content-Type, Accept",
-            },
-         })
-         .then(function (res) {
-            if (res.error) {
-               console.log(res.error);
-            } else {
-               // convert list of country objects to an of country names (strings)
-               let countries = res.data;
-               let countryNames = countries.map((country) => ({
-                  value: country.countryName,
-                  label: country.countryName,
-               }));
-
-               setCountries(countryNames);
-            }
-         })
-         .catch(function (error) {
-            console.log(error);
-         });
-   };
-
-   // Map
-   const mapElem = useRef(null);
 
    useEffect(() => {
       let view;
@@ -71,6 +36,44 @@ function Map() {
          }
       };
    }, []);
+
+   // Callback function to handle selecting country
+   const handleCountrySelect = (country) => {
+      setCurrentCountry(country);
+   };
+
+   // Loads list of countries
+   const loadCountries = async () => {
+      let url = buildPath("/all_countries");
+      axios
+         .get(url, {
+            headers: {
+               "Access-Control-Allow-Origin": "*",
+               "Access-Control-Allow-Headers":
+                  "Origin, X-Requested-With, Content-Type, Accept",
+            },
+         })
+         .then(function (res) {
+            if (res.error) {
+               console.log(res.error);
+            } else {
+               // convert list of country objects to an of country names (strings)
+               let countries = res.data;
+               let countryNames = countries.map((country) => ({
+                  value: country.id,
+                  label: country.countryName,
+               }));
+
+               setCountries(countryNames);
+            }
+         })
+         .catch(function (error) {
+            console.log(error);
+         });
+   };
+
+   // Map
+   const mapElem = useRef(null);
 
    // PMESII-PT filters
    const [checkboxes, setCheckboxes] = useState({
@@ -160,8 +163,8 @@ function Map() {
             <Select
                placeholder="Select a Country"
                options={countries}
-               value={value}
-               onChange={changeHandler}
+               value={currentCountry}
+               onChange={handleCountrySelect}
             />
             <div className="map" ref={mapElem}></div>
          </div>
