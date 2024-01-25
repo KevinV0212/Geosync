@@ -21,7 +21,7 @@ function Map() {
 
     useEffect(()=>{
         let view;
-        loadModules(["esri/views/MapView", "esri/WebMap"], {css:true}).then(([MapView, WebMap])=>{
+        loadModules(["esri/views/MapView", "esri/WebMap", "esri/Graphic", "esri/layers/GraphicsLayer"], {css:true}).then(([MapView, WebMap, Graphic, GraphicsLayer])=>{
             const webmap = new WebMap({
                 basemap:"topo-vector"
             })
@@ -31,6 +31,26 @@ function Map() {
                 zoom: 2,
                 container: mapElem.current
             })
+            // Map pins
+            const graphicsLayer = new GraphicsLayer();
+            webmap.add(graphicsLayer);
+           
+            const point = {
+               type: "point",
+               longitude: -118.80657463861,
+               latitude: 34.0005930608889
+            };
+            const simpleMarkerSymbol = {
+               type: "simple-marker",
+               size: 4,
+               color: [255, 0, 0],
+               outline: null
+            };
+            const pointGraphic = new Graphic({
+                geometry: point,
+                symbol: simpleMarkerSymbol
+             });
+             graphicsLayer.add(pointGraphic);
         })
         return()=>{
             if (!!view) {
