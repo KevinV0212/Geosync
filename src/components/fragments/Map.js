@@ -4,6 +4,8 @@ import Select from 'react-select';
 import countryList from 'react-select-country-list';
 import './Map.css';
 import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import AddIcon from '@mui/icons-material/Add';
 
 function Map() {
     // Country selector
@@ -59,7 +61,10 @@ function Map() {
     return (
         <div className="home">
             <div className="filters-container">
-                <Button variant="outlined" size="small" sx={{marginTop: 1, marginLeft: -8}}>Edit</Button>  
+                <IconButton aria-label="add" sx={{marginTop: 1, position: 'absolute', top: 0, left: 0}}>
+                    <AddIcon />
+                </IconButton> 
+                <Button variant="outlined" size="small" sx={{marginTop: 1.5}}>Edit</Button> 
                 <h3>PMESII Filters</h3>
                 <form className="filters-form">
                     <div className="filterPMESII">
