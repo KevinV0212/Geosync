@@ -34,3 +34,7 @@
     text-align: left; 
     margin-left: 20px;
   }
+
+  .lg-container {
+    position: relative;
+  }

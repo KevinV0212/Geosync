@@ -6,6 +6,7 @@
     border: 1px solid #C4C2C4;
     height: 240px;
     width: 150px;
+    position: relative;
 }
 
 .filters-form {
