@@ -1,13 +1,14 @@
 import Sidebar from "./WikiSection/Sidebar";
 import Nav from "./Nav";
-
+import AddEntry from "../forms/AddEntry";
 function Wiki() {
-  return (
-    <div>
-      <Nav />
-      <Sidebar />
-    </div>
-  );
+   return (
+      <div>
+         <AddEntry />
+         <Nav />
+         <Sidebar />
+      </div>
+   );
 }
 
 export default Wiki;

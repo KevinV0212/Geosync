@@ -5,6 +5,7 @@ import "./Map.css";
 import buildPath from "../Path.js";
 import axios from "axios";
 import { useLocalStorage } from "usehooks-ts";
+import AddPin from "../forms/AddPin.js";
 function Map() {
    // Country selector
    const [currentCountry, setCurrentCountry] = useLocalStorage(
@@ -168,6 +169,7 @@ function Map() {
             />
             <div className="map" ref={mapElem}></div>
          </div>
+         <AddPin />
       </div>
    );
 }
