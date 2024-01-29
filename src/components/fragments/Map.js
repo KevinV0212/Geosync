@@ -37,8 +37,8 @@ function Map() {
            
             const point = {
                type: "point",
-               longitude: -118.80657463861,
-               latitude: 34.0005930608889
+               longitude: -81.2001,
+               latitude: 28.6024
             };
             const simpleMarkerSymbol = {
                type: "simple-marker",
