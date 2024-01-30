@@ -5,10 +5,14 @@ function Home() {
    function navigateToMap() {
       window.location.href = '/map';
     }
+    function navigateToDocs() {
+      window.location.href = '/documents';
+    }
+
    return (  
       <div className="columns">    
-         <div>Mission Statement</div>
-         <div>Tasks</div>
+         <div className="msDocs-img" onClick={() => navigateToDocs()}></div>
+         <div className="taskDocs-img" onClick={() => navigateToDocs()}></div>
          <div className="map-img" onClick={() => navigateToMap()}></div>
       </div>
    )
