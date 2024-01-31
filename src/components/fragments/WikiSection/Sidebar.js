@@ -1,10 +1,40 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Level1 from "./Level1";
 import "./List.css";
 import { FaCheck } from "react-icons/fa6";
 import "./Sidebar.css";
 
+import { useLocalStorage } from "usehooks-ts";
+import { getAllWiki } from "../../../utils";
+
 function Sidebar() {
+   // country selection list
+   const [currentCountry, setCurrentCountry] = useLocalStorage(
+      "current_country",
+      null
+   );
+
+   const [countries, setCountries] = useState([]);
+   let wikiEntries = [];
+
+   function loadWikiEntries() {
+      if (!currentCountry) {
+         return;
+      }
+      const countryID = currentCountry.countryID;
+      const filters = null;
+
+      getAllWiki(countryID, filters).then((entriesList) => {
+         wikiEntries = entriesList;
+         console.log(wikiEntries);
+      });
+   }
+
+   useEffect(() => {
+      loadWikiEntries();
+      return;
+   }, [currentCountry]);
+
    const [toggled, setToggled] = useState([true, true, true, true, true, true]);
    const PMESII = [
       "Political",

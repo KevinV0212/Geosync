@@ -1,2 +1,3 @@
 import { getAllCountries } from "./countryUtil";
-export { getAllCountries };
+import { getAllWiki } from "./wikiUtil";
+export { getAllCountries, getAllWiki };
