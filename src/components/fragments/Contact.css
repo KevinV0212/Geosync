@@ -1,0 +1,36 @@
+.div {
+    text-align: left;
+}
+
+.heading {
+    font-size: 18px;
+    text-align: center;
+    margin-left: 10px;
+}
+
+.lineborder {
+    font-size: 16px;
+    color: #e5e5e5;
+    line-height: 22px;
+    border-top-width: thin;
+    border-bottom-width: thin;
+    border-top-style: solid;
+    border-bottom-style: solid;
+    border-top-color: #b70000;
+    border-bottom-color: #b70000;
+    background-color: #000000;
+    margin-left: 0;
+    padding-left: 10px;
+}
+
+.name {
+    font-size: 14px;
+    margin: 0;
+    margin-left: 10px;
+}
+
+.info {
+    font-size: 12px;
+    margin: 0;
+    margin-left: 10px;
+}
