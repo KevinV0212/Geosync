@@ -93,7 +93,7 @@ const AddEntry = () => {
 
    return (
       <div>
-         <h1>Add Map Pin</h1>
+         <h1>Add Wiki Entry</h1>
          <FormGroup>
             <FormControl>
                <InputLabel>Title</InputLabel>

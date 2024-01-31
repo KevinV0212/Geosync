@@ -5,9 +5,9 @@ import AddEntry from "../forms/AddEntry";
 function Wiki() {
    return (
       <div>
-         <AddEntry />
          <Nav />
          <Sidebar />
+         <AddEntry />{" "}
       </div>
    );
 }

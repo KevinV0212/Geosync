@@ -5,21 +5,57 @@ import "./Map.css";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import AddIcon from "@mui/icons-material/Add";
-import buildPath from "../Path.js";
-import axios from "axios";
 import { useLocalStorage } from "usehooks-ts";
 import AddPin from "../forms/AddPin.js";
-
+import { getAllCountries } from "../../utils";
+import { getMapPins } from "../../utils/mapUtil.js";
 function Map() {
    // Country selector
    const [currentCountry, setCurrentCountry] = useLocalStorage(
       "current_country",
-      ""
+      null
    );
    const [countries, setCountries] = useState([]);
+   // PMESII-PT filters
+   const [checkboxes, setCheckboxes] = useState({
+      checkbox1: true,
+      checkbox2: true,
+      checkbox3: true,
+      checkbox4: true,
+      checkbox5: true,
+      checkbox6: true,
+   });
+
+   let mapPins = [];
 
    // Map
    const mapElem = useRef(null);
+
+   function loadCountries() {
+      getAllCountries().then((countries) =>
+         setCountries(
+            countries.map((country) => ({
+               value: country.id,
+               label: country.countryName,
+            }))
+         )
+      );
+   }
+   function loadMapPins() {
+      if (!currentCountry) {
+         return;
+      }
+      const countryID = currentCountry.countryID;
+      const filters = [];
+      for (const checkbox in checkboxes) {
+         filters.push(checkboxes[checkbox]);
+      }
+
+      getMapPins(countryID, filters).then((pinList) => {
+         mapPins = pinList;
+         console.log(mapPins);
+      });
+   }
 
    useEffect(() => {
       let view;
@@ -63,58 +99,22 @@ function Map() {
          graphicsLayer.add(pointGraphic);
       });
       loadCountries();
+      loadMapPins();
       return () => {
          if (!!view) {
             view.destroy();
             view = null;
          }
       };
-   }, []);
+   }, [currentCountry]);
 
    // Callback function to handle selecting country
    const handleCountrySelect = (country) => {
-      setCurrentCountry(country);
+      setCurrentCountry({
+         countryID: country.value,
+         countryName: country.label,
+      });
    };
-
-   // Loads list of countries
-   const loadCountries = async () => {
-      let url = buildPath("/all_countries");
-      axios
-         .get(url, {
-            headers: {
-               "Access-Control-Allow-Origin": "*",
-               "Access-Control-Allow-Headers":
-                  "Origin, X-Requested-With, Content-Type, Accept",
-            },
-         })
-         .then(function (res) {
-            if (res.error) {
-               console.log(res.error);
-            } else {
-               // convert list of country objects to an of country names (strings)
-               let countries = res.data;
-               let countryNames = countries.map((country) => ({
-                  value: country.id,
-                  label: country.countryName,
-               }));
-
-               setCountries(countryNames);
-            }
-         })
-         .catch(function (error) {
-            console.log(error);
-         });
-   };
-
-   // PMESII-PT filters
-   const [checkboxes, setCheckboxes] = useState({
-      checkbox1: true,
-      checkbox2: true,
-      checkbox3: true,
-      checkbox4: true,
-      checkbox5: true,
-      checkbox6: true,
-   });
 
    const handleCheckboxChange = (checkboxName) => {
       setCheckboxes((prevCheckboxes) => ({
@@ -202,7 +202,14 @@ function Map() {
             <Select
                placeholder="Select a Country"
                options={countries}
-               value={currentCountry}
+               value={
+                  currentCountry
+                     ? {
+                          value: currentCountry.countryID,
+                          label: currentCountry.countryName,
+                       }
+                     : null
+               }
                onChange={handleCountrySelect}
             />
             <div className="map" ref={mapElem}></div>
