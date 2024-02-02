@@ -11,7 +11,9 @@ import {
 import { addMapPin } from "../../utils/mapUtil";
 import { useLocalStorage } from "usehooks-ts";
 
+// form for adding map pin to current country
 function AddPin() {
+   // get information of current country
    const [currentCountry, setCurrentCountry] = useLocalStorage(
       "current_country",
       null
@@ -27,12 +29,14 @@ function AddPin() {
       pmessiCat: "",
    });
 
-   // submits a request to add new mappin
+   // submits a request to add new map pin to current country
    const handleSubmit = async (e) => {
       e.preventDefault();
-      // Perform login logic here with loginData
-      // log country id
-      // create new payload object
+
+      if (!currentCountry) {
+         return;
+      }
+
       let requestBody = {
          mapID: countryID,
          title: formData.title,
@@ -47,7 +51,6 @@ function AddPin() {
          infrastructure: false,
       };
       requestBody[formData.pmessiCat] = true;
-      // console.log(requestBody);
       addMapPin(requestBody);
    };
 
