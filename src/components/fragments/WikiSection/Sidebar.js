@@ -5,7 +5,7 @@ import { FaCheck } from "react-icons/fa6";
 import "./Sidebar.css";
 
 import { useLocalStorage } from "usehooks-ts";
-import { getAllWiki } from "../../../utils";
+import { getAllWiki } from "../../../utils/wikiUtil";
 
 function Sidebar() {
    // country selection list

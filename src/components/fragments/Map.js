@@ -7,7 +7,7 @@ import IconButton from "@mui/material/IconButton";
 import AddIcon from "@mui/icons-material/Add";
 import { useLocalStorage } from "usehooks-ts";
 import AddPin from "../forms/AddPin.js";
-import { getAllCountries } from "../../utils";
+import { getAllCountries } from "../../utils/countryUtil.js";
 import { getMapPins } from "../../utils/mapUtil.js";
 function Map() {
    // Country selector
