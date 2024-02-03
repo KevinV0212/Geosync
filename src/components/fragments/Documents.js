@@ -51,7 +51,7 @@ function Documents() {
                </ul>
             </div>
          </div>
-         <AddDocument />
+         {/* <AddDocument /> */}
       </div>
    );
 }

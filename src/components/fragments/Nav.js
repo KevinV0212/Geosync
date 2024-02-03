@@ -1,6 +1,7 @@
+import BasicModal from "./BasicModal";
 import "./Nav.css";
 import { FaPlus } from "react-icons/fa";
-
+import AddEntry from "../forms/AddEntry.js";
 function Nav() {
    return (
       <nav className="wiki-nav">
@@ -17,6 +18,9 @@ function Nav() {
                <FaPlus className="nav-icons" />
             </a>
          </div>
+         <BasicModal buttonText={"Add Entry"}>
+            <AddEntry />
+         </BasicModal>
       </nav>
    );
 }

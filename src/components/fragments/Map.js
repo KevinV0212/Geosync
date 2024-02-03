@@ -10,6 +10,8 @@ import AddPin from "../forms/AddPin.js";
 import { getAllCountries } from "../../utils/countryUtil.js";
 import { getMapPins } from "../../utils/mapUtil.js";
 import AddCountry from "../forms/AddCountry.js";
+import MOdal from "./BasicModal.js";
+import BasicModal from "./BasicModal.js";
 function Map() {
    // Country selector
    const [currentCountry, setCurrentCountry] = useLocalStorage(
@@ -138,6 +140,12 @@ function Map() {
             <Button variant="outlined" size="small" sx={{ marginTop: 1.5 }}>
                Edit
             </Button>
+            <BasicModal buttonText="Add Country">
+               <AddCountry />
+            </BasicModal>
+            <BasicModal buttonText="Add Pin">
+               <AddPin />
+            </BasicModal>
             <h3>PMESII Filters</h3>
             <form className="filters-form">
                <div className="filterPMESII">
@@ -218,8 +226,6 @@ function Map() {
             />
             <div className="map" ref={mapElem}></div>
          </div>
-         <AddPin />
-         <AddCountry />
       </div>
    );
 }
