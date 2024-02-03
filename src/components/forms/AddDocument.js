@@ -1,127 +1,139 @@
-import { Button, FormControl, Input } from "@mui/base";
-import {
-   Checkbox,
-   FormControlLabel,
-   FormGroup,
-   InputLabel,
-   checkboxClasses,
-} from "@mui/material";
-import React, { useState } from "react";
-import buildPath from "../Path";
-import axios from "axios";
+// import React, { useState } from "react";
+// import { Button, FormControl } from "@mui/base";
+// import {
+//    TextField,
+//    FormControlLabel,
+//    FormGroup,
+//    FormLabel,
+//    Radio,
+//    RadioGroup,
+// } from "@mui/material";
+// import { addMapPin } from "../../utils/mapUtil";
+// import { useLocalStorage } from "usehooks-ts";
 
-const AddDocument = () => {
-   const [title, setTitle] = useState("");
-   const [description, setDescription] = useState("");
-   const [longitutde, setLongitude] = useState(0);
-   const [latitude, setLatitude] = useState(0);
+// // form for adding map pin to current country
+// function AddPin() {
+//    const [formData, setFormData] = useState({
+//       title: "",
+//       description: "",
+//       longitude: "",
+//       latitude: "",
+//       pmessiCat: "",
+//    });
 
-   // filters
-   const [political, setPolitical] = useState(false);
-   const [military, setMilitary] = useState(false);
-   const [economic, setEconomic] = useState(false);
-   const [social, setSocial] = useState(false);
-   const [information, setInformation] = useState(false);
-   const [infrastructure, setInfrastructure] = useState(false);
+//    // submits a request to add new map pin to current country
+//    const handleSubmit = async (e) => {
+//       e.preventDefault();
 
-   // handles toggling of a checkbox
-   const handleChangePolitical = (e) => setPolitical(true);
-   const handleChangeMilitary = (e) => setMilitary(true);
-   const handleChangeEconomic = (e) => setEconomic(true);
-   const handleChangeSocial = (e) => setSocial(true);
-   const handleChangeInformation = (e) => setInformation(true);
-   const handleChangeInfrastructure = (e) => setInfrastructure(true);
+//       if (!currentCountry) {
+//          return;
+//       }
 
-   const handleSubmit = async () => {
-      const url = buildPath("/add_mappin");
-      let obj = {
-         title: title,
-         description: description,
-         longitude: longitutde,
-         latitude: latitude,
-         political: political,
-         military: military,
-         economic: economic,
-         social: social,
-         information: information,
-         infrastructure: infrastructure,
-      };
-      let js = JSON.stringify(obj);
+//       // requestBody for API request
+//       let requestBody = {};
 
-      let config = {
-         method: "post",
-         url: url,
-         headers: {
-            "Content-Type": "application/json",
-         },
-         data: js,
-      };
-      console.log(js);
-      // call axios with data to url
-      // axios(config)
-      //    .then((response) => {
-      //       let res = response.data;
-      //       if (res.error) {
-      //          console.log(res.error);
-      //       } else {
-      //          console.log("Login Successful! User's Token: " + res.token);
-      //       }
-      //    })
-      //    .catch((error) => {
-      //       console.log(error);
-      //    });
-   };
+//       requestBody[formData.pmessiCat] = true;
+//       addMapPin(requestBody);
+//    };
 
-   return (
-      <div>
-         <h1>Add Map Pin</h1>
-         <FormGroup>
-            <FormControl>
-               <InputLabel>Title</InputLabel>
-               <Input />
-            </FormControl>
-            <FormControl>
-               <InputLabel>Description</InputLabel>
-               <Input />
-            </FormControl>
-            <FormControl>
-               <InputLabel>Longitude</InputLabel>
-               <Input />
-            </FormControl>
-            <FormControl>
-               <InputLabel>Latitude</InputLabel>
-               <Input />
-            </FormControl>
-            <FormControl>
-               <FormControlLabel
-                  control={<Checkbox onChange={handleChangePolitical} />}
-                  label="Political"
-               />
-               <FormControlLabel
-                  control={<Checkbox onChange={handleChangeMilitary} />}
-                  label="Military"
-               />
-               <FormControlLabel
-                  control={<Checkbox onChange={handleChangeEconomic} />}
-                  label="Economic"
-               />
-               <FormControlLabel
-                  control={<Checkbox onChange={handleChangeSocial} />}
-                  label="Social"
-               />
-               <FormControlLabel
-                  control={<Checkbox onChange={handleChangeInformation} />}
-                  label="Information"
-               />
-               <FormControlLabel
-                  control={<Checkbox onChange={handleChangeInfrastructure} />}
-                  label="Infrastructure"
-               />
-            </FormControl>
-            <Button onClick={handleSubmit}>Submit</Button>
-         </FormGroup>
-      </div>
-   );
-};
+//    // callback for when states of form components change
+//    const handleChange = (e) => {
+//       const { name, value } = e.target;
+//       setFormData({ ...formData, [name]: value });
+//    };
 
-export default AddDocument;
+//    return (
+//       <div>
+//          <form onSubmit={handleSubmit}>
+//             <h1>Add Map Pin </h1>
+//             <h2>{countryName}</h2>
+//             <FormGroup>
+//                <FormControl>
+//                   <TextField
+//                      label="title"
+//                      name="title"
+//                      value={formData.title}
+//                      variant="outlined"
+//                      margin="normal"
+//                      onChange={handleChange}
+//                      required
+//                   />
+//                </FormControl>
+//                <FormControl>
+//                   <TextField
+//                      label="description"
+//                      name="description"
+//                      value={formData.description}
+//                      variant="outlined"
+//                      margin="normal"
+//                      onChange={handleChange}
+//                      required
+//                   />
+//                </FormControl>
+//                <FormControl>
+//                   <TextField
+//                      label="longitude"
+//                      name="longitude"
+//                      value={formData.longitude}
+//                      variant="outlined"
+//                      margin="normal"
+//                      onChange={handleChange}
+//                      required
+//                   />
+//                </FormControl>
+//                <FormControl>
+//                   <TextField
+//                      label="latitude"
+//                      name="latitude"
+//                      value={formData.latitude}
+//                      variant="outlined"
+//                      margin="normal"
+//                      onChange={handleChange}
+//                      required
+//                   />
+//                </FormControl>
+//                <FormControl>
+//                   <FormLabel id="pmessiCat">Choose a PMESII Category</FormLabel>
+//                   <RadioGroup required name="pmessiCat" row>
+//                      <FormControlLabel
+//                         value="political"
+//                         control={<Radio onChange={handleChange} />}
+//                         label="Political"
+//                      />
+//                      <FormControlLabel
+//                         value="military"
+//                         control={<Radio onChange={handleChange} />}
+//                         label="Military"
+//                      />
+//                      <FormControlLabel
+//                         value="economic"
+//                         control={<Radio onChange={handleChange} />}
+//                         label="Economic"
+//                      />
+//                      <FormControlLabel
+//                         value="social "
+//                         control={<Radio onChange={handleChange} />}
+//                         label="Social"
+//                      />
+//                      <FormControlLabel
+//                         value="information"
+//                         control={<Radio onChange={handleChange} />}
+//                         label="Information"
+//                      />
+//                      <FormControlLabel
+//                         value="infrastructure"
+//                         control={<Radio onChange={handleChange} />}
+//                         label="Infrastructure"
+//                      />
+//                   </RadioGroup>
+//                </FormControl>
+//                <Button type="submit" variant="contained" onClick={handleSubmit}>
+//                   Submit
+//                </Button>
+//             </FormGroup>
+//          </form>
+//       </div>
+//    );
+// }
+
+// export default AddPin;

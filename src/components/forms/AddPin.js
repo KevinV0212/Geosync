@@ -37,6 +37,7 @@ function AddPin() {
          return;
       }
 
+      // requestBody for API request
       let requestBody = {
          mapID: countryID,
          title: formData.title,
@@ -50,6 +51,7 @@ function AddPin() {
          information: false,
          infrastructure: false,
       };
+
       requestBody[formData.pmessiCat] = true;
       addMapPin(requestBody);
    };
@@ -90,9 +92,9 @@ function AddPin() {
                </FormControl>
                <FormControl>
                   <TextField
-                     label="longitude"
-                     name="longitude"
-                     value={formData.longitude}
+                     label="latitude"
+                     name="latitude"
+                     value={formData.latitude}
                      variant="outlined"
                      margin="normal"
                      onChange={handleChange}
@@ -101,9 +103,9 @@ function AddPin() {
                </FormControl>
                <FormControl>
                   <TextField
-                     label="latitude"
-                     name="latitude"
-                     value={formData.latitude}
+                     label="longitude"
+                     name="longitude"
+                     value={formData.longitude}
                      variant="outlined"
                      margin="normal"
                      onChange={handleChange}

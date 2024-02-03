@@ -3,6 +3,7 @@ import "./Documents.css";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import AddIcon from "@mui/icons-material/Add";
+import AddDocument from "../forms/AddDocument";
 
 function Documents() {
    return (
@@ -50,6 +51,7 @@ function Documents() {
                </ul>
             </div>
          </div>
+         <AddDocument />
       </div>
    );
 }

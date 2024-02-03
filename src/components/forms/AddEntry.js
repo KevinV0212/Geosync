@@ -27,6 +27,8 @@ const AddEntry = () => {
       pmessiCat: "",
       ascopeCat: "",
    });
+
+   // submits a request to add new map pin to current country
    const handleSubmit = async (e) => {
       e.preventDefault();
 
@@ -34,6 +36,7 @@ const AddEntry = () => {
          return;
       }
 
+      // requestBody for API request
       let requestBody = {
          mapID: countryID,
          title: formData.title,
@@ -65,6 +68,7 @@ const AddEntry = () => {
       const { name, value } = e.target;
       setFormData({ ...formData, [name]: value });
    };
+
    return (
       <div>
          <form onSubmit={handleSubmit}>
@@ -95,9 +99,9 @@ const AddEntry = () => {
                </FormControl>
                <FormControl>
                   <TextField
-                     label="longitude"
-                     name="longitude"
-                     value={formData.longitude}
+                     label="latitude"
+                     name="latitude"
+                     value={formData.latitude}
                      variant="outlined"
                      margin="normal"
                      onChange={handleChange}
@@ -106,9 +110,9 @@ const AddEntry = () => {
                </FormControl>
                <FormControl>
                   <TextField
-                     label="latitude"
-                     name="latitude"
-                     value={formData.latitude}
+                     label="longitude"
+                     name="longitude"
+                     value={formData.longitude}
                      variant="outlined"
                      margin="normal"
                      onChange={handleChange}
