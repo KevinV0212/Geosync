@@ -59,8 +59,7 @@ function Map() {
          console.log(mapPins);
       });
    }
-   // loadCountries();
-   // loadMapPins();
+
    useEffect(() => {
       let view;
       loadModules(
