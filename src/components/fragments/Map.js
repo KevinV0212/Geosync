@@ -10,8 +10,8 @@ import AddPin from "../forms/AddPin.js";
 import { getAllCountries } from "../../utils/countryUtil.js";
 import { getMapPins } from "../../utils/mapUtil.js";
 import AddCountry from "../forms/AddCountry.js";
-import MOdal from "./BasicModal.js";
 import BasicModal from "./BasicModal.js";
+import EditCountry from "../forms/EditCountry.js";
 function Map() {
    // Country selector
    const [currentCountry, setCurrentCountry] = useLocalStorage(
@@ -19,7 +19,13 @@ function Map() {
       null
    );
    const [countries, setCountries] = useState([]);
+   let listOptions = countries.map((country) => ({
+      value: country.id,
+      label: country.countryName,
+   }));
+
    // PMESII-PT filters
+
    const [checkboxes, setCheckboxes] = useState({
       checkbox1: true,
       checkbox2: true,
@@ -36,14 +42,7 @@ function Map() {
 
    // function that loads a list of countries in the format below
    function loadCountries() {
-      getAllCountries().then((countries) =>
-         setCountries(
-            countries.map((country) => ({
-               value: country.id,
-               label: country.countryName,
-            }))
-         )
-      );
+      getAllCountries().then((countries) => setCountries(countries));
    }
 
    // loads the mappins associated to the currently selected country
@@ -62,6 +61,29 @@ function Map() {
          console.log(mapPins);
       });
    }
+
+   // Callback function to handle selecting country
+   const handleCountrySelect = (country) => {
+      const countryInfo = countries.find(
+         (targetCountry) => targetCountry.id === country.value
+      );
+
+      const temp = {
+         countryID: countryInfo.id,
+         countryName: countryInfo.countryName,
+         latitude: countryInfo.latitude,
+         longitude: countryInfo.longitude,
+      };
+
+      setCurrentCountry(temp);
+   };
+
+   const handleCheckboxChange = (checkboxName) => {
+      setCheckboxes((prevCheckboxes) => ({
+         ...prevCheckboxes,
+         [checkboxName]: !prevCheckboxes[checkboxName],
+      }));
+   };
 
    useEffect(() => {
       let view;
@@ -113,21 +135,6 @@ function Map() {
          }
       };
    }, [currentCountry]);
-
-   // Callback function to handle selecting country
-   const handleCountrySelect = (country) => {
-      setCurrentCountry({
-         countryID: country.value,
-         countryName: country.label,
-      });
-   };
-
-   const handleCheckboxChange = (checkboxName) => {
-      setCheckboxes((prevCheckboxes) => ({
-         ...prevCheckboxes,
-         [checkboxName]: !prevCheckboxes[checkboxName],
-      }));
-   };
    return (
       <div className="home">
          <div className="filters-container">
@@ -140,12 +147,16 @@ function Map() {
             <Button variant="outlined" size="small" sx={{ marginTop: 1.5 }}>
                Edit
             </Button>
+            <BasicModal buttonText="Edit Country">
+               <EditCountry />
+            </BasicModal>
             <BasicModal buttonText="Add Country">
                <AddCountry />
             </BasicModal>
             <BasicModal buttonText="Add Pin">
                <AddPin />
             </BasicModal>
+
             <h3>PMESII Filters</h3>
             <form className="filters-form">
                <div className="filterPMESII">
@@ -213,7 +224,7 @@ function Map() {
          <div className="map-container">
             <Select
                placeholder="Select a Country"
-               options={countries}
+               options={listOptions}
                value={
                   currentCountry
                      ? {
