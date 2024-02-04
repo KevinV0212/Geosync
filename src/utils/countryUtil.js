@@ -1,6 +1,7 @@
 import axios from "axios";
 import buildPath from "../components/Path";
 
+// handles request to get all countries
 async function getAllCountries() {
    let url = buildPath("/all_countries");
    let response = await axios
@@ -27,10 +28,12 @@ async function getAllCountries() {
             // Something happened in setting up the request that triggered an Error
             console.log("Error", error.message);
          }
+         return;
       });
    return response.data;
 }
 
+// handles request to add new country with info from requestBody
 async function addCountry(requestBody) {
    if (!requestBody) {
       return;
@@ -69,9 +72,12 @@ async function addCountry(requestBody) {
          console.log("Error", error.message);
       }
       // do some error handling
+      return;
    });
+   console.log(requestBody.countryName + " has been created");
 }
 
+// handles request to update a country with info from requestBody
 async function updateCountry(requestBody) {
    if (!requestBody) {
       return;
@@ -112,8 +118,50 @@ async function updateCountry(requestBody) {
       // do some error handling
       return;
    });
-
+   console.log("country updated");
    return response.data;
 }
 
-export { getAllCountries, addCountry, updateCountry };
+// deletes country with given countryID
+async function deleteCountry(countryID) {
+   if (!countryID) {
+      return;
+   }
+   const url = buildPath("/delete_country/" + countryID);
+
+   let config = {
+      method: "delete",
+      url: url,
+      headers: {
+         headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Headers":
+               "Origin, X-Requested-With, Content-Type, Accept",
+            "Content-Type": "application/json",
+         },
+      },
+   };
+
+   await axios(config).catch(function (error) {
+      if (error.response) {
+         // The request was made and the server responded with a status code
+         // that falls out of the range of 2xx
+         console.log(error.response.data);
+         console.log(error.response.status);
+         console.log(error.response.headers);
+      } else if (error.request) {
+         // The request was made but no response was received
+         // `error.request` is an instance of XMLHttpRequest in the browser
+         // and an instance of http.ClientRequest in node.js
+         console.log(error.request);
+      } else {
+         // Something happened in setting up the request that triggered an Error
+         console.log("Error", error.message);
+      }
+      // do some error handling
+      return;
+   });
+   console.log("country: " + countryID + " deleted");
+}
+
+export { getAllCountries, addCountry, updateCountry, deleteCountry };

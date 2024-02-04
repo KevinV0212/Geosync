@@ -49,6 +49,18 @@ function EditCountry() {
       setFormData({ ...formData, [name]: value });
    };
 
+   const handleDelete = () => {
+      const deleteOk = window.confirm(
+         "Are you sure you want to delete this country?"
+      );
+      if (deleteOk) {
+         console.log("delete");
+         deleteCountry(countryID);
+      } else {
+         console.log("don't delete");
+      }
+      window.alert(countryName + " has been deleted.");
+   };
    // ensures that edit form is populated with current country info
    useEffect(() => {
       setFormData({
@@ -62,7 +74,7 @@ function EditCountry() {
       <div>
          <form onSubmit={handleSubmit}>
             <h1>Edit Country ({countryName})</h1>
-
+            <Button onClick={handleDelete}>Delete</Button>
             <FormGroup>
                <FormControl>
                   <TextField
