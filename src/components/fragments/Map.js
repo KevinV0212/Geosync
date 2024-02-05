@@ -109,7 +109,6 @@ function Map() {
                color[1] = 203;
                color[2] = 5;
             }
-            console.log(color);
             const point = {
                type: "point",
                longitude: long,
@@ -117,7 +116,7 @@ function Map() {
             };
             const simpleMarkerSymbol = {
                type: "simple-marker",
-               size: 7,
+               size: 5,
                color: color,
                outline: null,
             };
