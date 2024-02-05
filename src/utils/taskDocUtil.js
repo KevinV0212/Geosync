@@ -1,52 +1,42 @@
 import axios from "axios";
 import buildPath from "../components/Path";
 
-async function getMapPins(countryID, filters = undefined) {
-   const url = buildPath("/get_mappins");
-   let obj = {
-      countryID: countryID,
-      filters: filters ? filters : null,
-   };
-   let config = {
-      method: "post",
-      url: url,
-      headers: {
+async function getAllTasks() {
+   let url = buildPath("/all_tasks");
+   let response = await axios
+      .get(url, {
          headers: {
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Headers":
                "Origin, X-Requested-With, Content-Type, Accept",
-            "Content-Type": "application/json",
          },
-      },
-      data: obj,
-   };
-
-   const response = await axios(config).catch(function (error) {
-      if (error.response) {
-         // The request was made and the server responded with a status code
-         // that falls out of the range of 2xx
-         console.log(error.response.data);
-         console.log(error.response.status);
-         console.log(error.response.headers);
-      } else if (error.request) {
-         // The request was made but no response was received
-         // `error.request` is an instance of XMLHttpRequest in the browser
-         // and an instance of http.ClientRequest in node.js
-         console.log(error.request);
-      } else {
-         // Something happened in setting up the request that triggered an Error
-         console.log("Error", error.message);
-      }
-      // do some error handling
-   });
+      })
+      .catch(function (error) {
+         if (error.response) {
+            // The request was made and the server responded with a status code
+            // that falls out of the range of 2xx
+            console.log(error.response.data);
+            console.log(error.response.status);
+            console.log(error.response.headers);
+         } else if (error.request) {
+            // The request was made but no response was received
+            // `error.request` is an instance of XMLHttpRequest in the browser
+            // and an instance of http.ClientRequest in node.js
+            console.log(error.request);
+         } else {
+            // Something happened in setting up the request that triggered an Error
+            console.log("Error", error.message);
+         }
+         return;
+      });
    return response.data;
 }
 
-async function addMapPin(requestBody) {
+async function addTask(requestBody) {
    if (!requestBody) {
       return;
    }
-   const url = buildPath("/add_mappin");
+   const url = buildPath("/add_task");
    let obj = requestBody;
 
    let config = {
@@ -80,15 +70,16 @@ async function addMapPin(requestBody) {
          console.log("Error", error.message);
       }
       // do some error handling
+      return;
    });
+   console.log("task document added");
 }
 
-// deletes map pin with given mapPinID
-async function deleteMapPin(mapPinID) {
-   if (!mapPinID) {
+async function deleteTask(taskID) {
+   if (!taskID) {
       return;
    }
-   const url = buildPath("/delete_mappin/" + mapPinID);
+   const url = buildPath("/delete_task/" + taskID);
 
    let config = {
       method: "delete",
@@ -122,6 +113,7 @@ async function deleteMapPin(mapPinID) {
       // do some error handling
       return;
    });
-   console.log("map pin: " + mapPinID + " deleted");
+   console.log("task document: " + taskID + " deleted");
 }
-export { getMapPins, addMapPin, deleteMapPin };
+
+export { getAllTasks, addTask, deleteTask };

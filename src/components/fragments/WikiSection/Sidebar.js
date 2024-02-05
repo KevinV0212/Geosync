@@ -5,7 +5,7 @@ import { FaCheck } from "react-icons/fa6";
 import "./Sidebar.css";
 
 import { useLocalStorage } from "usehooks-ts";
-import { getAllWiki } from "../../../utils/wikiUtil";
+import { deleteWikiEntry, getWikiEntries } from "../../../utils/wikiUtil";
 
 function Sidebar() {
    // country selection list
@@ -14,7 +14,6 @@ function Sidebar() {
       null
    );
 
-   const [countries, setCountries] = useState([]);
    let wikiEntries = [];
 
    function loadWikiEntries() {
@@ -22,9 +21,8 @@ function Sidebar() {
          return;
       }
       const countryID = currentCountry.countryID;
-      const filters = null;
 
-      getAllWiki(countryID, filters).then((entriesList) => {
+      getWikiEntries(countryID).then((entriesList) => {
          wikiEntries = entriesList;
          console.log(wikiEntries);
       });
@@ -131,7 +129,6 @@ function Sidebar() {
       });
       setSelectedASCOPE(updated);
    }
-
    return (
       <div>
          <section className="sidebar">

@@ -39,7 +39,7 @@ function AddPin() {
 
       // requestBody for API request
       let requestBody = {
-         mapID: countryID,
+         countryID: countryID,
          title: formData.title,
          description: formData.description,
          longitude: formData.longitude,
@@ -54,6 +54,7 @@ function AddPin() {
 
       requestBody[formData.pmessiCat] = true;
       addMapPin(requestBody);
+      window.alert("Pin Added");
    };
 
    // callback for when states of form components change
