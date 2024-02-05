@@ -2,7 +2,24 @@ import BasicModal from "./BasicModal";
 import "./Nav.css";
 import { FaPlus } from "react-icons/fa";
 import AddEntry from "../forms/AddEntry.js";
+import { Button } from "@mui/material";
+import { useState } from "react";
 function Nav() {
+   const [managerView, setManagerView] = useState(true);
+
+   const handleViewChange = () => setManagerView(!managerView);
+
+   const renderManagerControls = () => {
+      if (managerView) {
+         return (
+            <>
+               <BasicModal buttonText={"Add Entry"}>
+                  <AddEntry />
+               </BasicModal>
+            </>
+         );
+      }
+   };
    return (
       <nav className="wiki-nav">
          <div className="nav-container">
@@ -18,9 +35,11 @@ function Nav() {
                <FaPlus className="nav-icons" />
             </a>
          </div>
-         <BasicModal buttonText={"Add Entry"}>
-            <AddEntry />
-         </BasicModal>
+         {renderManagerControls()}
+
+         <Button onClick={handleViewChange}>
+            Change to {managerView ? "user view" : "manager view"}
+         </Button>
       </nav>
    );
 }

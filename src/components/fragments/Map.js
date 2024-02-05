@@ -34,9 +34,38 @@ function Map() {
       checkbox5: true,
       checkbox6: true,
    });
-
    let mapPins = [];
 
+   const [managerView, setManagerView] = useState(true);
+
+   const handleViewChange = () => setManagerView(!managerView);
+
+   const renderManagerControls = () => {
+      if (managerView) {
+         return (
+            <>
+               <IconButton
+                  aria-label="add"
+                  sx={{ marginTop: 1, position: "absolute", top: 0, left: 0 }}
+               >
+                  <AddIcon />
+               </IconButton>
+               <Button variant="outlined" size="small" sx={{ marginTop: 1.5 }}>
+                  Edit
+               </Button>
+               <BasicModal buttonText="Edit Country">
+                  <EditCountry />
+               </BasicModal>
+               <BasicModal buttonText="Add Country">
+                  <AddCountry />
+               </BasicModal>
+               <BasicModal buttonText="Add Pin">
+                  <AddPin />
+               </BasicModal>
+            </>
+         );
+      }
+   };
    // Map
    const mapElem = useRef(null);
 
@@ -138,24 +167,10 @@ function Map() {
    return (
       <div className="home">
          <div className="filters-container">
-            <IconButton
-               aria-label="add"
-               sx={{ marginTop: 1, position: "absolute", top: 0, left: 0 }}
-            >
-               <AddIcon />
-            </IconButton>
-            <Button variant="outlined" size="small" sx={{ marginTop: 1.5 }}>
-               Edit
+            {renderManagerControls()}
+            <Button onClick={handleViewChange}>
+               Change to {managerView ? "user view" : "manager view"}
             </Button>
-            <BasicModal buttonText="Edit Country">
-               <EditCountry />
-            </BasicModal>
-            <BasicModal buttonText="Add Country">
-               <AddCountry />
-            </BasicModal>
-            <BasicModal buttonText="Add Pin">
-               <AddPin />
-            </BasicModal>
 
             <h3>PMESII Filters</h3>
             <form className="filters-form">

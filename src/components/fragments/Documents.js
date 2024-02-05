@@ -11,6 +11,9 @@ import { getAllMissions } from "../../utils/missionDocUtil";
 function Documents() {
    const [taskDocs, setTaskDocs] = useState([]);
    const [missionDocs, setMissionDocs] = useState([]);
+   const [managerView, setManagerView] = useState(true);
+
+   const handleViewChange = () => setManagerView(!managerView);
 
    const loadTaskDocs = () => {
       getAllTasks().then((taskDocList) => setTaskDocs(taskDocList));
@@ -24,32 +27,49 @@ function Documents() {
       loadTaskDocs();
       loadMissionDocs();
    }, []);
+
+   const renderManagerControls = () => {
+      if (managerView) {
+         return (
+            <>
+               <IconButton
+                  aria-label="add"
+                  sx={{ marginTop: 1, position: "absolute", top: 0, left: 0 }}
+               >
+                  <AddIcon />
+               </IconButton>
+               <Button
+                  variant="outlined"
+                  size="small"
+                  sx={{ marginTop: 1.5, marginLeft: -140 }}
+               >
+                  Edit
+               </Button>
+               <BasicModal buttonText="Add Document">
+                  <AddDocument onReload={loadTaskDocs} />
+               </BasicModal>
+            </>
+         );
+      }
+   };
    return (
       <div className="lg-container">
-         <IconButton
-            aria-label="add"
-            sx={{ marginTop: 1, position: "absolute", top: 0, left: 0 }}
-         >
-            <AddIcon />
-         </IconButton>
-
-         <BasicModal buttonText="Add Document">
-            <AddDocument onReload={loadTaskDocs} />
-         </BasicModal>
-         <Button
-            variant="outlined"
-            size="small"
-            sx={{ marginTop: 1.5, marginLeft: -140 }}
-         >
-            Edit
+         <Button onClick={handleViewChange}>
+            Change to {managerView ? "user view" : "manager view"}
          </Button>
+         {renderManagerControls()}
+
          <div className="lists-container">
             <div className="list-container">
                <h2>Mission Statement</h2>
                <ul className="list1">
                   {missionDocs.map((doc) => (
                      <li key={doc.id}>
-                        <TaskDocument id={doc.id} link={doc.link} />
+                        <TaskDocument
+                           id={doc.id}
+                           link={doc.link}
+                           canDelete={managerView}
+                        />
                      </li>
                   ))}
                </ul>
@@ -59,13 +79,16 @@ function Documents() {
                <ul className="list2">
                   {taskDocs.map((doc) => (
                      <li key={doc.id}>
-                        <TaskDocument id={doc.id} link={doc.link} />
+                        <TaskDocument
+                           id={doc.id}
+                           link={doc.link}
+                           canDelete={managerView}
+                        />
                      </li>
                   ))}
                </ul>
             </div>
          </div>
-         {/* <AddDocument /> */}
       </div>
    );
 }

@@ -1,7 +1,7 @@
 import { Button } from "@mui/material";
 import { deleteTask } from "../utils/taskDocUtil";
 
-export default function TaskDocument({ id, link }) {
+export default function TaskDocument({ id, link, canDelete }) {
    const handleDelete = () => {
       const deleteCheck = window.confirm(
          "Are you sure you wish to delete this task document?"
@@ -16,9 +16,14 @@ export default function TaskDocument({ id, link }) {
          <a href={link} target="_blank">
             {link}
          </a>
-         <Button onClick={handleDelete} value={id}>
-            Delete {id}
-         </Button>
+         {canDelete ? (
+            <Button onClick={handleDelete} value={id}>
+               {" "}
+               Delete {id}{" "}
+            </Button>
+         ) : (
+            ""
+         )}
       </div>
    );
 }

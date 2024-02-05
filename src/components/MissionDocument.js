@@ -1,7 +1,7 @@
 import { Button } from "@mui/material";
 import { deleteMission } from "../utils/missionDocUtil";
 
-export default function MissionDocument({ id, link }) {
+export default function MissionDocument({ id, link, canDelete }) {
    const handleDelete = () => {
       const deleteCheck = window.confirm(
          "Are you sure you wish to delete this mission document?"
@@ -16,9 +16,14 @@ export default function MissionDocument({ id, link }) {
          <a href={link} target="_blank">
             {link}
          </a>
-         <Button onClick={handleDelete} value={id}>
-            Delete {id}
-         </Button>
+         {canDelete ? (
+            <Button onClick={handleDelete} value={id}>
+               {" "}
+               Delete {id}{" "}
+            </Button>
+         ) : (
+            ""
+         )}
       </div>
    );
 }
