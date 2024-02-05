@@ -17,11 +17,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Level1 from "./Level1";
-
-
 import Divider from '@mui/material/Divider';
-
-//Overlap boxes
 
 //Searchbar styling
 const Search = styled('div')(({ theme }) => ({
