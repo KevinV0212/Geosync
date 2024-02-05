@@ -1,0 +1,40 @@
+
+.appBar {
+    position: fixed;
+    margin-top: 80px;
+}
+
+.search {
+    position: 'relative';
+    margin-left: 0;
+    width: 100%;
+}
+
+.searchIconWrapper {
+    height: 100%;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.toolBar {
+    justify-content: space-around;
+}
+
+.selector {
+    width: 12%;
+    color: black;
+}
+
+.drawer {
+    width: 240px;
+}
+
+.drawerPaper {
+    width: 240px;
+}
+
+.box {
+    margin-top: 80px;
+}

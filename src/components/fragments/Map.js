@@ -9,6 +9,7 @@ import { useLocalStorage } from "usehooks-ts";
 import AddPin from "../forms/AddPin.js";
 import { getAllCountries } from "../../utils";
 import { getMapPins } from "../../utils/mapUtil.js";
+
 function Map() {
    // Country selector
    const [currentCountry, setCurrentCountry] = useLocalStorage(

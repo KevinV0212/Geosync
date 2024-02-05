@@ -12,9 +12,6 @@ import ContactMailRoundedIcon from '@mui/icons-material/ContactMailRounded';
 import GroupRoundedIcon from '@mui/icons-material/GroupRounded';
 import Divider from '@mui/material/Divider';
 
-
-
-
 export default function FAQ() {
 
 
