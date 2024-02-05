@@ -138,23 +138,49 @@ function Map() {
          // Map pins
          const graphicsLayer = new GraphicsLayer();
          webmap.add(graphicsLayer);
-
-         const point = {
-            type: "point",
-            longitude: -118.80657463861,
-            latitude: 34.0005930608889,
-         };
-         const simpleMarkerSymbol = {
-            type: "simple-marker",
-            size: 4,
-            color: [255, 0, 0],
-            outline: null,
-         };
-         const pointGraphic = new Graphic({
-            geometry: point,
-            symbol: simpleMarkerSymbol,
-         });
-         graphicsLayer.add(pointGraphic);
+         let len = mapPins.length;
+         for (let i = 0; i < len; i++) {
+            let long = mapPins[i]["longitude"];
+            let lat = mapPins[i]["latitude"];
+            let color = [0, 0, 0]
+            if (mapPins[i]["political"]) {
+               color[0] = 255;
+            }
+            else if (mapPins[i]["military"]) {
+               color[2] = 255;
+            }
+            else if (mapPins[i]["economy"]) {
+               color[1] = 255;
+            }
+            else if (mapPins[i]["social"]) {
+               color = [255, 0, 255];
+            }
+            else if (mapPins[i]["information"]) {
+               color[1] = 139;
+               color[2] = 139;
+            }
+            else if (mapPins[i]["infrastructure"]) {
+               color[0] = 255;
+               color[1] = 203;
+               color[2] = 5;
+            }
+            const point = {
+               type: "point",
+               longitude: long,
+               latitude: lat,
+            };
+            const simpleMarkerSymbol = {
+               type: "simple-marker",
+               size: 5,
+               color: color,
+               outline: null,
+            };
+            const pointGraphic = new Graphic({
+               geometry: point,
+               symbol: simpleMarkerSymbol,
+            });
+            graphicsLayer.add(pointGraphic);
+         }
       });
       loadCountries();
       loadMapPins();
