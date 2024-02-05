@@ -1,127 +1,83 @@
-import { Button, FormControl, Input } from "@mui/base";
+import React, { useState } from "react";
+import { Button, FormControl } from "@mui/base";
 import {
-   Checkbox,
+   TextField,
    FormControlLabel,
    FormGroup,
-   InputLabel,
-   checkboxClasses,
+   FormLabel,
+   Radio,
+   RadioGroup,
 } from "@mui/material";
-import React, { useState } from "react";
-import buildPath from "../Path";
-import axios from "axios";
+import { addMapPin } from "../../utils/mapUtil";
+import { addTask } from "../../utils/taskDocUtil";
+import { addMission } from "../../utils/missionDocUtil";
 
-const AddDocument = () => {
-   const [title, setTitle] = useState("");
-   const [description, setDescription] = useState("");
-   const [longitutde, setLongitude] = useState(0);
-   const [latitude, setLatitude] = useState(0);
+// form for adding map pin to current country
+function AddPin({ onReload }) {
+   const [formData, setFormData] = useState({
+      link: "",
+      docType: "",
+   });
 
-   // filters
-   const [political, setPolitical] = useState(false);
-   const [military, setMilitary] = useState(false);
-   const [economic, setEconomic] = useState(false);
-   const [social, setSocial] = useState(false);
-   const [information, setInformation] = useState(false);
-   const [infrastructure, setInfrastructure] = useState(false);
+   // submits a request to add new map pin to current country
+   const handleSubmit = async (e) => {
+      e.preventDefault();
 
-   // handles toggling of a checkbox
-   const handleChangePolitical = (e) => setPolitical(true);
-   const handleChangeMilitary = (e) => setMilitary(true);
-   const handleChangeEconomic = (e) => setEconomic(true);
-   const handleChangeSocial = (e) => setSocial(true);
-   const handleChangeInformation = (e) => setInformation(true);
-   const handleChangeInfrastructure = (e) => setInfrastructure(true);
+      // requestBody for API request
+      let requestBody = formData;
+      if (requestBody.docType === "mission") {
+         addMission(requestBody);
+      } else if (requestBody.docType === "task") {
+         addTask(requestBody);
+      }
+      onReload();
+   };
 
-   const handleSubmit = async () => {
-      const url = buildPath("/add_mappin");
-      let obj = {
-         title: title,
-         description: description,
-         longitude: longitutde,
-         latitude: latitude,
-         political: political,
-         military: military,
-         economic: economic,
-         social: social,
-         information: information,
-         infrastructure: infrastructure,
-      };
-      let js = JSON.stringify(obj);
-
-      let config = {
-         method: "post",
-         url: url,
-         headers: {
-            "Content-Type": "application/json",
-         },
-         data: js,
-      };
-      console.log(js);
-      // call axios with data to url
-      // axios(config)
-      //    .then((response) => {
-      //       let res = response.data;
-      //       if (res.error) {
-      //          console.log(res.error);
-      //       } else {
-      //          console.log("Login Successful! User's Token: " + res.token);
-      //       }
-      //    })
-      //    .catch((error) => {
-      //       console.log(error);
-      //    });
+   // callback for when states of form components change
+   const handleChange = (e) => {
+      const { name, value } = e.target;
+      setFormData({ ...formData, [name]: value });
    };
 
    return (
       <div>
-         <h1>Add Map Pin</h1>
-         <FormGroup>
-            <FormControl>
-               <InputLabel>Title</InputLabel>
-               <Input />
-            </FormControl>
-            <FormControl>
-               <InputLabel>Description</InputLabel>
-               <Input />
-            </FormControl>
-            <FormControl>
-               <InputLabel>Longitude</InputLabel>
-               <Input />
-            </FormControl>
-            <FormControl>
-               <InputLabel>Latitude</InputLabel>
-               <Input />
-            </FormControl>
-            <FormControl>
-               <FormControlLabel
-                  control={<Checkbox onChange={handleChangePolitical} />}
-                  label="Political"
-               />
-               <FormControlLabel
-                  control={<Checkbox onChange={handleChangeMilitary} />}
-                  label="Military"
-               />
-               <FormControlLabel
-                  control={<Checkbox onChange={handleChangeEconomic} />}
-                  label="Economic"
-               />
-               <FormControlLabel
-                  control={<Checkbox onChange={handleChangeSocial} />}
-                  label="Social"
-               />
-               <FormControlLabel
-                  control={<Checkbox onChange={handleChangeInformation} />}
-                  label="Information"
-               />
-               <FormControlLabel
-                  control={<Checkbox onChange={handleChangeInfrastructure} />}
-                  label="Infrastructure"
-               />
-            </FormControl>
-            <Button onClick={handleSubmit}>Submit</Button>
-         </FormGroup>
+         <form onSubmit={handleSubmit}>
+            <h1>Add Document</h1>
+            <FormGroup>
+               <FormControl>
+                  <TextField
+                     label="Link"
+                     name="link"
+                     value={formData.link}
+                     variant="outlined"
+                     margin="normal"
+                     onChange={handleChange}
+                     required
+                  />
+               </FormControl>
+
+               <FormControl>
+                  <FormLabel id="pmessiCat">Choose a Document Type</FormLabel>
+                  <RadioGroup required name="docType" row>
+                     <FormControlLabel
+                        value="mission"
+                        control={<Radio onChange={handleChange} />}
+                        label="Mission Statement"
+                     />
+                     <FormControlLabel
+                        value="task"
+                        control={<Radio onChange={handleChange} />}
+                        label="Task"
+                     />
+                  </RadioGroup>
+               </FormControl>
+               <Button type="submit" variant="contained" onClick={handleSubmit}>
+                  Submit
+               </Button>
+            </FormGroup>
+         </form>
       </div>
    );
-};
+}
 
-export default AddDocument;
+export default AddPin;

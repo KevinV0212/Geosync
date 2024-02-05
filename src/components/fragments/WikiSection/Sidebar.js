@@ -1,10 +1,38 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Level1 from "./Level1";
 import "./List.css";
 import { FaCheck } from "react-icons/fa6";
 import "./Sidebar.css";
 
+import { useLocalStorage } from "usehooks-ts";
+import { deleteWikiEntry, getWikiEntries } from "../../../utils/wikiUtil";
+
 function Sidebar() {
+   // country selection list
+   const [currentCountry, setCurrentCountry] = useLocalStorage(
+      "current_country",
+      null
+   );
+
+   let wikiEntries = [];
+
+   function loadWikiEntries() {
+      if (!currentCountry) {
+         return;
+      }
+      const countryID = currentCountry.countryID;
+
+      getWikiEntries(countryID).then((entriesList) => {
+         wikiEntries = entriesList;
+         console.log(wikiEntries);
+      });
+   }
+
+   useEffect(() => {
+      loadWikiEntries();
+      return;
+   }, [currentCountry]);
+
    const [toggled, setToggled] = useState([true, true, true, true, true, true]);
    const PMESII = [
       "Political",
@@ -101,7 +129,6 @@ function Sidebar() {
       });
       setSelectedASCOPE(updated);
    }
-
    return (
       <div>
          <section className="sidebar">
