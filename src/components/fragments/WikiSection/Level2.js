@@ -1,8 +1,10 @@
 import React from "react";
 import { testEntries } from "../../../test_data/wikiTest";
+import {Typography} from "@mui/material";
+
 
 //Passing in PMESII and ASCOPE
-function Level1(props) {
+function Level2(props) {
    return (
       <div>
          {testEntries
@@ -12,19 +14,14 @@ function Level1(props) {
                   element[props.ASCOPE] === true
             )
             .map((item, i) => (
-               <div className="element">
-                  <div className="individualTitle">
-                     <h4>
-                        <b>{item.Title}</b>
-                     </h4>
-                  </div>
-                  <div className="individualContent">
-                     <>{item.Description}</>
-                  </div>
+               <div>
+                  <Typography sx={{textDecoration: 'underline'}}>{item.Title}</Typography>
+                  <Typography>{item.Description} </Typography>
                </div>
+               
             ))}
       </div>
    );
 }
 
-export default Level;
+export default Level2;

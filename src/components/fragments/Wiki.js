@@ -1,13 +1,11 @@
 import React from "react";
-import Sidebar from "./WikiSection/Sidebar";
-import Nav from "./Nav";
 import AddEntry from "../forms/AddEntry";
-import Temp from "./temp";
+import WikiSection from "./WikiSection/WikiSection";
 
 function Wiki() {
    return (
       <div>
-         <Temp/>
+         <WikiSection/>
       </div>
    );
 }

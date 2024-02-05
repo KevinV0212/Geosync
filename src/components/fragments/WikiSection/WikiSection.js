@@ -1,8 +1,7 @@
-import React, {useState, useMemo, useRef, useEffect} from 'react';
-import {AppBar, Button, Toolbar, Typography} from "@mui/material";
-import './Wiki.css';
+import React, {useState, useMemo} from 'react';
+import {AppBar, Toolbar, Typography} from "@mui/material";
+import '../Wiki.css';
 import AddIcon from '@mui/icons-material/Add';
-import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import SearchIcon from '@mui/icons-material/Search';
 import Select from 'react-select';
 import countryList from 'react-select-country-list';
@@ -10,29 +9,17 @@ import InputBase from '@mui/material/InputBase';
 import { styled, alpha, ThemeProvider, useTheme } from '@mui/material/styles';
 import Drawer from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
-import { withStyles } from '@mui/material/styles';
 import {makeStyles} from '@mui/styles';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import { FaCheck } from "react-icons/fa6";
-import "./WikiSection/List.css";
-import "./WikiSection/Sidebar.css";
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import Level1 from "./WikiSection/Level1";
+import Level1 from "./Level1";
 
 
 import Divider from '@mui/material/Divider';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
-import List from '@mui/material/List';
-import CssBaseline from '@mui/material/CssBaseline';
 
 //Overlap boxes
 
@@ -93,27 +80,17 @@ const Search = styled('div')(({ theme }) => ({
 
 
 
-function Temp() {
+function WikiSection() {
 
   const numbers = [0, 1, 2, 3, 4, 5]
-
-  const [checked, setChecked] = React.useState([true, false]);
 
     // Country selector
     const [value, setValue] = useState('')
     const options = useMemo(() => countryList().getData(), [])
 
-    const changeHandler = value => {
-        setValue(value)
-      }
-
-    // Map
-    const mapElem = useRef(null);
 
     const theme = useTheme();
     const classes = useStyles(theme);
-
-    const [toggled, setToggled] = useState([true, true, true, true, true, true]);
 
    const PMESII = [
       "Political",
@@ -178,17 +155,6 @@ function Temp() {
       true,
    ]);
 
-   function toggle(i) {
-      const updated = toggled.map((item, index) => {
-         if (index === i) {
-            return !item;
-         } else {
-            return item;
-         }
-      });
-      setToggled(updated);
-   }
-
    function onClicker(i) {
      filterPMESII(i)
      numbers.map((item, j) => (
@@ -224,19 +190,21 @@ function Temp() {
         <ThemeProvider theme = {theme}>
         <Box sx={{ display: 'flex' }}>
         
-        <AppBar sx={{background: "gray", position: 'fixed', marginTop: "80px", boxShadow: '0'}} > 
+        <AppBar sx={{background: "#D7CEC7", position: 'fixed', marginTop: "80px", boxShadow: '0'}} > 
             <Toolbar className='toolBar'>
                 <Select className = 'selector' placeholder="Select a Country" options={options} value={value} />
-                <Search>
-                    <SearchIconWrapper>
-                    <SearchIcon />
-                    </SearchIconWrapper>
+                <Search >
+                    <SearchIconWrapper >
+                    <SearchIcon sx={{color: "black"}}/>
+                    </SearchIconWrapper >
                     <StyledInputBase
                     placeholder="Search…"
                     inputProps={{ 'aria-label': 'search' }}
+                    sx={{color: "black"}}
                     />
                 </Search>
-                <AddIcon/>
+                <AddIcon
+                sx={{color: 'black'}}/>
                 
             </Toolbar>
         </AppBar>
@@ -245,7 +213,7 @@ function Temp() {
           sx={{
             width: drawerWidth,
             flexShrink: 0,
-            [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box', background: 'gray' },
+            [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box', background: "#D7CEC7" },
             
           }}
           classes={{paper: classes.drawerPaper}}
@@ -264,7 +232,10 @@ function Temp() {
                     control={
                       <Checkbox
                       checked= {selectedPMESII[i] === true ? true : false}
-                      onClick={() => onClicker(i)}/>
+                      onClick={() => onClicker(i)}
+                      style ={{
+                        color: "black",
+                      }}/>
                     }
                   />
                   
@@ -276,7 +247,10 @@ function Temp() {
                                 control={
                                   <Checkbox
                                   checked= {selectedASCOPE[i * 6 + j] === true}
-                                  onClick={() => filterASCOPE(i * 6 + j)}/>
+                                  onClick={() => filterASCOPE(i * 6 + j)}
+                                  style ={{
+                                    color: "black",
+                                  }}/>
                                 }
                               />
                           ))}
@@ -288,24 +262,24 @@ function Temp() {
           </Box>
         </Drawer>
 
-        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+        <Box component="main" sx={{ flexGrow: 1, background: "#D7CEC7"}}>
           <Toolbar />
           {PMESII.map((item, i) => (
             <div>
               {selectedPMESII[i] && (
-              <Accordion >
+              <Accordion defaultExpanded >
                 <AccordionSummary
                   expandIcon={<ArrowDropDownIcon />}
                   aria-controls="panel1-content"
                   id="panel1-header"
                 >
-                  <Typography sx={{marginLeft: '10px'}}>{item}</Typography>
+                  <Typography >{item}</Typography>
                 </AccordionSummary>
                 <Divider variant= 'middle' sx={{borderBottomWidth: 1, borderColor: 'black'}}/>
                 <AccordionDetails>
                   <Typography>
                     <Level1
-                      current={item}
+                      currentPMESII={item}
                       selected={selectedASCOPE}
                       value={i}
                     />
@@ -323,4 +297,4 @@ function Temp() {
     )
 }
 
-export default Temp;
+export default WikiSection;
