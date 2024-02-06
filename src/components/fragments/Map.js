@@ -72,7 +72,14 @@ function Map() {
 
    // function that loads a list of countries in the format below
    function loadCountries() {
-      getAllCountries().then((countries) => setCountries(countries));
+      getAllCountries().then((countries) => {
+         countries.sort((countryA, countryB) => {
+            if (countryA.countryName < countryB.countryName) return -1;
+            if (countryA.countryName > countryB.countryName) return 1;
+            return 0;
+         });
+         setCountries(countries);
+      });
    }
 
    // loads the mappins associated to the currently selected country
@@ -116,6 +123,9 @@ function Map() {
    };
 
    useEffect(() => {
+      loadCountries();
+      loadMapPins();
+
       let view;
       loadModules(
          [
@@ -142,24 +152,19 @@ function Map() {
          for (let i = 0; i < len; i++) {
             let long = mapPins[i]["longitude"];
             let lat = mapPins[i]["latitude"];
-            let color = [0, 0, 0]
+            let color = [0, 0, 0];
             if (mapPins[i]["political"]) {
                color[0] = 255;
-            }
-            else if (mapPins[i]["military"]) {
+            } else if (mapPins[i]["military"]) {
                color[2] = 255;
-            }
-            else if (mapPins[i]["economy"]) {
+            } else if (mapPins[i]["economy"]) {
                color[1] = 255;
-            }
-            else if (mapPins[i]["social"]) {
+            } else if (mapPins[i]["social"]) {
                color = [255, 0, 255];
-            }
-            else if (mapPins[i]["information"]) {
+            } else if (mapPins[i]["information"]) {
                color[1] = 139;
                color[2] = 139;
-            }
-            else if (mapPins[i]["infrastructure"]) {
+            } else if (mapPins[i]["infrastructure"]) {
                color[0] = 255;
                color[1] = 203;
                color[2] = 5;
@@ -182,8 +187,6 @@ function Map() {
             graphicsLayer.add(pointGraphic);
          }
       });
-      loadCountries();
-      loadMapPins();
       return () => {
          if (!!view) {
             view.destroy();
