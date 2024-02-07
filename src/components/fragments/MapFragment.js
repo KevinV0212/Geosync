@@ -12,7 +12,7 @@ import { getMapPins } from "../../utils/mapUtil.js";
 import AddCountry from "../forms/AddCountry.js";
 import BasicModal from "./BasicModal.js";
 import EditCountry from "../forms/EditCountry.js";
-
+import MapComponent from "../MapComponent.js";
 function Map() {
    // Country selector
    const [currentCountry, setCurrentCountry] = useLocalStorage(
@@ -26,7 +26,6 @@ function Map() {
    }));
 
    // PMESII-PT filters
-
    const [checkboxes, setCheckboxes] = useState({
       checkbox1: true,
       checkbox2: true,
@@ -35,7 +34,7 @@ function Map() {
       checkbox5: true,
       checkbox6: true,
    });
-   let mapPins = [];
+   const [mapPins, setMapPins] = useState([]);
 
    const [managerView, setManagerView] = useState(true);
 
@@ -67,8 +66,6 @@ function Map() {
          );
       }
    };
-   // Map
-   const mapElem = useRef(null);
 
    // function that loads a list of countries in the format below
    function loadCountries() {
@@ -93,9 +90,9 @@ function Map() {
          filters.push(checkboxes[checkbox]);
       }
 
+      let mapPins = [];
       getMapPins(countryID, filters).then((pinList) => {
-         mapPins = pinList;
-         console.log(mapPins);
+         setMapPins([...pinList]);
       });
    }
 
@@ -125,75 +122,8 @@ function Map() {
    useEffect(() => {
       loadCountries();
       loadMapPins();
-
-      let view;
-      loadModules(
-         [
-            "esri/views/MapView",
-            "esri/WebMap",
-            "esri/Graphic",
-            "esri/layers/GraphicsLayer",
-         ],
-         { css: true }
-      ).then(([MapView, WebMap, Graphic, GraphicsLayer]) => {
-         const webmap = new WebMap({
-            basemap: "topo-vector",
-         });
-         view = new MapView({
-            map: webmap,
-            center: [0, 0],
-            zoom: 2,
-            container: mapElem.current,
-         });
-         // Map pins
-         const graphicsLayer = new GraphicsLayer();
-         webmap.add(graphicsLayer);
-         let len = mapPins.length;
-         for (let i = 0; i < len; i++) {
-            let long = mapPins[i]["longitude"];
-            let lat = mapPins[i]["latitude"];
-            let color = [0, 0, 0];
-            if (mapPins[i]["political"]) {
-               color[0] = 255;
-            } else if (mapPins[i]["military"]) {
-               color[2] = 255;
-            } else if (mapPins[i]["economy"]) {
-               color[1] = 255;
-            } else if (mapPins[i]["social"]) {
-               color = [255, 0, 255];
-            } else if (mapPins[i]["information"]) {
-               color[1] = 139;
-               color[2] = 139;
-            } else if (mapPins[i]["infrastructure"]) {
-               color[0] = 255;
-               color[1] = 203;
-               color[2] = 5;
-            }
-            const point = {
-               type: "point",
-               longitude: long,
-               latitude: lat,
-            };
-            const simpleMarkerSymbol = {
-               type: "simple-marker",
-               size: 5,
-               color: color,
-               outline: null,
-            };
-            const pointGraphic = new Graphic({
-               geometry: point,
-               symbol: simpleMarkerSymbol,
-            });
-            graphicsLayer.add(pointGraphic);
-         }
-      });
-      return () => {
-         if (!!view) {
-            view.destroy();
-            view = null;
-         }
-      };
    }, [currentCountry]);
+
    return (
       <div className="home">
          <div className="filters-container">
@@ -201,8 +131,7 @@ function Map() {
             <Button onClick={handleViewChange}>
                Change to {managerView ? "user view" : "manager view"}
             </Button>
-
-            <h3>PMESII Filters</h3>
+            <h3>PMESII Filters {mapPins.length}</h3>
             <form className="filters-form">
                <div className="filterPMESII">
                   <label>
@@ -280,7 +209,8 @@ function Map() {
                }
                onChange={handleCountrySelect}
             />
-            <div className="map" ref={mapElem}></div>
+            {/* <div className="map" ref={mapElem}></div> */}
+            <MapComponent mapPins={mapPins} />
          </div>
       </div>
    );
