@@ -38,7 +38,7 @@ const AddEntry = () => {
 
       // requestBody for API request
       let requestBody = {
-         mapID: countryID,
+         countryID: countryID,
          title: formData.title,
          description: formData.description,
          longitude: formData.longitude,

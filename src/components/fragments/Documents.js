@@ -32,19 +32,6 @@ function Documents() {
       if (managerView) {
          return (
             <>
-               <IconButton
-                  aria-label="add"
-                  sx={{ marginTop: 1, position: "absolute", top: 0, left: 0 }}
-               >
-                  <AddIcon />
-               </IconButton>
-               <Button
-                  variant="outlined"
-                  size="small"
-                  sx={{ marginTop: 1.5, marginLeft: -140 }}
-               >
-                  Edit
-               </Button>
                <BasicModal buttonText="Add Document">
                   <AddDocument onReload={loadTaskDocs} />
                </BasicModal>
