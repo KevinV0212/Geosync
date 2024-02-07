@@ -12,7 +12,7 @@ import { getMapPins } from "../../utils/mapUtil.js";
 import AddCountry from "../forms/AddCountry.js";
 import BasicModal from "./BasicModal.js";
 import EditCountry from "../forms/EditCountry.js";
-import MapComponent from "./MapComponent.js";
+import MapComponent from "../MapComponent.js";
 function Map() {
    // Country selector
    const [currentCountry, setCurrentCountry] = useLocalStorage(
