@@ -23,7 +23,7 @@ export default function BasicModal(props) {
 
    return (
       <div>
-         <Button onClick={handleOpen}>{props.buttonText}</Button>
+         <Button variant="outlined" size="small" sx={{ marginTop: 0.5 }} onClick={handleOpen}>{props.buttonText}</Button>
          <Modal
             open={open}
             onClose={handleClose}
