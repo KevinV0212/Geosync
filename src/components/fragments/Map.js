@@ -12,6 +12,7 @@ import { getMapPins } from "../../utils/mapUtil.js";
 import AddCountry from "../forms/AddCountry.js";
 import BasicModal from "./BasicModal.js";
 import EditCountry from "../forms/EditCountry.js";
+import Popup from "@arcgis/core/widgets/Popup.js";
 
 function Map() {
    // Country selector
@@ -113,6 +114,7 @@ function Map() {
          ...prevCheckboxes,
          [checkboxName]: !prevCheckboxes[checkboxName],
       }));
+      loadMapPins();
    };
 
    useEffect(() => {
@@ -127,12 +129,12 @@ function Map() {
          { css: true }
       ).then(([MapView, WebMap, Graphic, GraphicsLayer]) => {
          const webmap = new WebMap({
-            basemap: "topo-vector",
+            basemap: "gray-vector",
          });
          view = new MapView({
             map: webmap,
             center: [0, 0],
-            zoom: 2,
+            zoom: 1,
             container: mapElem.current,
          });
          // Map pins
@@ -181,6 +183,30 @@ function Map() {
             });
             graphicsLayer.add(pointGraphic);
          }
+         // Popup
+         view.popupEnabled = false;
+         const popup = new Popup({
+            view: view,
+         });
+         view.on("click", (event) => {
+            // Get the coordinates of the click on the view
+            // around the decimals to 3 decimals
+            const lat = Math.round(event.mapPoint.latitude * 1000) / 1000;
+            const lon = Math.round(event.mapPoint.longitude * 1000) / 1000;
+            view.popup = popup;
+         });
+         const handleClick = (event) => {
+            const long = event.mapPoint.longitude;
+            const lat = event.mapPoint.latitude;
+   
+            // Open the popup
+            popup.open({
+               // Set the popup's title to the coordinates of the clicked location
+               title: "Reverse geocode: [" + long + ", " + lat + "]",
+               location: event.mapPoint, // Set the location of the popup to the clicked location
+            });
+         };
+         view.on("click", handleClick);
       });
       loadCountries();
       loadMapPins();
