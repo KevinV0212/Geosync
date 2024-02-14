@@ -221,7 +221,7 @@ function Map() {
       <div className="home">
          <div className="filters-container">
             {renderManagerControls()}
-            <Button variant="outlined" size="small" sx={{ marginTop: 0.5 }} onClick={handleViewChange}>
+            <Button variant="outlined" size="small" sx={{ marginTop: 0.5, color: '#690005', border: '1px solid #690005', width: '126.37px' }} onClick={handleViewChange}>
                {managerView ? "user view" : "manager view"}
             </Button>
 
