@@ -1,44 +1,52 @@
 import axios from "axios";
-import buildPath from "../components/Path";
+import buildPath from "../../components/Path";
 
-// handles request to get all countries
-async function getAllCountries() {
-   let url = buildPath("/all_countries");
-   let response = await axios
-      .get(url, {
+async function getMapPins(countryID, filters = undefined) {
+   const url = buildPath("/get_mappins");
+   let obj = {
+      countryID: countryID,
+      filters: filters ? filters : null,
+   };
+   let config = {
+      method: "post",
+      url: url,
+      headers: {
          headers: {
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Headers":
                "Origin, X-Requested-With, Content-Type, Accept",
+            "Content-Type": "application/json",
          },
-      })
-      .catch(function (error) {
-         if (error.response) {
-            // The request was made and the server responded with a status code
-            // that falls out of the range of 2xx
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
-         } else if (error.request) {
-            // The request was made but no response was received
-            // `error.request` is an instance of XMLHttpRequest in the browser
-            // and an instance of http.ClientRequest in node.js
-            console.log(error.request);
-         } else {
-            // Something happened in setting up the request that triggered an Error
-            console.log("Error", error.message);
-         }
-         return;
-      });
+      },
+      data: obj,
+   };
+
+   const response = await axios(config).catch(function (error) {
+      if (error.response) {
+         // The request was made and the server responded with a status code
+         // that falls out of the range of 2xx
+         console.log(error.response.data);
+         console.log(error.response.status);
+         console.log(error.response.headers);
+      } else if (error.request) {
+         // The request was made but no response was received
+         // `error.request` is an instance of XMLHttpRequest in the browser
+         // and an instance of http.ClientRequest in node.js
+         console.log(error.request);
+      } else {
+         // Something happened in setting up the request that triggered an Error
+         console.log("Error", error.message);
+      }
+      // do some error handling
+   });
    return response.data;
 }
 
-// handles request to add new country with info from requestBody
-async function addCountry(requestBody) {
+async function addMapPin(requestBody) {
    if (!requestBody) {
       return;
    }
-   const url = buildPath("/add_country");
+   const url = buildPath("/add_mappin");
    let obj = requestBody;
 
    let config = {
@@ -72,62 +80,15 @@ async function addCountry(requestBody) {
          console.log("Error", error.message);
       }
       // do some error handling
-      return;
    });
-   console.log(requestBody.countryName + " has been created");
 }
 
-// handles request to update a country with info from requestBody
-async function updateCountry(requestBody) {
-   if (!requestBody) {
+// deletes map pin with given mapPinID
+async function deleteMapPin(mapPinID) {
+   if (!mapPinID) {
       return;
    }
-   const url = buildPath("/update_country");
-   let obj = requestBody;
-
-   let config = {
-      method: "put",
-      url: url,
-      headers: {
-         headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Headers":
-               "Origin, X-Requested-With, Content-Type, Accept",
-            "Content-Type": "application/json",
-         },
-      },
-      data: obj,
-   };
-
-   const response = await axios(config).catch(function (error) {
-      if (error.response) {
-         // The request was made and the server responded with a status code
-         // that falls out of the range of 2xx
-         console.log(error.response.data);
-         console.log(error.response.status);
-         console.log(error.response.headers);
-      } else if (error.request) {
-         // The request was made but no response was received
-         // `error.request` is an instance of XMLHttpRequest in the browser
-         // and an instance of http.ClientRequest in node.js
-         console.log(error.request);
-      } else {
-         // Something happened in setting up the request that triggered an Error
-         console.log("Error", error.message);
-      }
-      // do some error handling
-      return;
-   });
-   console.log("country updated");
-   return response.data;
-}
-
-// deletes country with given countryID
-async function deleteCountry(countryID) {
-   if (!countryID) {
-      return;
-   }
-   const url = buildPath("/delete_country/" + countryID);
+   const url = buildPath("/delete_mappin/" + mapPinID);
 
    let config = {
       method: "delete",
@@ -161,7 +122,6 @@ async function deleteCountry(countryID) {
       // do some error handling
       return;
    });
-   console.log("country: " + countryID + " deleted");
+   console.log("map pin: " + mapPinID + " deleted");
 }
-
-export { getAllCountries, addCountry, updateCountry, deleteCountry };
+export { getMapPins, addMapPin, deleteMapPin };

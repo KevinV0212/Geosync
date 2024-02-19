@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, FormControl } from "@mui/base";
 import { TextField, FormGroup } from "@mui/material";
-import { addCountry } from "../../utils/countryUtil";
+import { addCountry } from "../../utils/country/countryUtil";
 
 // form for adding map pin to current country
 function AddCountry() {

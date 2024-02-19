@@ -1,5 +1,5 @@
 import { Button } from "@mui/material";
-import { deleteTask } from "../utils/taskDocUtil";
+import { deleteTask } from "../utils/document/taskDocUtil";
 
 export default function TaskDocument({ id, link, canDelete }) {
    const handleDelete = () => {

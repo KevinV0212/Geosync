@@ -1,5 +1,5 @@
 import { Button } from "@mui/material";
-import { deleteMission } from "../utils/missionDocUtil";
+import { deleteMission } from "../utils/document/missionDocUtil";
 
 export default function MissionDocument({ id, link, canDelete }) {
    const handleDelete = () => {

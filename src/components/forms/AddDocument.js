@@ -8,9 +8,9 @@ import {
    Radio,
    RadioGroup,
 } from "@mui/material";
-import { addMapPin } from "../../utils/mapUtil";
-import { addTask } from "../../utils/taskDocUtil";
-import { addMission } from "../../utils/missionDocUtil";
+import { addMapPin } from "../../utils/map/mapUtil";
+import { addTask } from "../../utils/document/taskDocUtil";
+import { addMission } from "../../utils/document/missionDocUtil";
 
 // form for adding map pin to current country
 function AddPin({ onReload }) {

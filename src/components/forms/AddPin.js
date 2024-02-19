@@ -8,7 +8,7 @@ import {
    Radio,
    RadioGroup,
 } from "@mui/material";
-import { addMapPin } from "../../utils/mapUtil";
+import { addMapPin } from "../../utils/map/mapUtil";
 import { useLocalStorage } from "usehooks-ts";
 
 // form for adding map pin to current country

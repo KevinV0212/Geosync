@@ -1,91 +1,44 @@
 import axios from "axios";
-import buildPath from "../components/Path";
+import buildPath from "../../components/Path";
 
-async function getAllWiki(countryID, filters = undefined) {
-   const url = buildPath("/all_wiki");
-   let obj = {
-      countryID: countryID,
-      filters: filters ? filters : null,
-   };
-   let config = {
-      method: "get",
-      url: url,
-      headers: {
+// handles request to get all countries
+async function getAllCountries() {
+   let url = buildPath("/all_countries");
+   let response = await axios
+      .get(url, {
          headers: {
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Headers":
                "Origin, X-Requested-With, Content-Type, Accept",
-            "Content-Type": "application/json",
          },
-      },
-      withCredentials: false,
-      data: obj,
-   };
-
-   const response = await axios(config).catch(function (error) {
-      if (error.response) {
-         // The request was made and the server responded with a status code
-         // that falls out of the range of 2xx
-         console.log(error.response.data);
-         console.log(error.response.status);
-         console.log(error.response.headers);
-      } else if (error.request) {
-         // The request was made but no response was received
-         // `error.request` is an instance of XMLHttpRequest in the browser
-         // and an instance of http.ClientRequest in node.js
-         console.log(error.request);
-      } else {
-         // Something happened in setting up the request that triggered an Error
-         console.log("Error", error.message);
-      }
-   });
+      })
+      .catch(function (error) {
+         if (error.response) {
+            // The request was made and the server responded with a status code
+            // that falls out of the range of 2xx
+            console.log(error.response.data);
+            console.log(error.response.status);
+            console.log(error.response.headers);
+         } else if (error.request) {
+            // The request was made but no response was received
+            // `error.request` is an instance of XMLHttpRequest in the browser
+            // and an instance of http.ClientRequest in node.js
+            console.log(error.request);
+         } else {
+            // Something happened in setting up the request that triggered an Error
+            console.log("Error", error.message);
+         }
+         return;
+      });
    return response.data;
 }
 
-async function getWikiEntries(countryID) {
-   const url = buildPath("/get_wikientries");
-   let obj = {
-      countryID: countryID,
-   };
-   let config = {
-      method: "post",
-      url: url,
-      headers: {
-         headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Headers":
-               "Origin, X-Requested-With, Content-Type, Accept",
-            "Content-Type": "application/json",
-         },
-      },
-      data: obj,
-   };
-
-   const response = await axios(config).catch(function (error) {
-      if (error.response) {
-         // The request was made and the server responded with a status code
-         // that falls out of the range of 2xx
-         console.log(error.response.data);
-         console.log(error.response.status);
-         console.log(error.response.headers);
-      } else if (error.request) {
-         // The request was made but no response was received
-         // `error.request` is an instance of XMLHttpRequest in the browser
-         // and an instance of http.ClientRequest in node.js
-         console.log(error.request);
-      } else {
-         // Something happened in setting up the request that triggered an Error
-         console.log("Error", error.message);
-      }
-      // do some error handling
-   });
-   return response.data;
-}
-async function addWikiEntry(requestBody) {
+// handles request to add new country with info from requestBody
+async function addCountry(requestBody) {
    if (!requestBody) {
       return;
    }
-   const url = buildPath("/add_wiki");
+   const url = buildPath("/add_country");
    let obj = requestBody;
 
    let config = {
@@ -119,15 +72,62 @@ async function addWikiEntry(requestBody) {
          console.log("Error", error.message);
       }
       // do some error handling
+      return;
    });
+   console.log(requestBody.countryName + " has been created");
 }
 
-// deletes map pin with given mapPinID
-async function deleteWikiEntry(wikiEntryID) {
-   if (!wikiEntryID) {
+// handles request to update a country with info from requestBody
+async function updateCountry(requestBody) {
+   if (!requestBody) {
       return;
    }
-   const url = buildPath("/delete_wiki/" + wikiEntryID);
+   const url = buildPath("/update_country");
+   let obj = requestBody;
+
+   let config = {
+      method: "put",
+      url: url,
+      headers: {
+         headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Headers":
+               "Origin, X-Requested-With, Content-Type, Accept",
+            "Content-Type": "application/json",
+         },
+      },
+      data: obj,
+   };
+
+   const response = await axios(config).catch(function (error) {
+      if (error.response) {
+         // The request was made and the server responded with a status code
+         // that falls out of the range of 2xx
+         console.log(error.response.data);
+         console.log(error.response.status);
+         console.log(error.response.headers);
+      } else if (error.request) {
+         // The request was made but no response was received
+         // `error.request` is an instance of XMLHttpRequest in the browser
+         // and an instance of http.ClientRequest in node.js
+         console.log(error.request);
+      } else {
+         // Something happened in setting up the request that triggered an Error
+         console.log("Error", error.message);
+      }
+      // do some error handling
+      return;
+   });
+   console.log("country updated");
+   return response.data;
+}
+
+// deletes country with given countryID
+async function deleteCountry(countryID) {
+   if (!countryID) {
+      return;
+   }
+   const url = buildPath("/delete_country/" + countryID);
 
    let config = {
       method: "delete",
@@ -161,7 +161,7 @@ async function deleteWikiEntry(wikiEntryID) {
       // do some error handling
       return;
    });
-   console.log("wiki entry: " + wikiEntryID + " deleted");
+   console.log("country: " + countryID + " deleted");
 }
 
-export { getAllWiki, getWikiEntries, addWikiEntry, deleteWikiEntry };
+export { getAllCountries, addCountry, updateCountry, deleteCountry };

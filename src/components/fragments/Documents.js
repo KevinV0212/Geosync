@@ -5,9 +5,9 @@ import IconButton from "@mui/material/IconButton";
 import AddIcon from "@mui/icons-material/Add";
 import AddDocument from "../forms/AddDocument";
 import BasicModal from "./BasicModal";
-import { getAllTasks } from "../../utils/taskDocUtil";
+import { getAllTasks } from "../../utils/document/taskDocUtil";
 import TaskDocument from "../TaskDocument";
-import { getAllMissions } from "../../utils/missionDocUtil";
+import { getAllMissions } from "../../utils/document/missionDocUtil";
 function Documents() {
    const [taskDocs, setTaskDocs] = useState([]);
    const [missionDocs, setMissionDocs] = useState([]);
