@@ -1,10 +1,7 @@
-import React, { useState, useRef, useEffect } from "react";
-import { loadModules } from "esri-loader";
+import React, { useState, useEffect } from "react";
 import Select from "react-select";
 import "./Map.css";
 import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import AddIcon from "@mui/icons-material/Add";
 import { useLocalStorage } from "usehooks-ts";
 import AddPin from "../forms/AddPin.js";
 import { getAllCountries } from "../../utils/country/countryUtil.js";
@@ -61,6 +58,9 @@ function Map() {
    // function that loads a list of countries in the format below
    function loadCountries() {
       getAllCountries().then((countries) => {
+         if (!countries) {
+            window.alert("There was a problem getting countries");
+         }
          countries.sort((countryA, countryB) => {
             if (countryA.countryName < countryB.countryName) return -1;
             if (countryA.countryName > countryB.countryName) return 1;
@@ -77,13 +77,14 @@ function Map() {
       }
       const countryID = currentCountry.countryID;
       const filters = [];
-      console.log(filters);
       for (const checkbox in checkboxes) {
          filters.push(checkboxes[checkbox]);
       }
 
-      let mapPins = [];
       getMapPins(countryID, filters).then((pinList) => {
+         if (!pinList) {
+            window.alert("There was a problem getting map pins");
+         }
          setMapPins([...pinList]);
       });
    }

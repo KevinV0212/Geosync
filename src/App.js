@@ -7,8 +7,24 @@ import FAQ from "./components/fragments/FAQ";
 import Map from "./components/fragments/MapFragment";
 import Wiki from "./components/fragments/Wiki";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { useEffect } from "react";
+import axios from "axios";
 
 function App() {
+   useEffect(() => {
+      axios.interceptors.response.use(
+         (response) => {
+            return response;
+         },
+         (error) => {
+            if (!error.response) {
+               console.log("Please check your internet connection.");
+            }
+
+            return Promise.reject(error);
+         }
+      );
+   }, []);
    return (
       <div className="App">
          <Router>

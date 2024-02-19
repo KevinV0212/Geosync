@@ -22,7 +22,7 @@ async function getAllWiki(countryID, filters = undefined) {
       data: obj,
    };
 
-   const response = await axios(config).catch(function (error) {
+   const response = await axios.request(config).catch(function (error) {
       if (error.response) {
          // The request was made and the server responded with a status code
          // that falls out of the range of 2xx
@@ -38,6 +38,7 @@ async function getAllWiki(countryID, filters = undefined) {
          // Something happened in setting up the request that triggered an Error
          console.log("Error", error.message);
       }
+      return { data: [] };
    });
    return response.data;
 }
@@ -61,7 +62,7 @@ async function getWikiEntries(countryID) {
       data: obj,
    };
 
-   const response = await axios(config).catch(function (error) {
+   const response = await axios.request(config).catch(function (error) {
       if (error.response) {
          // The request was made and the server responded with a status code
          // that falls out of the range of 2xx
@@ -77,7 +78,6 @@ async function getWikiEntries(countryID) {
          // Something happened in setting up the request that triggered an Error
          console.log("Error", error.message);
       }
-      // do some error handling
    });
    return response.data;
 }
@@ -102,7 +102,7 @@ async function addWikiEntry(requestBody) {
       data: obj,
    };
 
-   axios(config).catch(function (error) {
+   axios.request(config).catch(function (error) {
       if (error.response) {
          // The request was made and the server responded with a status code
          // that falls out of the range of 2xx
@@ -118,7 +118,6 @@ async function addWikiEntry(requestBody) {
          // Something happened in setting up the request that triggered an Error
          console.log("Error", error.message);
       }
-      // do some error handling
    });
 }
 
@@ -142,7 +141,7 @@ async function deleteWikiEntry(wikiEntryID) {
       },
    };
 
-   await axios(config).catch(function (error) {
+   await axios.request(config).catch(function (error) {
       if (error.response) {
          // The request was made and the server responded with a status code
          // that falls out of the range of 2xx
@@ -158,10 +157,7 @@ async function deleteWikiEntry(wikiEntryID) {
          // Something happened in setting up the request that triggered an Error
          console.log("Error", error.message);
       }
-      // do some error handling
-      return;
    });
-   console.log("wiki entry: " + wikiEntryID + " deleted");
 }
 
 export { getAllWiki, getWikiEntries, addWikiEntry, deleteWikiEntry };

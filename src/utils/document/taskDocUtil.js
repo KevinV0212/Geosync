@@ -27,7 +27,7 @@ async function getAllTasks() {
             // Something happened in setting up the request that triggered an Error
             console.log("Error", error.message);
          }
-         return;
+         return { data: null };
       });
    return response.data;
 }
@@ -53,7 +53,7 @@ async function addTask(requestBody) {
       data: obj,
    };
 
-   axios(config).catch(function (error) {
+   axios.request(config).catch(function (error) {
       if (error.response) {
          // The request was made and the server responded with a status code
          // that falls out of the range of 2xx
@@ -69,8 +69,6 @@ async function addTask(requestBody) {
          // Something happened in setting up the request that triggered an Error
          console.log("Error", error.message);
       }
-      // do some error handling
-      return;
    });
    console.log("task document added");
 }
@@ -94,7 +92,7 @@ async function deleteTask(taskID) {
       },
    };
 
-   await axios(config).catch(function (error) {
+   await axios.request(config).catch(function (error) {
       if (error.response) {
          // The request was made and the server responded with a status code
          // that falls out of the range of 2xx
@@ -110,8 +108,6 @@ async function deleteTask(taskID) {
          // Something happened in setting up the request that triggered an Error
          console.log("Error", error.message);
       }
-      // do some error handling
-      return;
    });
    console.log("task document: " + taskID + " deleted");
 }
