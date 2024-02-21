@@ -113,7 +113,7 @@ function Map() {
    useEffect(() => {
       loadCountries();
       loadMapPins();
-   }, [currentCountry]);
+   }, [currentCountry, checkboxes]);
 
    return (
       <div className="home">
