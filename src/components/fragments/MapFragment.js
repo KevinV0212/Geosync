@@ -44,15 +44,6 @@ function Map() {
       if (managerView) {
          return (
             <>
-               <IconButton
-                  aria-label="add"
-                  sx={{ marginTop: 1, position: "absolute", top: 0, left: 0 }}
-               >
-                  <AddIcon />
-               </IconButton>
-               <Button variant="outlined" size="small" sx={{ marginTop: 1.5 }}>
-                  Edit
-               </Button>
                <BasicModal buttonText="Edit Country">
                   <EditCountry />
                </BasicModal>
@@ -129,7 +120,7 @@ function Map() {
          <div className="filters-container">
             {renderManagerControls()}
             <Button onClick={handleViewChange}>
-               Change to {managerView ? "user view" : "manager view"}
+               {managerView ? "user view" : "manager view"}
             </Button>
             <h3>PMESII Filters {mapPins.length}</h3>
             <form className="filters-form">
