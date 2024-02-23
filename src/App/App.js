@@ -1,11 +1,11 @@
 import "./App.css";
-import Navbar from "./components/navbar";
-import Home from "./components/fragments/Home";
-import Contact from "./components/fragments/Contact";
-import Documents from "./components/fragments/Documents";
-import FAQ from "./components/fragments/FAQ";
-import Map from "./components/fragments/MapFragment";
-import Wiki from "./components/fragments/Wiki";
+import Navbar from "../components/navbar";
+import Home from "../components/fragments/Home/Home";
+import Contact from "../components/fragments/Contact/Contact";
+import Documents from "../components/fragments/Documents/Documents";
+import FAQ from "../components/fragments/FAQ";
+import Map from "../components/fragments/Map/MapFragment";
+import Wiki from "../components/fragments/Wiki";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { useEffect } from "react";
 import axios from "axios";

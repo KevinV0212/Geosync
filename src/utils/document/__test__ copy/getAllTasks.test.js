@@ -1,28 +1,28 @@
 import MockAxios from "axios";
-import { getAllCountries } from "../countryUtil";
+import { getAllTasks } from "../taskDocUtil";
 
-describe("getAllCountries", () => {
-   it("tests if getAllCountries can return list if connected to API", async () => {
+describe("getAllTasks", () => {
+   it("tests if getAllTasks can return list if connected to API", async () => {
       const mockResponse = {
          data: [
             {
                id: 1,
-               countryName: "United States",
-               latitude: 37.0902,
-               longitude: 95.7129,
+               link: "https://www.youtube.com/watch?v=xvFZjo5PgG0&ab_channel=Duran",
+               title: "",
+               description: "",
             },
             {
                id: 2,
-               countryName: "Mexico",
-               latitude: 23.6345,
-               longitude: 102.5528,
+               link: "https://www.youtube.com/watch?v=F0Gkr4MBEO0&ab_channel=demovenom",
+               title: "",
+               description: "",
             },
          ],
       };
       MockAxios.get.mockResolvedValueOnce(mockResponse);
 
       // work
-      const countries = await getAllCountries();
+      const countries = await getAllTasks();
 
       // assertions
       expect(countries).toEqual(mockResponse.data);
@@ -44,7 +44,7 @@ describe("getAllCountries", () => {
       });
 
       const logSpy = jest.spyOn(console, "log");
-      const countries = await getAllCountries();
+      const countries = await getAllTasks();
 
       // assertions for console log
       expect(logSpy).toHaveBeenCalled();
@@ -68,7 +68,7 @@ describe("getAllCountries", () => {
       });
 
       const logSpy = jest.spyOn(console, "log");
-      const countries = await getAllCountries();
+      const countries = await getAllTasks();
 
       // assertions for console log
       expect(logSpy).toHaveBeenCalled();
@@ -90,7 +90,7 @@ describe("getAllCountries", () => {
       });
 
       const logSpy = jest.spyOn(console, "log");
-      const countries = await getAllCountries();
+      const countries = await getAllTasks();
 
       // assertions for console log
       expect(logSpy).toHaveBeenCalled();

@@ -1,28 +1,61 @@
 import MockAxios from "axios";
-import { getAllCountries } from "../countryUtil";
+import { getAllWiki } from "../wikiUtil";
 
-describe("getAllCountries", () => {
-   it("tests if getAllCountries can return list if connected to API", async () => {
+describe("getAllWiki", () => {
+   const mockRequestBody = {
+      countryID: 1,
+      filters: [
+         true,
+         true,
+         true,
+         true,
+         true,
+         true,
+         true,
+         true,
+         true,
+         true,
+         true,
+         true,
+      ],
+   };
+   it("should not call axios if the countryID is not present", async () => {
+      await getAllWiki(null);
+      expect(MockAxios.request).not.toHaveBeenCalled();
+   });
+
+   it("tests if getAllWiki can return list if connected to API", async () => {
       const mockResponse = {
          data: [
             {
+               mapId: 5,
                id: 1,
-               countryName: "United States",
-               latitude: 37.0902,
-               longitude: 95.7129,
-            },
-            {
-               id: 2,
-               countryName: "Mexico",
-               latitude: 23.6345,
-               longitude: 102.5528,
+               title: "Buckingham Palace",
+               description: "A place in England",
+               longitude: -0.140634,
+               latitude: 51.501476,
+               political: true,
+               military: false,
+               economic: false,
+               social: false,
+               information: false,
+               infrastructure: false,
+               areas: false,
+               structures: false,
+               capabilities: false,
+               organization: false,
+               people: false,
+               events: false,
             },
          ],
       };
-      MockAxios.get.mockResolvedValueOnce(mockResponse);
+      MockAxios.request.mockResolvedValueOnce(mockResponse);
 
       // work
-      const countries = await getAllCountries();
+      const countries = await getAllWiki(
+         mockRequestBody.countryID,
+         mockRequestBody.filters
+      );
 
       // assertions
       expect(countries).toEqual(mockResponse.data);
@@ -39,12 +72,15 @@ describe("getAllCountries", () => {
          },
       };
 
-      MockAxios.get.mockImplementationOnce(() => {
+      MockAxios.request.mockImplementationOnce(() => {
          return Promise.reject(mockError);
       });
 
       const logSpy = jest.spyOn(console, "log");
-      const countries = await getAllCountries();
+      const countries = await getAllWiki(
+         mockRequestBody.countryID,
+         mockRequestBody.filters
+      );
 
       // assertions for console log
       expect(logSpy).toHaveBeenCalled();
@@ -63,12 +99,15 @@ describe("getAllCountries", () => {
          request: "request",
       };
 
-      MockAxios.get.mockImplementationOnce(() => {
+      MockAxios.request.mockImplementationOnce(() => {
          return Promise.reject(mockError);
       });
 
       const logSpy = jest.spyOn(console, "log");
-      const countries = await getAllCountries();
+      const countries = await getAllWiki(
+         mockRequestBody.countryID,
+         mockRequestBody.filters
+      );
 
       // assertions for console log
       expect(logSpy).toHaveBeenCalled();
@@ -85,12 +124,15 @@ describe("getAllCountries", () => {
          message: "message",
       };
 
-      MockAxios.get.mockImplementationOnce(() => {
+      MockAxios.request.mockImplementationOnce(() => {
          return Promise.reject(mockError);
       });
 
       const logSpy = jest.spyOn(console, "log");
-      const countries = await getAllCountries();
+      const countries = await getAllWiki(
+         mockRequestBody.countryID,
+         mockRequestBody.filters
+      );
 
       // assertions for console log
       expect(logSpy).toHaveBeenCalled();

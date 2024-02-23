@@ -1,31 +1,32 @@
 import MockAxios from "axios";
-import { getAllCountries } from "../countryUtil";
+import { addMission } from "../missionDocUtil";
 
-describe("getAllCountries", () => {
-   it("tests if getAllCountries can return list if connected to API", async () => {
+describe("addMission ", () => {
+   const mockRequestBody = {
+      link: "https://en.wikipedia.org/wiki/Arm",
+      title: "title",
+      description: "description",
+   };
+
+   it("should not call axios if the request body is not present", async () => {
+      await addMission(null);
+      expect(MockAxios.request).not.toHaveBeenCalled();
+   });
+
+   it("should return the information of the newly added country if added successfully", async () => {
       const mockResponse = {
-         data: [
-            {
-               id: 1,
-               countryName: "United States",
-               latitude: 37.0902,
-               longitude: 95.7129,
-            },
-            {
-               id: 2,
-               countryName: "Mexico",
-               latitude: 23.6345,
-               longitude: 102.5528,
-            },
-         ],
+         data: {
+            id: 6,
+            link: "https://en.wikipedia.org/wiki/Arm",
+            title: "title",
+            description: "description",
+         },
       };
-      MockAxios.get.mockResolvedValueOnce(mockResponse);
+      MockAxios.request.mockResolvedValueOnce(mockResponse);
 
-      // work
-      const countries = await getAllCountries();
+      const newMission = await addMission(mockRequestBody);
 
-      // assertions
-      expect(countries).toEqual(mockResponse.data);
+      expect(newMission).toEqual(mockResponse.data);
    });
 
    // ERROR CASES ----------------------------------------------------------------------
@@ -39,12 +40,12 @@ describe("getAllCountries", () => {
          },
       };
 
-      MockAxios.get.mockImplementationOnce(() => {
+      MockAxios.request.mockImplementationOnce(() => {
          return Promise.reject(mockError);
       });
 
       const logSpy = jest.spyOn(console, "log");
-      const countries = await getAllCountries();
+      const countries = await addMission(mockRequestBody);
 
       // assertions for console log
       expect(logSpy).toHaveBeenCalled();
@@ -63,12 +64,12 @@ describe("getAllCountries", () => {
          request: "request",
       };
 
-      MockAxios.get.mockImplementationOnce(() => {
+      MockAxios.request.mockImplementationOnce(() => {
          return Promise.reject(mockError);
       });
 
       const logSpy = jest.spyOn(console, "log");
-      const countries = await getAllCountries();
+      const countries = await addMission(mockRequestBody);
 
       // assertions for console log
       expect(logSpy).toHaveBeenCalled();
@@ -85,12 +86,12 @@ describe("getAllCountries", () => {
          message: "message",
       };
 
-      MockAxios.get.mockImplementationOnce(() => {
+      MockAxios.request.mockImplementationOnce(() => {
          return Promise.reject(mockError);
       });
 
       const logSpy = jest.spyOn(console, "log");
-      const countries = await getAllCountries();
+      const countries = await addMission(mockRequestBody);
 
       // assertions for console log
       expect(logSpy).toHaveBeenCalled();

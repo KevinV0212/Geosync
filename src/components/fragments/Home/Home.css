@@ -5,7 +5,7 @@
 }
 
 .map-img {
-   background-image: url("/src/components/home_map.png");
+   background-image: url("/src/assets/home_map.png");
    height: 100%;
    width: 100%;
    zoom: 70%;
@@ -27,7 +27,7 @@
 }
 
 .taskDocs-img {
-   background-image: url("/src/components/home_taskDocs.png");
+   background-image: url("/src/assets/home_taskDocs.png");
    height: 100%;
    width: 100%;
    zoom: 70%;
@@ -49,7 +49,7 @@
 }
 
 .msDocs-img {
-   background-image: url("/src/components/home_msDocs.png");
+   background-image: url("/src/assets/home_msDocs.png");
    height: 100%;
    width: 100%;
    zoom: 70%;

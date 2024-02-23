@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
 import Select from "react-select";
-import "./Map.css";
+import "./MapFragment.css";
 import Button from "@mui/material/Button";
 import { useLocalStorage } from "usehooks-ts";
-import AddPin from "../forms/AddPin.js";
-import { getAllCountries } from "../../utils/country/countryUtil.js";
-import { getMapPins } from "../../utils/map/mapUtil.js";
-import AddCountry from "../forms/AddCountry.js";
-import BasicModal from "./BasicModal.js";
-import EditCountry from "../forms/EditCountry.js";
-import MapComponent from "../MapComponent.js";
+import AddPin from "../../forms/AddPin.js";
+import { getAllCountries } from "../../../utils/country/countryUtil.js";
+import { getMapPins } from "../../../utils/map/mapUtil.js";
+import AddCountry from "../../forms/AddCountry.js";
+import BasicModal from "../BasicModal.js";
+import EditCountry from "../../forms/EditCountry.js";
+import MapComponent from "../../MapComponent.js";
 function Map() {
    // Country selector
    const [currentCountry, setCurrentCountry] = useLocalStorage(

@@ -1,0 +1,32 @@
+.home {
+   display: flex;
+}
+
+.filters-container {
+   border: 1px solid #c4c2c4;
+   height: 240px;
+   width: 150px;
+   position: relative;
+}
+
+.filters-form {
+   margin-left: 5px;
+}
+
+.filterPMESII {
+   display: flex;
+   flex-direction: column;
+   align-items: flex-start;
+}
+
+.map-container {
+   flex: 1;
+   margin-left: 1px;
+   height: 100vh;
+   width: 100%;
+}
+
+.map {
+   height: 100%;
+   width: 100%;
+}

@@ -1,31 +1,30 @@
 import MockAxios from "axios";
-import { getAllCountries } from "../countryUtil";
+import { deleteMapPin } from "../mapUtil";
 
-describe("getAllCountries", () => {
-   it("tests if getAllCountries can return list if connected to API", async () => {
+describe("deleteMapPin", () => {
+   it("should not call axios if the mapPinID is not present", async () => {
+      await deleteMapPin(null);
+      expect(MockAxios.request).not.toHaveBeenCalled();
+   });
+
+   it("should console log message if mapPin is successfully deleted", async () => {
+      const mockMapPinID = 1;
       const mockResponse = {
-         data: [
-            {
-               id: 1,
-               countryName: "United States",
-               latitude: 37.0902,
-               longitude: 95.7129,
-            },
-            {
-               id: 2,
-               countryName: "Mexico",
-               latitude: 23.6345,
-               longitude: 102.5528,
-            },
-         ],
+         status: 200,
       };
-      MockAxios.get.mockResolvedValueOnce(mockResponse);
+      MockAxios.request.mockResolvedValueOnce(mockResponse);
 
-      // work
-      const countries = await getAllCountries();
+      const logSpy = jest.spyOn(console, "log");
+      await deleteMapPin(mockMapPinID);
 
-      // assertions
-      expect(countries).toEqual(mockResponse.data);
+      // assertions for console log
+      expect(logSpy).toHaveBeenCalled();
+      expect(logSpy).toHaveBeenCalledTimes(1);
+      expect(logSpy).toHaveBeenCalledWith(
+         `Map Pin ${mockMapPinID} Successfully Deleted`
+      );
+
+      logSpy.mockRestore();
    });
 
    // ERROR CASES ----------------------------------------------------------------------
@@ -39,12 +38,12 @@ describe("getAllCountries", () => {
          },
       };
 
-      MockAxios.get.mockImplementationOnce(() => {
+      MockAxios.request.mockImplementationOnce(() => {
          return Promise.reject(mockError);
       });
 
       const logSpy = jest.spyOn(console, "log");
-      const countries = await getAllCountries();
+      const countries = await deleteMapPin(1);
 
       // assertions for console log
       expect(logSpy).toHaveBeenCalled();
@@ -53,8 +52,6 @@ describe("getAllCountries", () => {
       expect(logSpy).toHaveBeenCalledWith(mockError.response.status);
       expect(logSpy).toHaveBeenCalledWith(mockError.response.headers);
 
-      // assertion for function output
-      expect(countries).toBe(null);
       logSpy.mockRestore();
    });
 
@@ -63,20 +60,18 @@ describe("getAllCountries", () => {
          request: "request",
       };
 
-      MockAxios.get.mockImplementationOnce(() => {
+      MockAxios.request.mockImplementationOnce(() => {
          return Promise.reject(mockError);
       });
 
       const logSpy = jest.spyOn(console, "log");
-      const countries = await getAllCountries();
+      const countries = await deleteMapPin(1);
 
       // assertions for console log
       expect(logSpy).toHaveBeenCalled();
       expect(logSpy).toHaveBeenCalledTimes(1);
       expect(logSpy).toHaveBeenCalledWith(mockError.request);
 
-      // assertion for function output
-      expect(countries).toBe(null);
       logSpy.mockRestore();
    });
 
@@ -85,20 +80,18 @@ describe("getAllCountries", () => {
          message: "message",
       };
 
-      MockAxios.get.mockImplementationOnce(() => {
+      MockAxios.request.mockImplementationOnce(() => {
          return Promise.reject(mockError);
       });
 
       const logSpy = jest.spyOn(console, "log");
-      const countries = await getAllCountries();
+      const countries = await deleteMapPin(1);
 
       // assertions for console log
       expect(logSpy).toHaveBeenCalled();
       expect(logSpy).toHaveBeenCalledTimes(1);
       expect(logSpy).toHaveBeenCalledWith("Error", mockError.message);
 
-      // assertion for function output
-      expect(countries).toBe(null);
       logSpy.mockRestore();
    });
 });

@@ -4,7 +4,7 @@ import buildPath from "../../components/Path";
 // handles request to get all countries
 async function getAllCountries() {
    let url = buildPath("/all_countries");
-   let response = await axios
+   const response = await axios
       .get(url, {
          headers: {
             "Access-Control-Allow-Origin": "*",
@@ -12,7 +12,7 @@ async function getAllCountries() {
                "Origin, X-Requested-With, Content-Type, Accept",
          },
       })
-      .catch(function (error) {
+      .catch((error) => {
          if (error.response) {
             // The request was made and the server responded with a status code
             // that falls out of the range of 2xx
@@ -55,35 +55,24 @@ async function addCountry(requestBody) {
       data: obj,
    };
 
-   const response = await axios
-      .request(config)
-      .then((res) => {
-         if (res.status === 201 || res.status === 200) {
-            return res;
-         }
-         if (res.status === 400) {
-            const error = res.text();
-            throw new Error(error);
-         }
-      })
-      .catch(function (error) {
-         if (error.response) {
-            // The request was made and the server responded with a status code
-            // that falls out of the range of 2xx
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
-         } else if (error.request) {
-            // The request was made but no response was received
-            // `error.request` is an instance of XMLHttpRequest in the browser
-            // and an instance of http.ClientRequest in node.js
-            console.log(error.request);
-         } else {
-            // Something happened in setting up the request that triggered an Error
-            console.log("Error", error.message);
-         }
-         return { data: null };
-      });
+   const response = await axios.request(config).catch((error) => {
+      if (error.response) {
+         // The request was made and the server responded with a status code
+         // that falls out of the range of 2xx
+         console.log(error.response.data);
+         console.log(error.response.status);
+         console.log(error.response.headers);
+      } else if (error.request) {
+         // The request was made but no response was received
+         // `error.request` is an instance of XMLHttpRequest in the browser
+         // and an instance of http.ClientRequest in node.js
+         console.log(error.request);
+      } else {
+         // Something happened in setting up the request that triggered an Error
+         console.log("Error", error.message);
+      }
+      return { data: null };
+   });
    return response.data;
 }
 
@@ -109,7 +98,7 @@ async function updateCountry(requestBody) {
       data: obj,
    };
 
-   const response = await axios.request(config).catch(function (error) {
+   const response = await axios.request(config).catch((error) => {
       if (error.response) {
          // The request was made and the server responded with a status code
          // that falls out of the range of 2xx
@@ -123,12 +112,11 @@ async function updateCountry(requestBody) {
          console.log(error.request);
       } else {
          // Something happened in setting up the request that triggered an Error
-         console.log(error.message);
+         console.log("Error", error.message);
       }
       // do some error handling
-      return;
+      return { data: null };
    });
-   console.log("country updated");
    return response.data;
 }
 
@@ -163,7 +151,7 @@ async function deleteCountry(countryID) {
             throw new Error(error);
          }
       })
-      .catch(function (error) {
+      .catch((error) => {
          if (error.response) {
             // The request was made and the server responded with a status code
             // that falls out of the range of 2xx

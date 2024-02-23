@@ -1,28 +1,58 @@
 import MockAxios from "axios";
-import { getAllCountries } from "../countryUtil";
+import { getMapPins } from "../mapUtil";
 
-describe("getAllCountries", () => {
-   it("tests if getAllCountries can return list if connected to API", async () => {
+describe("getMapPins", () => {
+   const mockRequestBody = {
+      countryID: 1,
+      filters: [true, true, true, true, true, true],
+   };
+   it("should not call axios if the countryID is not present", async () => {
+      await getMapPins(null);
+      expect(MockAxios.request).not.toHaveBeenCalled();
+   });
+
+   it("tests if getMapPins can return list if connected to API", async () => {
       const mockResponse = {
          data: [
             {
+               countryID: 1,
+               title: "Apostolic Palace",
+               description:
+                  "The Apostolic Palace (Latin: Palatium Apostolicum; Italian: Palazzo Apostolico) is the official residence of the Pope, the head of the Catholic Church, located in Vatican City.",
+               longitude: 41.903611,
+               latitude: 12.456389,
+               political: true,
+               military: false,
+               social: false,
+               information: false,
+               infrastructure: false,
                id: 1,
-               countryName: "United States",
-               latitude: 37.0902,
-               longitude: 95.7129,
+               economy: false,
             },
             {
+               countryID: 1,
+               title: "Arch of the Bells",
+               description:
+                  "Arch of the Bells is a city gate in Municipio Roma XIV, Rome, Lazio. Arch of the Bells is situated nearby to the post office Poste Vaticane and the square Basilica Forecourt.",
+               longitude: 12.45490191086849,
+               latitude: 41.90181285056788,
+               political: false,
+               military: true,
+               social: false,
+               information: false,
+               infrastructure: false,
                id: 2,
-               countryName: "Mexico",
-               latitude: 23.6345,
-               longitude: 102.5528,
+               economy: false,
             },
          ],
       };
-      MockAxios.get.mockResolvedValueOnce(mockResponse);
+      MockAxios.request.mockResolvedValueOnce(mockResponse);
 
       // work
-      const countries = await getAllCountries();
+      const countries = await getMapPins(
+         mockRequestBody.countryID,
+         mockRequestBody.filters
+      );
 
       // assertions
       expect(countries).toEqual(mockResponse.data);
@@ -39,12 +69,15 @@ describe("getAllCountries", () => {
          },
       };
 
-      MockAxios.get.mockImplementationOnce(() => {
+      MockAxios.request.mockImplementationOnce(() => {
          return Promise.reject(mockError);
       });
 
       const logSpy = jest.spyOn(console, "log");
-      const countries = await getAllCountries();
+      const countries = await getMapPins(
+         mockRequestBody.countryID,
+         mockRequestBody.filters
+      );
 
       // assertions for console log
       expect(logSpy).toHaveBeenCalled();
@@ -63,12 +96,15 @@ describe("getAllCountries", () => {
          request: "request",
       };
 
-      MockAxios.get.mockImplementationOnce(() => {
+      MockAxios.request.mockImplementationOnce(() => {
          return Promise.reject(mockError);
       });
 
       const logSpy = jest.spyOn(console, "log");
-      const countries = await getAllCountries();
+      const countries = await getMapPins(
+         mockRequestBody.countryID,
+         mockRequestBody.filters
+      );
 
       // assertions for console log
       expect(logSpy).toHaveBeenCalled();
@@ -85,12 +121,15 @@ describe("getAllCountries", () => {
          message: "message",
       };
 
-      MockAxios.get.mockImplementationOnce(() => {
+      MockAxios.request.mockImplementationOnce(() => {
          return Promise.reject(mockError);
       });
 
       const logSpy = jest.spyOn(console, "log");
-      const countries = await getAllCountries();
+      const countries = await getMapPins(
+         mockRequestBody.countryID,
+         mockRequestBody.filters
+      );
 
       // assertions for console log
       expect(logSpy).toHaveBeenCalled();

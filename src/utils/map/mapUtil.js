@@ -2,6 +2,9 @@ import axios from "axios";
 import buildPath from "../../components/Path";
 
 async function getMapPins(countryID, filters = undefined) {
+   if (!countryID) {
+      return null;
+   }
    const url = buildPath("/get_mappins");
    let obj = {
       countryID: countryID,
@@ -21,7 +24,7 @@ async function getMapPins(countryID, filters = undefined) {
       data: obj,
    };
 
-   const response = await axios.request(config).catch(function (error) {
+   const response = await axios.request(config).catch((error) => {
       if (error.response) {
          // The request was made and the server responded with a status code
          // that falls out of the range of 2xx
@@ -37,7 +40,7 @@ async function getMapPins(countryID, filters = undefined) {
          // Something happened in setting up the request that triggered an Error
          console.log("Error", error.message);
       }
-      return { data: [] };
+      return { data: null };
    });
    return response.data;
 }
@@ -63,7 +66,7 @@ async function addMapPin(requestBody) {
       data: obj,
    };
 
-   axios.request(config).catch(function (error) {
+   const response = await axios.request(config).catch((error) => {
       if (error.response) {
          // The request was made and the server responded with a status code
          // that falls out of the range of 2xx
@@ -79,7 +82,9 @@ async function addMapPin(requestBody) {
          // Something happened in setting up the request that triggered an Error
          console.log("Error", error.message);
       }
+      return { data: null };
    });
+   return response.data;
 }
 
 // deletes map pin with given mapPinID
@@ -102,22 +107,33 @@ async function deleteMapPin(mapPinID) {
       },
    };
 
-   await axios.request(config).catch(function (error) {
-      if (error.response) {
-         // The request was made and the server responded with a status code
-         // that falls out of the range of 2xx
-         console.log(error.response.data);
-         console.log(error.response.status);
-         console.log(error.response.headers);
-      } else if (error.request) {
-         // The request was made but no response was received
-         // `error.request` is an instance of XMLHttpRequest in the browser
-         // and an instance of http.ClientRequest in node.js
-         console.log(error.request);
-      } else {
-         // Something happened in setting up the request that triggered an Error
-         console.log("Error", error.message);
-      }
-   });
+   await axios
+      .request(config)
+      .then((res) => {
+         if (res.status === 201 || res.status === 200) {
+            console.log(`Map Pin ${mapPinID} Successfully Deleted`);
+         }
+         if (res.status === 400) {
+            const error = res.text();
+            throw new Error(error);
+         }
+      })
+      .catch((error) => {
+         if (error.response) {
+            // The request was made and the server responded with a status code
+            // that falls out of the range of 2xx
+            console.log(error.response.data);
+            console.log(error.response.status);
+            console.log(error.response.headers);
+         } else if (error.request) {
+            // The request was made but no response was received
+            // `error.request` is an instance of XMLHttpRequest in the browser
+            // and an instance of http.ClientRequest in node.js
+            console.log(error.request);
+         } else {
+            // Something happened in setting up the request that triggered an Error
+            console.log("Error", error.message);
+         }
+      });
 }
 export { getMapPins, addMapPin, deleteMapPin };

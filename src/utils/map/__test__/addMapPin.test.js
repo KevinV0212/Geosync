@@ -1,31 +1,48 @@
 import MockAxios from "axios";
-import { getAllCountries } from "../countryUtil";
+import { addMapPin } from "../mapUtil";
 
-describe("getAllCountries", () => {
-   it("tests if getAllCountries can return list if connected to API", async () => {
+describe("addMapPin ", () => {
+   const mockRequestBody = {
+      mapID: 5,
+      title: "Buckingham Palace",
+      description: "A place in England",
+      longitude: -0.140634,
+      latitude: 51.501476,
+      political: true,
+      military: false,
+      economic: false,
+      social: false,
+      information: false,
+      infrastructure: false,
+   };
+
+   it("should not call axios if the request body is not present", async () => {
+      await addMapPin(null);
+      expect(MockAxios.request).not.toHaveBeenCalled();
+   });
+
+   it("should return the information of the newly added country if added successfully", async () => {
       const mockResponse = {
-         data: [
-            {
-               id: 1,
-               countryName: "United States",
-               latitude: 37.0902,
-               longitude: 95.7129,
-            },
-            {
-               id: 2,
-               countryName: "Mexico",
-               latitude: 23.6345,
-               longitude: 102.5528,
-            },
-         ],
+         data: {
+            id: 1,
+            mapID: 5,
+            title: "Buckingham Palace",
+            description: "A place in England",
+            longitude: -0.140634,
+            latitude: 51.501476,
+            political: true,
+            military: false,
+            economic: false,
+            social: false,
+            information: false,
+            infrastructure: false,
+         },
       };
-      MockAxios.get.mockResolvedValueOnce(mockResponse);
+      MockAxios.request.mockResolvedValueOnce(mockResponse);
 
-      // work
-      const countries = await getAllCountries();
+      const newCountry = await addMapPin(mockRequestBody);
 
-      // assertions
-      expect(countries).toEqual(mockResponse.data);
+      expect(newCountry).toEqual(mockResponse.data);
    });
 
    // ERROR CASES ----------------------------------------------------------------------
@@ -39,12 +56,12 @@ describe("getAllCountries", () => {
          },
       };
 
-      MockAxios.get.mockImplementationOnce(() => {
+      MockAxios.request.mockImplementationOnce(() => {
          return Promise.reject(mockError);
       });
 
       const logSpy = jest.spyOn(console, "log");
-      const countries = await getAllCountries();
+      const countries = await addMapPin(mockRequestBody);
 
       // assertions for console log
       expect(logSpy).toHaveBeenCalled();
@@ -63,12 +80,12 @@ describe("getAllCountries", () => {
          request: "request",
       };
 
-      MockAxios.get.mockImplementationOnce(() => {
+      MockAxios.request.mockImplementationOnce(() => {
          return Promise.reject(mockError);
       });
 
       const logSpy = jest.spyOn(console, "log");
-      const countries = await getAllCountries();
+      const countries = await addMapPin(mockRequestBody);
 
       // assertions for console log
       expect(logSpy).toHaveBeenCalled();
@@ -85,12 +102,12 @@ describe("getAllCountries", () => {
          message: "message",
       };
 
-      MockAxios.get.mockImplementationOnce(() => {
+      MockAxios.request.mockImplementationOnce(() => {
          return Promise.reject(mockError);
       });
 
       const logSpy = jest.spyOn(console, "log");
-      const countries = await getAllCountries();
+      const countries = await addMapPin(mockRequestBody);
 
       // assertions for console log
       expect(logSpy).toHaveBeenCalled();
