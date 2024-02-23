@@ -17,7 +17,7 @@ const initialInfo = {
 
 export default function DocumentInfo(props) {
    const [info, setInfo] = useState(initialInfo);
-   const { recordForView, openInForm, onDelete } = props;
+   const { recordForView, openInForm, deleteDocument } = props;
    //title (in popup title)
    // description
    // link
@@ -42,9 +42,11 @@ export default function DocumentInfo(props) {
             <Controls.IconButton>
                <ContentCopyIcon />
             </Controls.IconButton>
-            <Controls.IconButton>
-               <OpenInNewIcon />
-            </Controls.IconButton>
+            <a href={info.link} target="_blank">
+               <Controls.IconButton h>
+                  <OpenInNewIcon />
+               </Controls.IconButton>
+            </a>
          </Stack>
          <Stack
             direction="row"
@@ -61,7 +63,7 @@ export default function DocumentInfo(props) {
             <Controls.Button
                text="Delete"
                startIcon={<Delete />}
-               onClick={onDelete}
+               onClick={() => deleteDocument(recordForView)}
             />
          </Stack>
       </div>

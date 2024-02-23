@@ -2,9 +2,15 @@ import React, { useEffect, useState } from "react";
 import "./Documents.css";
 import Button from "@mui/material/Button";
 import DocumentForm from "../../forms/DocumentForm";
-import { addTask, getAllTasks } from "../../../utils/document/taskDocUtil";
+import {
+   addTask,
+   deleteTask,
+   getAllTasks,
+   updateTask,
+} from "../../../utils/document/taskDocUtil";
 import {
    addMission,
+   deleteMission,
    getAllMissions,
    updateMission,
 } from "../../../utils/document/missionDocUtil";
@@ -17,6 +23,7 @@ import {
    ListItemButton,
    ListItemText,
    Stack,
+   Typography,
 } from "@mui/material";
 
 function Documents() {
@@ -80,21 +87,16 @@ function Documents() {
 
    const addOrEdit = async (document, resetForm) => {
       if (document.id) {
-         console.log("this exists");
          if (document.docType === "mission") {
-            updateMission(document);
-            window.alert("updateMission");
+            await updateMission(document);
          } else if (document.docType === "task") {
-            // await addTask(document);
-            // window.alert("addTask");
+            await updateTask(document);
          }
       } else {
          if (document.docType === "mission") {
-            // await addMission(document);
-            window.alert("addMission");
+            await addMission(document);
          } else if (document.docType === "task") {
-            // await addTask(document);
-            // window.alert("addTask");
+            await addTask(document);
          }
       }
       resetForm();
@@ -103,16 +105,31 @@ function Documents() {
       setOpenForm(false);
    };
 
+   const deleteDocument = async (document) => {
+      if (!window.confirm("Are you sure you want to delete this document?")) {
+         return;
+      }
+      if (document.docType === "mission") {
+         await deleteMission(document.id);
+      } else if (document.docType === "task") {
+         await deleteTask(document.id);
+      }
+      loadDocuments();
+      setRecordForEdit(null);
+      setOpenInfo(false);
+   };
    useEffect(() => {
       loadDocuments();
    }, []);
 
    return (
       <div className="lg-container">
-         {renderManagerControls()}
-         <Button onClick={handleViewChange}>
-            Change to {managerView ? "user view" : "manager view"}
-         </Button>
+         <Stack>
+            {renderManagerControls()}
+            <Button onClick={handleViewChange}>
+               Change to {managerView ? "user view" : "manager view"}
+            </Button>
+         </Stack>
 
          <Controls.Popup
             title={recordForView ? recordForView.title : ""}
@@ -122,11 +139,15 @@ function Documents() {
             <DocumentInfo
                recordForView={recordForView}
                openInForm={openInForm}
+               deleteDocument={deleteDocument}
             />
          </Controls.Popup>
 
          <Stack direction="row">
             <List>
+               <Typography align="left" variant="h6">
+                  Mission Statements
+               </Typography>
                {missionDocs.map((document, index) => (
                   <ListItem key={index}>
                      <ListItemButton
@@ -134,12 +155,15 @@ function Documents() {
                            openInInfo({ ...document, docType: "mission" })
                         }
                      >
-                        <ListItemText primary={document.title} />
+                        <ListItemText align="left" primary={document.title} />
                      </ListItemButton>
                   </ListItem>
                ))}
             </List>
             <List>
+               <Typography align="left" variant="h6">
+                  Tasks
+               </Typography>
                {taskDocs.map((document, index) => (
                   <ListItem key={index}>
                      <ListItemButton
@@ -147,7 +171,7 @@ function Documents() {
                            openInInfo({ ...document, docType: "task" })
                         }
                      >
-                        <ListItemText primary={document.title} />
+                        <ListItemText align="left" primary={document.title} />
                      </ListItemButton>
                   </ListItem>
                ))}

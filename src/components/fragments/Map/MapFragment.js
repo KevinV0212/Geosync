@@ -1,16 +1,24 @@
 import React, { useState, useEffect } from "react";
 import Select from "react-select";
 import "./MapFragment.css";
-import Button from "@mui/material/Button";
 import { useLocalStorage } from "usehooks-ts";
-import AddPin from "../../forms/AddPin.js";
-import { getAllCountries } from "../../../utils/country/countryUtil.js";
+import MapPinForm from "../../forms/MapPinForm.js";
+import {
+   addCountry,
+   getAllCountries,
+   updateCountry,
+} from "../../../utils/country/countryUtil.js";
 import { getMapPins } from "../../../utils/map/mapUtil.js";
-import AddCountry from "../../forms/AddCountry.js";
+import CountryForm from "../../forms/CountryForm";
 import BasicModal from "../BasicModal.js";
-import EditCountry from "../../forms/EditCountry.js";
-import MapComponent from "../../MapComponent.js";
+import MapComponent from "../../MapComponent";
+import Controls from "../../controls/Controls.js";
+import { Stack } from "@mui/material";
 function Map() {
+   // Forms
+   const [openCountryForm, setOpenCountryForm] = useState(false);
+   const [openPinForm, setOpenPinForm] = useState(false);
+   const [recordForCountry, setRecordForCountry] = useState(null);
    // Country selector
    const [currentCountry, setCurrentCountry] = useLocalStorage(
       "current_country",
@@ -41,20 +49,66 @@ function Map() {
       if (managerView) {
          return (
             <>
-               <BasicModal buttonText="Edit Country">
-                  <EditCountry />
-               </BasicModal>
-               <BasicModal buttonText="Add Country">
-                  <AddCountry />
-               </BasicModal>
-               <BasicModal buttonText="Add Pin">
-                  <AddPin />
-               </BasicModal>
+               <Controls.Button
+                  text="Add Country"
+                  onClick={() => {
+                     setRecordForCountry(null);
+                     setOpenCountryForm(true);
+                  }}
+               />
+               <Controls.Button
+                  text="Edit Country"
+                  onClick={openCountryInForm}
+               />
+               <Controls.Popup
+                  title="Add/Edit Country"
+                  openPopup={openCountryForm}
+                  setOpenPopup={setOpenCountryForm}
+               >
+                  <CountryForm
+                     addOrEdit={addOrEditCountry}
+                     recordForEdit={recordForCountry}
+                  />
+               </Controls.Popup>
+               <Controls.Button
+                  text="Add Map Pin"
+                  onClick={() => {
+                     setOpenPinForm(true);
+                  }}
+               />
+               <Controls.Popup
+                  title="Add/Edit MapPin"
+                  openPopup={openPinForm}
+                  setOpenPopup={setOpenPinForm}
+               >
+                  <MapPinForm
+                  // addOrEdit={addOrEditCountry}
+                  // recordForEdit={recordForCountry}
+                  />
+               </Controls.Popup>
             </>
          );
       }
    };
-
+   const openCountryInForm = () => {
+      setRecordForCountry({
+         ...currentCountry,
+         latDir: currentCountry.latitude >= 0 ? "north" : "south",
+         longDir: currentCountry.longitude >= 0 ? "east" : "west",
+      });
+      setOpenCountryForm(true);
+   };
+   const addOrEditCountry = async (country, resetForm) => {
+      if (country.countryID) {
+         await updateCountry(document);
+      } else {
+         await addCountry(document);
+      }
+      resetForm();
+      loadCountries();
+      setRecordForCountry(null);
+      setOpenCountryForm(false);
+   };
    // function that loads a list of countries in the format below
    function loadCountries() {
       getAllCountries().then((countries) => {
@@ -120,10 +174,15 @@ function Map() {
    return (
       <div className="home">
          <div className="filters-container">
-            {renderManagerControls()}
-            <Button onClick={handleViewChange}>
-               Change to {managerView ? "user view" : "manager view"}
-            </Button>
+            <Stack spacing={1}>
+               {renderManagerControls()}
+               <Controls.Button
+                  variant="outlined"
+                  text={`Change to ${managerView ? "user view" : "manager view"}`}
+                  onClick={handleViewChange}
+               ></Controls.Button>
+            </Stack>
+
             <h3>PMESII Filters</h3>
             <form className="filters-form">
                <div className="filterPMESII">

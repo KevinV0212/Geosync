@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { addCountry } from "../../utils/country/countryUtil";
+import React, { useEffect } from "react";
 import { useForm, Form } from "../useForm";
 import Controls from "../controls/Controls";
 
@@ -21,7 +20,10 @@ const initialFormValues = {
 };
 
 // form for adding map pin to current country
-export default function AddCountry() {
+export default function CountryForm(props) {
+   const { addOrEdit, recordForEdit } = props;
+
+   // NOTE TO SELF, MAKE SURE TO VALIDATE LONGITUDE AND LATITUDE AS DOUBLES AND ONLY POSITIVE
    const validate = (fieldData = formData) => {
       let temp = { ...errors };
       if ("countryName" in fieldData)
@@ -29,9 +31,15 @@ export default function AddCountry() {
             ? ""
             : "This field is required.";
       if ("latitude" in fieldData)
-         temp.latitude = fieldData.latitude ? "" : "This field is required.";
+         temp.latitude =
+            typeof +fieldData.latitude === "number"
+               ? ""
+               : "This Should Be a Number";
       if ("longitude" in fieldData)
-         temp.longitude = fieldData.longitude ? "" : "This field is required.";
+         temp.longitude =
+            typeof +fieldData.longitude === "number"
+               ? ""
+               : "This Should Be a Number";
       if ("latDir" in fieldData)
          temp.latDir = fieldData.latDir ? "" : "Select a direction.";
       if ("longDir" in fieldData)
@@ -48,17 +56,8 @@ export default function AddCountry() {
    // submits a request to add new map pin to current country
    const handleSubmit = async (e) => {
       e.preventDefault();
-
-      // // requestBody for API request
-      // let requestBody = {
-      //    countryName: formData.countryName,
-      //    longitude: formData.longitude,
-      //    latitude: formData.latitude,
-      // };
-
-      // addCountry(requestBody);
       if (validate()) {
-         window.alert("submitted");
+         addOrEdit(formData, resetForm);
       }
    };
    const [
@@ -69,7 +68,11 @@ export default function AddCountry() {
       handleInputChange,
       resetForm,
    ] = useForm(initialFormValues, true, validate);
-
+   useEffect(() => {
+      if (recordForEdit != null) {
+         setFormData({ ...recordForEdit });
+      }
+   }, [recordForEdit]);
    return (
       <div>
          <Form onSubmit={handleSubmit}>
