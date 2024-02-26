@@ -1,9 +1,9 @@
 import React from "react";
-import WebMap from "@arcgis/core/WebMap";
-import MapView from "@arcgis/core/views/MapView";
-import Graphic from "@arcgis/core/Graphic";
-import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer";
-import Search from "@arcgis/core/widgets/Search";
+import WebMap from "@arcgis/core/WebMap.js";
+import MapView from "@arcgis/core/views/MapView.js";
+import Graphic from "@arcgis/core/Graphic.js";
+import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer.js";
+import Search from "@arcgis/core/widgets/Search.js";
 
 import { useEffect, useRef } from "react";
 

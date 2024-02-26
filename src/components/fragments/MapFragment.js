@@ -131,18 +131,29 @@ export default function Map() {
    // either adds or edit country depending on if the entry already has an id
    const addOrEditCountry = async (country, resetForm) => {
       const requestBody = {
-         countryID: country.countryID || null,
+         id: country.countryID || null,
          countryName: country.countryName,
          latitude: +country.latitude,
          longitude: +country.longitude,
       };
-      if (country.countryID) {
+      console.log(requestBody);
+
+      if (requestBody.id) {
          await updateCountry(requestBody);
+         const newCountry = await addCountry(requestBody);
+         if (newCountry) {
+            setCurrentCountry({
+               countryID: requestBody.id,
+               countryName: newCountry.countryName,
+               latitude: +newCountry.latitude,
+               longitude: +newCountry.longitude,
+            });
+         }
       } else {
          const newCountry = await addCountry(requestBody);
          if (newCountry && currentCountry == null) {
             setCurrentCountry({
-               countryID: newCountry.id,
+               countryID: requestBody.id,
                countryName: newCountry.countryName,
                latitude: +newCountry.latitude,
                longitude: +newCountry.longitude,
@@ -281,7 +292,7 @@ export default function Map() {
                {renderManagerControls()}
                <Controls.Button
                   variant="outlined"
-                  text={`Change to ${managerView ? "user view" : "manager view"}`}
+                  text={`${managerView ? "User view" : "Uanager view"}`}
                   onClick={handleViewChange}
                ></Controls.Button>
             </Stack>
