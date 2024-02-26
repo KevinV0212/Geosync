@@ -97,6 +97,16 @@ export default function CountryForm(props) {
             />
             <Typography>{formData.longitude >= 0 ? "East" : "West"}</Typography>
             <div>
+               {formData.countryID != null ? (
+                  <Controls.Button
+                     text="Delete"
+                     startIcon={<DeleteIcon />}
+                     onClick={() => handleCountryDelete(recordForEdit)}
+                     disabled={formData.countryID == null}
+                  />
+               ) : (
+                  ""
+               )}
                <Controls.Button
                   variant="outlined"
                   text="Cancel"
@@ -104,16 +114,6 @@ export default function CountryForm(props) {
                />
                <Controls.Button type="submit" text="Submit" />
             </div>
-            {formData.countryID != null ? (
-               <Controls.Button
-                  text="Delete"
-                  startIcon={<DeleteIcon />}
-                  onClick={() => handleCountryDelete(recordForEdit)}
-                  disabled={formData.countryID == null}
-               />
-            ) : (
-               ""
-            )}
          </Form>
       </div>
    );

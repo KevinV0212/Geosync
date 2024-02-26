@@ -2,27 +2,25 @@ import React, { useState, useEffect } from "react";
 import Select from "react-select";
 import "./MapFragment.css";
 import { useLocalStorage } from "usehooks-ts";
-import MapPinForm from "../../forms/MapPinForm.js";
+import MapPinForm from "../forms/MapPinForm.js";
 import {
    addCountry,
    deleteCountry,
    getAllCountries,
    updateCountry,
-} from "../../../utils/country/countryUtil.js";
+} from "../../utils/country/countryUtil.js";
 import {
    addMapPin,
    deleteMapPin,
    getMapPins,
    updateMapPin,
-} from "../../../utils/map/mapUtil.js";
-import CountryForm from "../../forms/CountryForm";
-import BasicModal from "../BasicModal.js";
-import MapComponent from "../../MapComponent";
-import Controls from "../../controls/Controls.js";
+} from "../../utils/map/mapUtil.js";
+import CountryForm from "../forms/CountryForm.js";
+import MapComponent from "../MapComponent.js";
+import Controls from "../controls/Controls.js";
 import { Stack } from "@mui/material";
 
-function Map() {
-   // Forms
+export default function Map() {
    const [currentCountry, setCurrentCountry] = useLocalStorage(
       "current_country",
       null
@@ -43,7 +41,7 @@ function Map() {
    function loadCountries() {
       getAllCountries().then((countries) => {
          if (countries === null) {
-            window.alert("There was a problem getting countries");
+            return;
          }
          countries.sort((countryA, countryB) => {
             if (countryA.countryName < countryB.countryName) return -1;
@@ -67,7 +65,7 @@ function Map() {
 
       getMapPins(countryID, filters).then((pinList) => {
          if (pinList === null) {
-            window.alert("There was a problem getting map pins");
+            return;
          }
          setMapPins([...pinList]);
       });
@@ -165,6 +163,7 @@ function Map() {
       }
       await deleteCountry(country.countryID);
       loadCountries();
+      loadMapPins();
       setCurrentCountry(null);
       setRecordForCountry(null);
       setOpenCountryForm(false);
@@ -372,5 +371,3 @@ function Map() {
       </div>
    );
 }
-
-export default Map;

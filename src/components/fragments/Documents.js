@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from "react";
 import "./Documents.css";
 import Button from "@mui/material/Button";
-import DocumentForm from "../../forms/DocumentForm";
+import DocumentForm from "../forms/DocumentForm";
 import {
    addTask,
    deleteTask,
    getAllTasks,
    updateTask,
-} from "../../../utils/document/task/taskDocUtil";
+} from "../../utils/document/task/taskDocUtil";
 import {
    addMission,
    deleteMission,
    getAllMissions,
    updateMission,
-} from "../../../utils/document/mission/missionDocUtil";
-import Controls from "../../controls/Controls";
+} from "../../utils/document/mission/missionDocUtil";
+import Controls from "../controls/Controls";
 import AddIcon from "@mui/icons-material/Add";
-import DocumentInfo from "../../info/DocumentInfo";
+import DocumentInfo from "../info/DocumentInfo";
 import {
    List,
    ListItem,
