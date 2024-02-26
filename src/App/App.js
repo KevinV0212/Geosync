@@ -1,10 +1,10 @@
 import "./App.css";
 import Navbar from "../components/navbar";
-import Home from "../components/fragments/Home/Home";
+import Home from "../components/fragments/Contact/Home";
 import Contact from "../components/fragments/Contact/Contact";
-import Documents from "../components/fragments/Documents/Documents";
+import Documents from "../components/fragments/Documents";
 import FAQ from "../components/fragments/FAQ";
-import Map from "../components/fragments/Map/MapFragment";
+import Map from "../components/fragments/MapFragment";
 import Wiki from "../components/fragments/Wiki";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { useEffect } from "react";
