@@ -20,10 +20,9 @@ export default function BasicModal(props) {
    const [open, setOpen] = React.useState(false);
    const handleOpen = () => setOpen(true);
    const handleClose = () => setOpen(false);
-
    return (
       <div>
-         <Button onClick={handleOpen}>{props.buttonText}</Button>
+         <Button variant="contained" size="small" sx={{ marginTop: 0.5, backgroundColor: '#690005', width: '126.37px' }} onClick={handleOpen}>{props.buttonText}</Button>
          <Modal
             open={open}
             onClose={handleClose}
