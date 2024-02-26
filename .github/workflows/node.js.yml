@@ -33,3 +33,5 @@ jobs:
       env:
         CI: "false"
     # - run: npm test
+
+    # Above code should run both CI and build test
