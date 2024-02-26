@@ -1,7 +1,9 @@
+import React from "react";
 import WebMap from "@arcgis/core/WebMap";
 import MapView from "@arcgis/core/views/MapView";
 import Graphic from "@arcgis/core/Graphic";
 import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer";
+import Search from "@arcgis/core/widgets/Search";
 
 import { useEffect, useRef } from "react";
 
@@ -28,8 +30,8 @@ export default function MapComponent({ mapPins }) {
 
       return pointGraphic;
    };
+
    useEffect(() => {
-      console.log(mapPins);
       if (mapDiv.current) {
          /**
           * Initialize application
@@ -44,13 +46,30 @@ export default function MapComponent({ mapPins }) {
             zoom: 2, // Represents the map scale at the center of the view.
             container: mapDiv.current, // The id or node representing the DOM element containing the view.
          });
+
          const graphicsLayer = new GraphicsLayer();
+         // graphicsLayer
+         //    .when(() => {
+         //       return graphicsLayer.queryExtent();
+         //    })
+         //    .then((response) => {
+         //       view.goTo(response.extent);
+         //    });
+         const searchWidget = new Search({
+            view: view,
+         });
+         // Adds the search widget below other elements in
+         // the top left corner of the view
+         view.ui.add(searchWidget, {
+            position: "top-left",
+            index: 2,
+         });
+
          webmap.add(graphicsLayer);
 
          if (mapPins) {
             let len = mapPins.length;
             for (let i = 0; i < len; i++) {
-               console.log(len);
                let long = mapPins[i]["longitude"];
                let lat = mapPins[i]["latitude"];
                let color = [0, 0, 0];

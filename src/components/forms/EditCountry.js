@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, FormControl } from "@mui/base";
 import { TextField, FormGroup } from "@mui/material";
-import { updateCountry, deleteCountry } from "../../utils/countryUtil";
+import { updateCountry, deleteCountry } from "../../utils/country/countryUtil";
 import { useLocalStorage } from "usehooks-ts";
 
 // form for adding map pin to current country
