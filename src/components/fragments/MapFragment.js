@@ -281,7 +281,7 @@ export default function Map() {
                {renderManagerControls()}
                <Controls.Button
                   variant="outlined"
-                  text={`Change to ${managerView ? "user view" : "manager view"}`}
+                  text={`${managerView ? "User view" : "Manager view"}`}
                   onClick={handleViewChange}
                ></Controls.Button>
             </Stack>
