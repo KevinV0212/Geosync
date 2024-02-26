@@ -5,114 +5,44 @@ import { useLocalStorage } from "usehooks-ts";
 import MapPinForm from "../../forms/MapPinForm.js";
 import {
    addCountry,
+   deleteCountry,
    getAllCountries,
    updateCountry,
 } from "../../../utils/country/countryUtil.js";
-import { getMapPins } from "../../../utils/map/mapUtil.js";
+import {
+   addMapPin,
+   deleteMapPin,
+   getMapPins,
+   updateMapPin,
+} from "../../../utils/map/mapUtil.js";
 import CountryForm from "../../forms/CountryForm";
 import BasicModal from "../BasicModal.js";
 import MapComponent from "../../MapComponent";
 import Controls from "../../controls/Controls.js";
 import { Stack } from "@mui/material";
+
 function Map() {
    // Forms
-   const [openCountryForm, setOpenCountryForm] = useState(false);
-   const [openPinForm, setOpenPinForm] = useState(false);
-   const [recordForCountry, setRecordForCountry] = useState(null);
-   // Country selector
    const [currentCountry, setCurrentCountry] = useLocalStorage(
       "current_country",
       null
    );
+   useEffect(() => {
+      loadCountries();
+      loadMapPins();
+   }, [currentCountry]);
+
+   // Country selector
    const [countries, setCountries] = useState([]);
    let listOptions = countries.map((country) => ({
       value: country.id,
       label: country.countryName,
    }));
 
-   // PMESII-PT filters
-   const [checkboxes, setCheckboxes] = useState({
-      checkbox1: true,
-      checkbox2: true,
-      checkbox3: true,
-      checkbox4: true,
-      checkbox5: true,
-      checkbox6: true,
-   });
-   const [mapPins, setMapPins] = useState([]);
-
-   const [managerView, setManagerView] = useState(true);
-
-   const handleViewChange = () => setManagerView(!managerView);
-
-   const renderManagerControls = () => {
-      if (managerView) {
-         return (
-            <>
-               <Controls.Button
-                  text="Add Country"
-                  onClick={() => {
-                     setRecordForCountry(null);
-                     setOpenCountryForm(true);
-                  }}
-               />
-               <Controls.Button
-                  text="Edit Country"
-                  onClick={openCountryInForm}
-               />
-               <Controls.Popup
-                  title="Add/Edit Country"
-                  openPopup={openCountryForm}
-                  setOpenPopup={setOpenCountryForm}
-               >
-                  <CountryForm
-                     addOrEdit={addOrEditCountry}
-                     recordForEdit={recordForCountry}
-                  />
-               </Controls.Popup>
-               <Controls.Button
-                  text="Add Map Pin"
-                  onClick={() => {
-                     setOpenPinForm(true);
-                  }}
-               />
-               <Controls.Popup
-                  title="Add/Edit MapPin"
-                  openPopup={openPinForm}
-                  setOpenPopup={setOpenPinForm}
-               >
-                  <MapPinForm
-                  // addOrEdit={addOrEditCountry}
-                  // recordForEdit={recordForCountry}
-                  />
-               </Controls.Popup>
-            </>
-         );
-      }
-   };
-   const openCountryInForm = () => {
-      setRecordForCountry({
-         ...currentCountry,
-         latDir: currentCountry.latitude >= 0 ? "north" : "south",
-         longDir: currentCountry.longitude >= 0 ? "east" : "west",
-      });
-      setOpenCountryForm(true);
-   };
-   const addOrEditCountry = async (country, resetForm) => {
-      if (country.countryID) {
-         await updateCountry(document);
-      } else {
-         await addCountry(document);
-      }
-      resetForm();
-      loadCountries();
-      setRecordForCountry(null);
-      setOpenCountryForm(false);
-   };
    // function that loads a list of countries in the format below
    function loadCountries() {
       getAllCountries().then((countries) => {
-         if (!countries) {
+         if (countries === null) {
             window.alert("There was a problem getting countries");
          }
          countries.sort((countryA, countryB) => {
@@ -136,7 +66,7 @@ function Map() {
       }
 
       getMapPins(countryID, filters).then((pinList) => {
-         if (!pinList) {
+         if (pinList === null) {
             window.alert("There was a problem getting map pins");
          }
          setMapPins([...pinList]);
@@ -166,10 +96,185 @@ function Map() {
       }));
    };
 
-   useEffect(() => {
+   // PMESII-PT filters
+   const [checkboxes, setCheckboxes] = useState({
+      checkbox1: true,
+      checkbox2: true,
+      checkbox3: true,
+      checkbox4: true,
+      checkbox5: true,
+      checkbox6: true,
+   });
+   const [mapPins, setMapPins] = useState([]);
+
+   const [managerView, setManagerView] = useState(true);
+
+   const handleViewChange = () => setManagerView(!managerView);
+
+   const [openCountryForm, setOpenCountryForm] = useState(false);
+   const [countryFormTitle, setCountryFormTitle] = useState("Add Country");
+   const [recordForCountry, setRecordForCountry] = useState(null);
+
+   const [currentPin, setCurrentPin] = useState(null);
+   const [openPinForm, setOpenPinForm] = useState(false);
+   const [pinFormTitle, setPinFormTitle] = useState("Add Pin");
+   const [recordForPin, setRecordForPin] = useState(null);
+
+   // Map Operations ---------------------------------------------------------
+
+   // opens current country's information in form to edit
+   const openCountryInForm = () => {
+      setRecordForCountry({
+         ...currentCountry,
+      });
+      setCountryFormTitle("Edit Country");
+      setOpenCountryForm(true);
+   };
+
+   // either adds or edit country depending on if the entry already has an id
+   const addOrEditCountry = async (country, resetForm) => {
+      const requestBody = {
+         countryID: country.countryID || null,
+         countryName: country.countryName,
+         latitude: +country.latitude,
+         longitude: +country.longitude,
+      };
+      if (country.countryID) {
+         await updateCountry(requestBody);
+      } else {
+         const newCountry = await addCountry(requestBody);
+         if (newCountry && currentCountry == null) {
+            setCurrentCountry({
+               countryID: newCountry.id,
+               countryName: newCountry.countryName,
+               latitude: +newCountry.latitude,
+               longitude: +newCountry.longitude,
+            });
+         }
+      }
+      resetForm();
       loadCountries();
+      setRecordForCountry(null);
+      setOpenCountryForm(false);
+   };
+
+   // handles deleting the country
+   const handleCountryDelete = async (country) => {
+      if (!window.confirm("Are you sure you want to delete this country?")) {
+         return;
+      }
+      await deleteCountry(country.countryID);
+      loadCountries();
+      setCurrentCountry(null);
+      setRecordForCountry(null);
+      setOpenCountryForm(false);
+   };
+
+   // Pin Operations--------------------------------------------------------------
+
+   // opens currently selected map pin's information in form to edit
+   const openPinInForm = () => {
+      setRecordForCountry({
+         ...currentPin,
+      });
+      setPinFormTitle("Edit Map Pin");
+      setOpenPinForm(true);
+   };
+
+   // either adds or edit country depending on if the pin already has an id
+   const addOrEditPin = async (pin, resetForm) => {
+      let requestBody = {
+         countryID: currentCountry.countryID,
+         title: pin.title,
+         description: pin.description,
+         longitude: +pin.longitude,
+         latitude: +pin.latitude,
+         political: false,
+         military: false,
+         economic: false,
+         social: false,
+         information: false,
+         infrastructure: false,
+      };
+
+      requestBody[pin.pmesiiCat] = true;
+
+      if (pin.id) {
+         await updateMapPin(requestBody);
+      } else {
+         await addMapPin(requestBody);
+      }
+      resetForm();
       loadMapPins();
-   }, [currentCountry]);
+      setCurrentPin(null);
+      setRecordForPin(null);
+      setOpenPinForm(false);
+   };
+
+   // handles deleting map pin
+   const handlePinDelete = async (pin) => {
+      if (!window.confirm("Are you sure you want to delete this map pin?")) {
+         return;
+      }
+      await deleteMapPin(pin.id);
+      setCurrentPin(null);
+      loadMapPins();
+      setRecordForPin(null);
+      setOpenPinForm(false);
+   };
+
+   // renders manager specific controls
+   const renderManagerControls = () => {
+      if (managerView) {
+         return (
+            <>
+               <Controls.Button
+                  text="Add Country"
+                  onClick={() => {
+                     setRecordForCountry(null);
+                     setCountryFormTitle("Add Country");
+                     setOpenCountryForm(true);
+                  }}
+               />
+               <Controls.Button
+                  text="Edit Country"
+                  onClick={openCountryInForm}
+                  disabled={currentCountry == null}
+               />
+               <Controls.Popup
+                  title={countryFormTitle}
+                  openPopup={openCountryForm}
+                  setOpenPopup={setOpenCountryForm}
+               >
+                  <CountryForm
+                     addOrEdit={addOrEditCountry}
+                     recordForEdit={recordForCountry}
+                     handleCountryDelete={handleCountryDelete}
+                  />
+               </Controls.Popup>
+
+               <Controls.Button
+                  text="Add Map Pin"
+                  onClick={() => {
+                     setOpenPinForm(true);
+                  }}
+                  disabled={currentCountry == null}
+               />
+               <Controls.Popup
+                  title={pinFormTitle}
+                  openPopup={openPinForm}
+                  setOpenPopup={setOpenPinForm}
+               >
+                  <MapPinForm
+                     addOrEdit={addOrEditPin}
+                     recordForEdit={recordForPin}
+                     handlePinDelete={handlePinDelete}
+                  />
+               </Controls.Popup>
+            </>
+         );
+      }
+   };
 
    return (
       <div className="home">

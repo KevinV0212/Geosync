@@ -1,8 +1,8 @@
 import axios from "axios";
-import buildPath from "../../components/Path";
+import buildPath from "../../../components/Path";
 
-async function getAllMissions() {
-   let url = buildPath("/all_missions");
+async function getAllTasks() {
+   let url = buildPath("/all_tasks");
    const response = await axios
       .get(url, {
          headers: {
@@ -32,11 +32,11 @@ async function getAllMissions() {
    return response.data;
 }
 
-async function addMission(requestBody) {
+async function addTask(requestBody) {
    if (!requestBody) {
-      return null;
+      return;
    }
-   const url = buildPath("/add_mission");
+   const url = buildPath("/add_task");
    let obj = requestBody;
 
    let config = {
@@ -69,17 +69,15 @@ async function addMission(requestBody) {
          // Something happened in setting up the request that triggered an Error
          console.log("Error", error.message);
       }
-      // do some error handling
       return { data: null };
    });
    return response.data;
 }
-
-async function updateMission(requestBody) {
+async function updateTask(requestBody) {
    if (!requestBody) {
       return null;
    }
-   const url = buildPath("/update_mission");
+   const url = buildPath("/update_task");
    let obj = requestBody;
 
    let config = {
@@ -117,12 +115,11 @@ async function updateMission(requestBody) {
    });
    return response.data;
 }
-
-async function deleteMission(missionID) {
-   if (!missionID) {
+async function deleteTask(taskID) {
+   if (!taskID) {
       return;
    }
-   const url = buildPath("/delete_mission/" + missionID);
+   const url = buildPath("/delete_task/" + taskID);
 
    let config = {
       method: "delete",
@@ -141,9 +138,7 @@ async function deleteMission(missionID) {
       .request(config)
       .then((res) => {
          if (res.status === 201 || res.status === 200) {
-            console.log(
-               `Mission Statement Document ${missionID} Successfully Deleted`
-            );
+            console.log(`Task Document ${taskID} Successfully Deleted`);
          }
          if (res.status === 400) {
             const error = res.text();
@@ -169,4 +164,4 @@ async function deleteMission(missionID) {
       });
 }
 
-export { getAllMissions, addMission, updateMission, deleteMission };
+export { getAllTasks, addTask, updateTask, deleteTask };

@@ -7,13 +7,13 @@ import {
    deleteTask,
    getAllTasks,
    updateTask,
-} from "../../../utils/document/taskDocUtil";
+} from "../../../utils/document/task/taskDocUtil";
 import {
    addMission,
    deleteMission,
    getAllMissions,
    updateMission,
-} from "../../../utils/document/missionDocUtil";
+} from "../../../utils/document/mission/missionDocUtil";
 import Controls from "../../controls/Controls";
 import AddIcon from "@mui/icons-material/Add";
 import DocumentInfo from "../../info/DocumentInfo";
@@ -30,6 +30,7 @@ function Documents() {
    const [managerView, setManagerView] = useState(true);
    const handleViewChange = () => setManagerView(!managerView);
 
+   const [formTitle, setFormTitle] = useState("Add Document");
    const [recordForEdit, setRecordForEdit] = useState(null);
    const [recordForView, setRecordForView] = useState(null);
 
@@ -54,12 +55,13 @@ function Documents() {
                   startIcon={<AddIcon />}
                   onClick={() => {
                      setRecordForEdit(null);
+                     setFormTitle("Add Document");
                      setOpenForm(true);
                   }}
                />
 
                <Controls.Popup
-                  title="Add/Edit Document"
+                  title={formTitle}
                   openPopup={openForm}
                   setOpenPopup={setOpenForm}
                >
@@ -80,12 +82,18 @@ function Documents() {
 
    const openInForm = (item) => {
       setRecordForEdit({ ...item });
-      console.log(item);
-      setOpenForm(true);
+      setFormTitle("Edit Document");
       setOpenInfo(false);
+      setOpenForm(true);
    };
 
    const addOrEdit = async (document, resetForm) => {
+      const requestBody = {
+         id: document.id || null,
+         title: document.title,
+         description: document.description,
+         link: document.link,
+      };
       if (document.id) {
          if (document.docType === "mission") {
             await updateMission(document);

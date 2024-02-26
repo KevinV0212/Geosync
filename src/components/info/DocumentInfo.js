@@ -5,7 +5,6 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { Delete } from "@mui/icons-material";
 
 const initialInfo = {
    id: "",
@@ -43,7 +42,7 @@ export default function DocumentInfo(props) {
                <ContentCopyIcon />
             </Controls.IconButton>
             <a href={info.link} target="_blank">
-               <Controls.IconButton h>
+               <Controls.IconButton>
                   <OpenInNewIcon />
                </Controls.IconButton>
             </a>
@@ -62,7 +61,7 @@ export default function DocumentInfo(props) {
             />
             <Controls.Button
                text="Delete"
-               startIcon={<Delete />}
+               startIcon={<DeleteIcon />}
                onClick={() => deleteDocument(recordForView)}
             />
          </Stack>

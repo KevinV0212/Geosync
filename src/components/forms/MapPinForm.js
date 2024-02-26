@@ -1,17 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { useForm, Form } from "../useForm";
 import Controls from "../controls/Controls";
 
 import { useLocalStorage } from "usehooks-ts";
-
-const latitudeItems = [
-   { id: "north", title: "N" },
-   { id: "south", title: "S" },
-];
-const longitudeItems = [
-   { id: "east", title: "E" },
-   { id: "west", title: "W" },
-];
+import { Typography } from "@mui/material";
 
 const pmesiiItems = [
    { id: "political", title: "Political" },
@@ -23,6 +15,7 @@ const pmesiiItems = [
 ];
 
 const initialFormValues = {
+   id: null,
    title: "",
    description: "",
    latitude: 0,
@@ -31,32 +24,30 @@ const initialFormValues = {
 };
 // form for adding map pin to current country
 export default function MapPinForm(props) {
-   const { addOrEdit, recordForEdit } = props;
+   const { addOrEdit, recordForEdit, deleteMapPin } = props;
 
+   // validates formData and records any errors that show up
    const validate = (fieldData = formData) => {
       let temp = { ...errors };
       if ("title" in fieldData)
-         temp.countryName = fieldData.countryName
-            ? ""
-            : "This field is required.";
+         temp.title = fieldData.title ? "" : "This field is required.";
       if ("description" in fieldData)
          temp.description = fieldData.description
             ? ""
             : "This field is required.";
-      if ("latitude" in fieldData)
+      if ("latitude" in fieldData) {
          temp.latitude =
-            typeof +fieldData.latitude === "number"
+            fieldData.latitude || fieldData.latitude === 0
                ? ""
-               : "This Should Be a Number";
-      if ("longitude" in fieldData)
+               : "This field is required.";
+      }
+      if ("longitude" in fieldData) {
          temp.longitude =
-            typeof +fieldData.longitude === "number"
+            fieldData.longitude || fieldData.longitude === 0
                ? ""
-               : "This Should Be a Number";
-      if ("latDir" in fieldData)
-         temp.latDir = fieldData.latDir ? "" : "Select a direction.";
-      if ("longDir" in fieldData)
-         temp.longDir = fieldData.longDir ? "" : "Select a direction.";
+               : "This field is required.";
+      }
+
       if ("pmesiiCat" in fieldData)
          temp.pmesiiCat = fieldData.pmesiiCat
             ? ""
@@ -71,12 +62,12 @@ export default function MapPinForm(props) {
    };
 
    // get information of current country
-   const [currentCountry, setCurrentCountry] = useLocalStorage(
-      "current_country",
-      null
-   );
-   let countryName = currentCountry ? currentCountry.countryName : null;
-   let countryID = currentCountry ? currentCountry.countryID : null;
+   // const [currentCountry, setCurrentCountry] = useLocalStorage(
+   //    "current_country",
+   //    null
+   // );
+   // let countryName = currentCountry ? currentCountry.countryName : null;
+   // let countryID = currentCountry ? currentCountry.countryID : null;
 
    const [
       formData,
@@ -86,38 +77,20 @@ export default function MapPinForm(props) {
       handleInputChange,
       resetForm,
    ] = useForm(initialFormValues, true, validate);
-   // submits a request to add new map pin to current country
+
+   useEffect(() => {
+      if (recordForEdit != null) {
+         setFormData({ ...recordForEdit });
+      }
+   }, [recordForEdit]);
+
+   // handles submission of form to callback from parent component
    const handleSubmit = async (e) => {
       e.preventDefault();
 
-      // if (!currentCountry) {
-      //    return;
-      // }
-
-      // // requestBody for API request
-      // let requestBody = {
-      //    countryID: countryID,
-      //    title: formData.title,
-      //    description: formData.description,
-      //    longitude: formData.longitude,
-      //    latitude: formData.latitude,
-      //    political: false,
-      //    military: false,
-      //    economic: false,
-      //    social: false,
-      //    information: false,
-      //    infrastructure: false,
-      // };
-
-      // requestBody[formData.pmesiiCat] = true;
-      // addMapPin(requestBody);
-      window.alert("Pin Added");
-   };
-
-   // callback for when states of form components change
-   const handleChange = (e) => {
-      const { name, value } = e.target;
-      setFormData({ ...formData, [name]: value });
+      if (validate) {
+         addOrEdit(formData, resetForm);
+      }
    };
 
    return (
@@ -141,32 +114,24 @@ export default function MapPinForm(props) {
                name="latitude"
                label="Latitude"
                value={formData.latitude}
+               inputProps={{ type: "number", min: -90, max: 90, step: "any" }}
                onChange={handleInputChange}
                error={errors.latitude}
             />
-            <Controls.RadioGroup
-               name="latDir"
-               label="Latitude Direction"
-               value={formData.latDir}
-               onChange={handleInputChange}
-               items={latitudeItems}
-               error={errors.latDir}
-            />
+            <Typography>
+               {formData.latitude >= 0 ? "North" : "South"}
+            </Typography>
+
             <Controls.Input
                name="longitude"
                label="Longitude"
                value={formData.longitude}
+               inputProps={{ type: "number", min: -180, max: 180, step: "any" }}
                onChange={handleInputChange}
                error={errors.longitude}
             />
-            <Controls.RadioGroup
-               name="longDir"
-               label="Longitude Direction"
-               value={formData.longDir}
-               onChange={handleInputChange}
-               items={longitudeItems}
-               error={errors.longDir}
-            />
+            <Typography>{formData.longitude >= 0 ? "East" : "West"}</Typography>
+
             <Controls.RadioGroup
                name="pmesiiCat"
                label="PMESII Category"

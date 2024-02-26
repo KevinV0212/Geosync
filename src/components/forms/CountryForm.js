@@ -1,65 +1,47 @@
 import React, { useEffect } from "react";
 import { useForm, Form } from "../useForm";
 import Controls from "../controls/Controls";
-
-const latitudeItems = [
-   { id: "north", title: "N" },
-   { id: "south", title: "S" },
-];
-const longitudeItems = [
-   { id: "east", title: "E" },
-   { id: "west", title: "W" },
-];
+import { Typography } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const initialFormValues = {
+   countryID: null,
    countryName: "",
    longitude: 0,
    latitude: 0,
-   latDir: "",
-   longDir: "",
 };
 
-// form for adding map pin to current country
+// Form for a new country
 export default function CountryForm(props) {
-   const { addOrEdit, recordForEdit } = props;
+   const { addOrEdit, recordForEdit, handleCountryDelete } = props;
 
-   // NOTE TO SELF, MAKE SURE TO VALIDATE LONGITUDE AND LATITUDE AS DOUBLES AND ONLY POSITIVE
+   // validates formData and records any errors that show up
    const validate = (fieldData = formData) => {
       let temp = { ...errors };
       if ("countryName" in fieldData)
          temp.countryName = fieldData.countryName
             ? ""
             : "This field is required.";
-      if ("latitude" in fieldData)
+      if ("latitude" in fieldData) {
          temp.latitude =
-            typeof +fieldData.latitude === "number"
+            fieldData.latitude || fieldData.latitude === 0
                ? ""
-               : "This Should Be a Number";
-      if ("longitude" in fieldData)
+               : "This field is required.";
+      }
+      if ("longitude" in fieldData) {
          temp.longitude =
-            typeof +fieldData.longitude === "number"
+            fieldData.longitude || fieldData.longitude === 0
                ? ""
-               : "This Should Be a Number";
-      if ("latDir" in fieldData)
-         temp.latDir = fieldData.latDir ? "" : "Select a direction.";
-      if ("longDir" in fieldData)
-         temp.longDir = fieldData.longDir ? "" : "Select a direction.";
+               : "This field is required.";
+      }
 
       setErrors({
          ...temp,
       });
-
       if (fieldData === formData)
          return Object.values(temp).every((x) => x === "");
    };
 
-   // submits a request to add new map pin to current country
-   const handleSubmit = async (e) => {
-      e.preventDefault();
-      if (validate()) {
-         addOrEdit(formData, resetForm);
-      }
-   };
    const [
       formData,
       setFormData,
@@ -68,11 +50,21 @@ export default function CountryForm(props) {
       handleInputChange,
       resetForm,
    ] = useForm(initialFormValues, true, validate);
+
    useEffect(() => {
       if (recordForEdit != null) {
          setFormData({ ...recordForEdit });
       }
    }, [recordForEdit]);
+
+   // handles submission of form to callback from parent component
+   const handleSubmit = async (e) => {
+      e.preventDefault();
+      if (validate()) {
+         addOrEdit(formData, resetForm);
+      }
+   };
+
    return (
       <div>
          <Form onSubmit={handleSubmit}>
@@ -87,32 +79,23 @@ export default function CountryForm(props) {
                name="latitude"
                label="Latitude"
                value={formData.latitude}
+               inputProps={{ type: "number", min: -90, max: 90, step: "any" }}
                onChange={handleInputChange}
                error={errors.latitude}
             />
-            <Controls.RadioGroup
-               name="latDir"
-               label="Latitude Direction"
-               value={formData.latDir}
-               onChange={handleInputChange}
-               items={latitudeItems}
-               error={errors.latDir}
-            />
+            <Typography>
+               {formData.latitude >= 0 ? "North" : "South"}
+            </Typography>
+
             <Controls.Input
                name="longitude"
                label="Longitude"
                value={formData.longitude}
+               inputProps={{ type: "number", min: -180, max: 180, step: "any" }}
                onChange={handleInputChange}
                error={errors.longitude}
             />
-            <Controls.RadioGroup
-               name="longDir"
-               label="Longitude Direction"
-               value={formData.longDir}
-               onChange={handleInputChange}
-               items={longitudeItems}
-               error={errors.longDir}
-            />
+            <Typography>{formData.longitude >= 0 ? "East" : "West"}</Typography>
             <div>
                <Controls.Button
                   variant="outlined"
@@ -121,6 +104,16 @@ export default function CountryForm(props) {
                />
                <Controls.Button type="submit" text="Submit" />
             </div>
+            {formData.countryID != null ? (
+               <Controls.Button
+                  text="Delete"
+                  startIcon={<DeleteIcon />}
+                  onClick={() => handleCountryDelete(recordForEdit)}
+                  disabled={formData.countryID == null}
+               />
+            ) : (
+               ""
+            )}
          </Form>
       </div>
    );

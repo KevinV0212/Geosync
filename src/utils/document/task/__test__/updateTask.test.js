@@ -1,7 +1,7 @@
 import MockAxios from "axios";
-import { updateMission } from "../missionDocUtil";
+import { updateTask } from "../taskDocUtil";
 
-describe("updateMission", () => {
+describe("updateTask", () => {
    const mockRequestBody = {
       countryName: "Brazil",
       latitude: 123.2342,
@@ -9,7 +9,7 @@ describe("updateMission", () => {
    };
 
    it("should not call axios if the request body is not present", async () => {
-      await updateMission(null);
+      await updateTask(null);
       expect(MockAxios.request).not.toHaveBeenCalled();
    });
 
@@ -24,7 +24,7 @@ describe("updateMission", () => {
       };
       MockAxios.request.mockResolvedValueOnce(mockResponse);
 
-      const newCountry = await updateMission(mockRequestBody);
+      const newCountry = await updateTask(mockRequestBody);
 
       expect(newCountry).toEqual(mockResponse.data);
    });
@@ -45,7 +45,7 @@ describe("updateMission", () => {
       });
 
       const logSpy = jest.spyOn(console, "log");
-      const countries = await updateMission(mockRequestBody);
+      const countries = await updateTask(mockRequestBody);
 
       // assertions for console log
       expect(logSpy).toHaveBeenCalled();
@@ -69,7 +69,7 @@ describe("updateMission", () => {
       });
 
       const logSpy = jest.spyOn(console, "log");
-      const countries = await updateMission(mockRequestBody);
+      const countries = await updateTask(mockRequestBody);
 
       // assertions for console log
       expect(logSpy).toHaveBeenCalled();
@@ -91,7 +91,7 @@ describe("updateMission", () => {
       });
 
       const logSpy = jest.spyOn(console, "log");
-      const countries = await updateMission(mockRequestBody);
+      const countries = await updateTask(mockRequestBody);
 
       // assertions for console log
       expect(logSpy).toHaveBeenCalled();

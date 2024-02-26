@@ -1,8 +1,8 @@
 import axios from "axios";
-import buildPath from "../../components/Path";
+import buildPath from "../../../components/Path";
 
-async function getAllTasks() {
-   let url = buildPath("/all_tasks");
+async function getAllMissions() {
+   let url = buildPath("/all_missions");
    const response = await axios
       .get(url, {
          headers: {
@@ -32,11 +32,11 @@ async function getAllTasks() {
    return response.data;
 }
 
-async function addTask(requestBody) {
+async function addMission(requestBody) {
    if (!requestBody) {
-      return;
+      return null;
    }
-   const url = buildPath("/add_task");
+   const url = buildPath("/add_mission");
    let obj = requestBody;
 
    let config = {
@@ -69,15 +69,17 @@ async function addTask(requestBody) {
          // Something happened in setting up the request that triggered an Error
          console.log("Error", error.message);
       }
+      // do some error handling
       return { data: null };
    });
    return response.data;
 }
-async function updateTask(requestBody) {
+
+async function updateMission(requestBody) {
    if (!requestBody) {
       return null;
    }
-   const url = buildPath("/update_task");
+   const url = buildPath("/update_mission");
    let obj = requestBody;
 
    let config = {
@@ -115,11 +117,12 @@ async function updateTask(requestBody) {
    });
    return response.data;
 }
-async function deleteTask(taskID) {
-   if (!taskID) {
+
+async function deleteMission(missionID) {
+   if (!missionID) {
       return;
    }
-   const url = buildPath("/delete_task/" + taskID);
+   const url = buildPath("/delete_mission/" + missionID);
 
    let config = {
       method: "delete",
@@ -138,7 +141,9 @@ async function deleteTask(taskID) {
       .request(config)
       .then((res) => {
          if (res.status === 201 || res.status === 200) {
-            console.log(`Task Document ${taskID} Successfully Deleted`);
+            console.log(
+               `Mission Statement Document ${missionID} Successfully Deleted`
+            );
          }
          if (res.status === 400) {
             const error = res.text();
@@ -164,4 +169,4 @@ async function deleteTask(taskID) {
       });
 }
 
-export { getAllTasks, addTask, updateTask, deleteTask };
+export { getAllMissions, addMission, updateMission, deleteMission };
