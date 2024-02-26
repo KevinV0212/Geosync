@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocalStorage } from "usehooks-ts";
 
 import { Button, FormControl } from "@mui/base";
@@ -10,57 +10,112 @@ import {
    RadioGroup,
    TextField,
 } from "@mui/material";
+import { useForm } from "../useForm";
 
-const AddEntry = () => {
-   const [currentCountry, setCurrentCountry] = useLocalStorage(
-      "current_country",
-      null
-   );
-   let countryName = currentCountry ? currentCountry.countryName : null;
-   let countryID = currentCountry ? currentCountry.countryID : null;
+const initialFormValues = {
+   id: null,
+   title: "",
+   description: "",
+   latitude: 0,
+   longitude: 0,
+   pmessiCat: "",
+   ascopeCat: "",
+};
 
-   const [formData, setFormData] = useState({
-      title: "",
-      description: "",
-      longitude: "",
-      latitude: "",
-      pmessiCat: "",
-      ascopeCat: "",
-   });
+export default function EntryForm(props) {
+   const { addOrEdit, recordForEdit, handleCountryDelete } = props;
+
+   // const [currentCountry, setCurrentCountry] = useLocalStorage(
+   //    "current_country",
+   //    null
+   // );
+   // let countryName = currentCountry ? currentCountry.countryName : null;
+   // let countryID = currentCountry ? currentCountry.countryID : null
+
+   // validates formData and records any errors that show up
+   const validate = (fieldData = formData) => {
+      let temp = { ...errors };
+      if ("countryName" in fieldData)
+         temp.countryName = fieldData.countryName
+            ? ""
+            : "This field is required.";
+      if ("latitude" in fieldData) {
+         temp.latitude =
+            fieldData.latitude || fieldData.latitude === 0
+               ? ""
+               : "This field is required.";
+      }
+      if ("longitude" in fieldData) {
+         temp.longitude =
+            fieldData.longitude || fieldData.longitude === 0
+               ? ""
+               : "This field is required.";
+      }
+      if ("pmesiiCat" in fieldData)
+         temp.pmesiiCat = fieldData.pmesiiCat
+            ? ""
+            : "Select a PMESII Category.";
+      if ("ascopeCat" in fieldData)
+         temp.ascopeCat = fieldData.ascopeCat
+            ? ""
+            : "Select a ASCOPE Category.";
+
+      setErrors({
+         ...temp,
+      });
+      if (fieldData === formData)
+         return Object.values(temp).every((x) => x === "");
+   };
+
+   const [
+      formData,
+      setFormData,
+      errors,
+      setErrors,
+      handleInputChange,
+      resetForm,
+   ] = useForm(initialFormValues, true, validate);
+
+   useEffect(() => {
+      if (recordForEdit != null) {
+         setFormData({ ...recordForEdit });
+      }
+   }, [recordForEdit]);
 
    // submits a request to add new map pin to current country
    const handleSubmit = async (e) => {
       e.preventDefault();
 
-      if (!currentCountry) {
-         return;
+      // if (!currentCountry) {
+      //    return;
+      // }
+
+      // // requestBody for API request
+      // let requestBody = {
+      //    countryID: countryID,
+      //    title: formData.title,
+      //    description: formData.description,
+      //    longitude: formData.longitude,
+      //    latitude: formData.latitude,
+      //    political: false,
+      //    military: false,
+      //    economic: false,
+      //    social: false,
+      //    information: false,
+      //    infrastructure: false,
+      //    areas: false,
+      //    structures: false,
+      //    capabilities: false,
+      //    organizations: false,
+      //    people: false,
+      //    events: false,
+      // };
+
+      // requestBody[formData.pmessiCat] = true;
+      // requestBody[formData.ascopeCat] = true;
+      if (validate) {
+         console.log(formData);
       }
-
-      // requestBody for API request
-      let requestBody = {
-         mapID: countryID,
-         title: formData.title,
-         description: formData.description,
-         longitude: formData.longitude,
-         latitude: formData.latitude,
-         political: false,
-         military: false,
-         economic: false,
-         social: false,
-         information: false,
-         infrastructure: false,
-         areas: false,
-         structures: false,
-         capabilities: false,
-         organizations: false,
-         people: false,
-         events: false,
-      };
-
-      requestBody[formData.pmessiCat] = true;
-      requestBody[formData.ascopeCat] = true;
-
-      console.log(requestBody);
    };
 
    // callback for when states of form components change
@@ -196,6 +251,4 @@ const AddEntry = () => {
          </form>
       </div>
    );
-};
-
-export default AddEntry;
+}
