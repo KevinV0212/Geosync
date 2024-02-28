@@ -22,7 +22,7 @@ import { Stack } from "@mui/material";
 
 export default function Map() {
    const [currentCountry, setCurrentCountry] = useLocalStorage(
-      "current_country",
+      // "current_country",
       null
    );
    useEffect(() => {
