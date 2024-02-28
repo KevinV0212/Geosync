@@ -21,14 +21,11 @@ import Controls from "../controls/Controls.js";
 import { Stack } from "@mui/material";
 
 export default function Map() {
-   const [currentCountry, setCurrentCountry] = useLocalStorage(
-      // "current_country",
-      null
-   );
-   useEffect(() => {
-      loadCountries();
-      loadMapPins();
-   }, [currentCountry]);
+   // const [currentCountry, setCurrentCountry] = useLocalStorage(
+   //    "current_country",
+   //    null
+   // );
+   const [currentCountry, setCurrentCountry] = useState(null);
 
    // Country selector
    const [countries, setCountries] = useState([]);
@@ -102,6 +99,12 @@ export default function Map() {
       checkbox5: true,
       checkbox6: true,
    });
+
+   useEffect(() => {
+      loadCountries();
+      loadMapPins();
+   }, [currentCountry, checkboxes]);
+
    const [mapPins, setMapPins] = useState([]);
 
    const [managerView, setManagerView] = useState(true);
