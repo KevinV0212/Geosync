@@ -49,11 +49,6 @@
    width: 100%;
 }
 
-label,
-input[type="checkbox"]:checked {
-   accent-color: #690005;
-}
-
 .country-selector {
    margin-bottom: 10px;
 }
@@ -67,4 +62,9 @@ input[type="checkbox"]:checked {
    color: white;
    margin-top: 0;
    padding: 10px;
+}
+
+label,
+input[type="checkbox"]:checked {
+   accent-color: #690005;
 }
