@@ -1,6 +1,6 @@
 import React from "react";
 import { Button as MuiButton, ThemeProvider } from "@mui/material";
-import theme from "./Theme";
+import theme from "../../themes/Theme";
 
 export default function Button(props) {
    const { text, size, color, variant, onClick, ...other } = props;
