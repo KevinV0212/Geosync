@@ -21,14 +21,11 @@ import Controls from "../controls/Controls.js";
 import { Stack } from "@mui/material";
 
 export default function Map() {
-   const [currentCountry, setCurrentCountry] = useLocalStorage(
-      "current_country",
-      null
-   );
-   useEffect(() => {
-      loadCountries();
-      loadMapPins();
-   }, [currentCountry]);
+   // const [currentCountry, setCurrentCountry] = useLocalStorage(
+   //    "current_country",
+   //    null
+   // );
+   const [currentCountry, setCurrentCountry] = useState(null);
 
    // Country selector
    const [countries, setCountries] = useState([]);
@@ -102,6 +99,12 @@ export default function Map() {
       checkbox5: true,
       checkbox6: true,
    });
+
+   useEffect(() => {
+      loadCountries();
+      loadMapPins();
+   }, [currentCountry, checkboxes]);
+
    const [mapPins, setMapPins] = useState([]);
 
    const [managerView, setManagerView] = useState(true);
@@ -288,7 +291,7 @@ export default function Map() {
    return (
       <div className="home">
          <div className="filters-container">
-            <Stack spacing={1}>
+            <Stack className="button-div" spacing={1}>
                {renderManagerControls()}
                <Controls.Button
                   variant="outlined"
@@ -297,8 +300,9 @@ export default function Map() {
                ></Controls.Button>
             </Stack>
 
-            <h3>PMESII Filters</h3>
+            
             <form className="filters-form">
+               <h3 className="filter-title">Filters</h3>
                <div className="filterPMESII">
                   <label>
                      <input
@@ -363,6 +367,7 @@ export default function Map() {
          </div>
          <div className="map-container">
             <Select
+               className="country-selector"
                placeholder="Select a Country"
                options={listOptions}
                value={

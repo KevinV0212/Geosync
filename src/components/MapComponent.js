@@ -108,7 +108,7 @@ export default function MapComponent({ mapPins }) {
       <div
          className="mapDiv"
          ref={mapDiv}
-         style={{ height: "100vh", width: "100%" }}
+         style={{height: "83%", backgroundColor: "white", padding: "10px", borderRadius: "4px" }}
       ></div>
    );
 }
