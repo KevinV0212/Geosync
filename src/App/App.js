@@ -30,7 +30,7 @@ function App() {
    }, []);
    return (
       <Box
-         id="App container"
+         id="appContainer"
          sx={{
             height: "inherit",
             display: "flex",
@@ -38,12 +38,12 @@ function App() {
          }}
       >
          <Router>
-            <Navbar />
+            <Navbar id="navbar" />
             <Container
+               id="fragmentContainer"
                maxWidth="xl"
-               className={styles.fragmentContainer}
                sx={{
-                  height: "inherit",
+                  height: "90vh",
                   padding: 5,
                   bgcolor: "plum",
 
@@ -51,18 +51,23 @@ function App() {
                   flexDirection: "column",
                }}
             >
-               <Routes>
-                  <Route exact path="/" element={<Home />}></Route>
-                  <Route exact path="/map" element={<Map />}></Route>
-                  <Route exact path="/contact" element={<Contact />}></Route>
-                  <Route
-                     exact
-                     path="/documents"
-                     element={<Documents />}
-                  ></Route>
-                  <Route exact path="/faq" element={<FAQ />}></Route>
-                  <Route exact path="/wiki" element={<Wiki />}></Route>
-               </Routes>
+               <Box
+                  id="fragmentContent"
+                  sx={{ flexGrow: 1, display: "flex", flexDirection: "column" }}
+               >
+                  <Routes>
+                     <Route exact path="/" element={<Home />}></Route>
+                     <Route exact path="/map" element={<Map />}></Route>
+                     <Route exact path="/contact" element={<Contact />}></Route>
+                     <Route
+                        exact
+                        path="/documents"
+                        element={<Documents />}
+                     ></Route>
+                     <Route exact path="/faq" element={<FAQ />}></Route>
+                     <Route exact path="/wiki" element={<Wiki />}></Route>
+                  </Routes>
+               </Box>
             </Container>
          </Router>
       </Box>

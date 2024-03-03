@@ -16,15 +16,9 @@ import {
 import Controls from "../../controls/Controls";
 import AddIcon from "@mui/icons-material/Add";
 import DocumentInfo from "../../info/DocumentInfo";
-import {
-   Grid,
-   List,
-   ListItem,
-   ListItemButton,
-   ListItemText,
-   Stack,
-   useTheme,
-} from "@mui/material";
+import { Grid, List, ListItem, Stack, useTheme } from "@mui/material";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import Section from "../../Section/Section";
 
 function Documents() {
@@ -136,13 +130,16 @@ function Documents() {
    return (
       <Stack
          container
-         spacing={3}
+         spacing={1}
          sx={{ flexGrow: 1, display: "flex", flexDirection: "column" }}
       >
          <Stack direction="row" spacing={2} sx={{ paddingX: 1, flexGrow: 0 }}>
             {renderManagerControls()}
             <Controls.Button
                variant="outlined"
+               startIcon={
+                  managerView ? <VisibilityOffIcon /> : <VisibilityIcon />
+               }
                onClick={handleViewChange}
                text={`${managerView ? "User view" : "manager view"}`}
             ></Controls.Button>

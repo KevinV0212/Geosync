@@ -8,7 +8,9 @@ export default function Section(props) {
 
    return (
       <Paper
+         id="sectionWrapper"
          sx={{
+            flexGrow: 1,
             padding: 2,
             bgcolor: theme.palette.lightGray.main,
 
@@ -17,26 +19,36 @@ export default function Section(props) {
             flexDirection: "column",
             justifyContent: "flex-start",
             alignItems: "stretch",
-            gap: 3,
+            gap: 2,
          }}
       >
-         <Box
-            sx={{
-               padding: 1,
-               bgcolor: "black",
-               borderRadius: 1,
-            }}
-         >
-            <Typography
-               variant="h"
-               component="h2"
-               align="center"
-               color="common.white"
+         <Box id="sectionContent" sx>
+            <Box
+               sx={{
+                  padding: 1,
+                  bgcolor: "black",
+                  borderRadius: 1,
+               }}
             >
-               {title || ""}
-            </Typography>
+               <Typography
+                  variant="h6"
+                  component="h2"
+                  align="center"
+                  color="common.white"
+               >
+                  {title || ""}
+               </Typography>
+            </Box>
+            <Card
+               sx={{
+                  flexGrow: 1,
+                  overflow: "hidden",
+                  overflowY: "scroll",
+               }}
+            >
+               {children}
+            </Card>
          </Box>
-         <Card sx={{ flexGrow: 1 }}>{children}</Card>
       </Paper>
    );
 }
