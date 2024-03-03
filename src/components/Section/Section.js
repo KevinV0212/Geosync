@@ -14,30 +14,28 @@ export default function Section(props) {
 
             display: "flex",
             flexDirection: "column",
-            justifyContent: "center",
+            justifyContent: "flex-start",
             alignItems: "stretch",
             gap: 1,
          }}
       >
-         <Stack direction="column" spacing={3}>
-            <Box
-               sx={{
-                  padding: 1,
-                  bgcolor: "black",
-                  borderRadius: 1,
-               }}
+         <Box
+            sx={{
+               padding: 1,
+               bgcolor: "black",
+               borderRadius: 1,
+            }}
+         >
+            <Typography
+               variant="h"
+               component="h2"
+               align="center"
+               color="common.white"
             >
-               <Typography
-                  variant="h"
-                  component="h2"
-                  align="center"
-                  color="common.white"
-               >
-                  {title || ""}
-               </Typography>
-            </Box>
-            <Card>{children}</Card>
-         </Stack>
+               {title || ""}
+            </Typography>
+         </Box>
+         <Card sx={{ flexGrow: 1 }}>{children}</Card>
       </Paper>
    );
 }

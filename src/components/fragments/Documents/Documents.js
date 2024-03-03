@@ -133,11 +133,10 @@ function Documents() {
    return (
       <Stack
          container
-         direction="column"
-         spacing={2}
-         sx={{ height: "100%", display: "flex", flexDirection: "column" }}
+         spacing={3}
+         sx={{ flexGrow: 1, display: "flex", flexDirection: "column" }}
       >
-         <Stack direction="row" spacing={2}>
+         <Stack direction="row" spacing={2} sx={{ flexGrow: 0 }}>
             {renderManagerControls()}
             <Controls.Button
                variant="outlined"
@@ -157,9 +156,24 @@ function Documents() {
                />
             </Controls.Popup>
          </Stack>
-
-         <Grid container spacing={2} sx={{ flexGrow: 1 }}>
-            <Grid item xs={12} sm={6}>
+         <Grid
+            container
+            sx={{
+               flexGrow: 1,
+               display: "flex",
+            }}
+         >
+            <Grid
+               item
+               xs={12}
+               sm={6}
+               sx={{
+                  padding: 0,
+                  flexGrow: 1,
+                  display: "flex",
+                  flexDirection: "row",
+               }}
+            >
                <Section title="Mission Statements">
                   <List>
                      {missionDocs.map((document, index) => (
@@ -180,7 +194,6 @@ function Documents() {
                </Section>
             </Grid>
             <Grid item xs={12} sm={6}>
-               {" "}
                <Section title="Tasks" sx={{ height: "100%" }}>
                   <List>
                      {taskDocs.map((document, index) => (

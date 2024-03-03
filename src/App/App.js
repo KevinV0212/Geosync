@@ -9,9 +9,11 @@ import Wiki from "../components/fragments/Wiki";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { useEffect } from "react";
 import axios from "axios";
-import { Container } from "@mui/material";
+import { Box, Container, Stack } from "@mui/material";
+import { useTheme } from "@mui/material";
 
 function App() {
+   const theme = useTheme();
    useEffect(() => {
       axios.interceptors.response.use(
          (response) => {
@@ -27,10 +29,28 @@ function App() {
       );
    }, []);
    return (
-      <div className={styles.app}>
+      <Box
+         id="App container"
+         sx={{
+            height: "inherit",
+            display: "flex",
+            flexDirection: "column",
+         }}
+      >
          <Router>
             <Navbar />
-            <Container maxWidth="xl" className={styles.fragmentContainer}>
+            <Container
+               maxWidth="xl"
+               className={styles.fragmentContainer}
+               sx={{
+                  padding: "20px",
+                  bgcolor: "lavender",
+
+                  height: "inherit",
+                  display: "flex",
+                  flexDirection: "column",
+               }}
+            >
                <Routes>
                   <Route exact path="/" element={<Home />}></Route>
                   <Route exact path="/map" element={<Map />}></Route>
@@ -45,7 +65,7 @@ function App() {
                </Routes>
             </Container>
          </Router>
-      </div>
+      </Box>
    );
 }
 
