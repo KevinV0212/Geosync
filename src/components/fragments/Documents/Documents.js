@@ -1,30 +1,30 @@
 import React, { useEffect, useState } from "react";
 import "./Documents.css";
-import Button from "@mui/material/Button";
-import DocumentForm from "../forms/DocumentForm";
+import DocumentForm from "../../forms/DocumentForm";
 import {
    addTask,
    deleteTask,
    getAllTasks,
    updateTask,
-} from "../../utils/document/task/taskDocUtil";
+} from "../../../utils/document/task/taskDocUtil";
 import {
    addMission,
    deleteMission,
    getAllMissions,
    updateMission,
-} from "../../utils/document/mission/missionDocUtil";
-import Controls from "../controls/Controls";
+} from "../../../utils/document/mission/missionDocUtil";
+import Controls from "../../controls/Controls";
 import AddIcon from "@mui/icons-material/Add";
-import DocumentInfo from "../info/DocumentInfo";
+import DocumentInfo from "../../info/DocumentInfo";
 import {
+   Grid,
    List,
    ListItem,
    ListItemButton,
    ListItemText,
    Stack,
-   Typography,
 } from "@mui/material";
+import Section from "../../Section/Section";
 
 function Documents() {
    const [managerView, setManagerView] = useState(true);
@@ -102,9 +102,9 @@ function Documents() {
          }
       } else {
          if (document.docType === "mission") {
-            await addMission(document);
+            await addMission(requestBody);
          } else if (document.docType === "task") {
-            await addTask(document);
+            await addTask(requestBody);
          }
       }
       resetForm();
@@ -131,61 +131,77 @@ function Documents() {
    }, []);
 
    return (
-      <div className="lg-container">
-         <Stack>
+      <Stack
+         container
+         direction="column"
+         spacing={2}
+         sx={{ height: "100%", display: "flex", flexDirection: "column" }}
+      >
+         <Stack direction="row" spacing={2}>
             {renderManagerControls()}
-            <Button onClick={handleViewChange}>
-               Change to {managerView ? "user view" : "manager view"}
-            </Button>
+            <Controls.Button
+               variant="outlined"
+               onClick={handleViewChange}
+               text={`${managerView ? "User view" : "manager view"}`}
+            ></Controls.Button>
+
+            <Controls.Popup
+               title={recordForView ? recordForView.title : ""}
+               openPopup={openInfo}
+               setOpenPopup={setOpenInfo}
+            >
+               <DocumentInfo
+                  recordForView={recordForView}
+                  openInForm={openInForm}
+                  deleteDocument={deleteDocument}
+               />
+            </Controls.Popup>
          </Stack>
 
-         <Controls.Popup
-            title={recordForView ? recordForView.title : ""}
-            openPopup={openInfo}
-            setOpenPopup={setOpenInfo}
-         >
-            <DocumentInfo
-               recordForView={recordForView}
-               openInForm={openInForm}
-               deleteDocument={deleteDocument}
-            />
-         </Controls.Popup>
-
-         <Stack direction="row">
-            <List>
-               <Typography align="left" variant="h6">
-                  Mission Statements
-               </Typography>
-               {missionDocs.map((document, index) => (
-                  <ListItem key={index}>
-                     <ListItemButton
-                        onClick={() =>
-                           openInInfo({ ...document, docType: "mission" })
-                        }
-                     >
-                        <ListItemText align="left" primary={document.title} />
-                     </ListItemButton>
-                  </ListItem>
-               ))}
-            </List>
-            <List>
-               <Typography align="left" variant="h6">
-                  Tasks
-               </Typography>
-               {taskDocs.map((document, index) => (
-                  <ListItem key={index}>
-                     <ListItemButton
-                        onClick={() =>
-                           openInInfo({ ...document, docType: "task" })
-                        }
-                     >
-                        <ListItemText align="left" primary={document.title} />
-                     </ListItemButton>
-                  </ListItem>
-               ))}
-            </List>
-         </Stack>
-      </div>
+         <Grid container spacing={2} sx={{ flexGrow: 1 }}>
+            <Grid item xs={12} sm={6}>
+               <Section title="Mission Statements">
+                  <List>
+                     {missionDocs.map((document, index) => (
+                        <ListItem key={index}>
+                           <ListItemButton
+                              onClick={() =>
+                                 openInInfo({ ...document, docType: "mission" })
+                              }
+                           >
+                              <ListItemText
+                                 align="left"
+                                 primary={document.title}
+                              />
+                           </ListItemButton>
+                        </ListItem>
+                     ))}
+                  </List>
+               </Section>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+               {" "}
+               <Section title="Tasks" sx={{ height: "100%" }}>
+                  <List>
+                     {taskDocs.map((document, index) => (
+                        <ListItem key={index}>
+                           <ListItemButton
+                              onClick={() =>
+                                 openInInfo({ ...document, docType: "task" })
+                              }
+                           >
+                              <ListItemText
+                                 align="left"
+                                 primary={document.title}
+                              />
+                           </ListItemButton>
+                        </ListItem>
+                     ))}
+                  </List>
+               </Section>
+            </Grid>
+         </Grid>
+      </Stack>
    );
 }
 

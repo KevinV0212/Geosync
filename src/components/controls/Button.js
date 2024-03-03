@@ -13,6 +13,7 @@ export default function Button(props) {
             color={color || "primary"}
             onClick={onClick}
             {...other}
+            sx={{ textTransform: "uppercase" }}
          >
             {text}
          </MuiButton>
