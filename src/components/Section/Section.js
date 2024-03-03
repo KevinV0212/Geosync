@@ -12,11 +12,12 @@ export default function Section(props) {
             padding: 2,
             bgcolor: theme.palette.lightGray.main,
 
+            flexGrow: 1,
             display: "flex",
             flexDirection: "column",
             justifyContent: "flex-start",
             alignItems: "stretch",
-            gap: 1,
+            gap: 3,
          }}
       >
          <Box

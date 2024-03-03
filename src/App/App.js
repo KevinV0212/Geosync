@@ -9,7 +9,7 @@ import Wiki from "../components/fragments/Wiki";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { useEffect } from "react";
 import axios from "axios";
-import { Box, Container, Stack } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import { useTheme } from "@mui/material";
 
 function App() {
@@ -43,10 +43,10 @@ function App() {
                maxWidth="xl"
                className={styles.fragmentContainer}
                sx={{
-                  padding: "20px",
-                  bgcolor: "lavender",
-
                   height: "inherit",
+                  padding: 5,
+                  bgcolor: "plum",
+
                   display: "flex",
                   flexDirection: "column",
                }}

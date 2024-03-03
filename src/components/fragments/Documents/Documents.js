@@ -23,10 +23,13 @@ import {
    ListItemButton,
    ListItemText,
    Stack,
+   useTheme,
 } from "@mui/material";
 import Section from "../../Section/Section";
 
 function Documents() {
+   const theme = useTheme();
+
    const [managerView, setManagerView] = useState(true);
    const handleViewChange = () => setManagerView(!managerView);
 
@@ -136,7 +139,7 @@ function Documents() {
          spacing={3}
          sx={{ flexGrow: 1, display: "flex", flexDirection: "column" }}
       >
-         <Stack direction="row" spacing={2} sx={{ flexGrow: 0 }}>
+         <Stack direction="row" spacing={2} sx={{ paddingX: 1, flexGrow: 0 }}>
             {renderManagerControls()}
             <Controls.Button
                variant="outlined"
@@ -158,56 +161,56 @@ function Documents() {
          </Stack>
          <Grid
             container
+            spacing={0}
             sx={{
                flexGrow: 1,
-               display: "flex",
             }}
          >
             <Grid
                item
-               xs={12}
-               sm={6}
+               sm={12}
+               md={6}
                sx={{
-                  padding: 0,
+                  padding: ".5rem!important",
                   flexGrow: 1,
                   display: "flex",
-                  flexDirection: "row",
                }}
             >
                <Section title="Mission Statements">
                   <List>
                      {missionDocs.map((document, index) => (
                         <ListItem key={index}>
-                           <ListItemButton
+                           <Controls.ListItemButton
+                              text={document.title}
                               onClick={() =>
                                  openInInfo({ ...document, docType: "mission" })
                               }
-                           >
-                              <ListItemText
-                                 align="left"
-                                 primary={document.title}
-                              />
-                           </ListItemButton>
+                           />
                         </ListItem>
                      ))}
                   </List>
                </Section>
             </Grid>
-            <Grid item xs={12} sm={6}>
-               <Section title="Tasks" sx={{ height: "100%" }}>
+            <Grid
+               item
+               sm={12}
+               md={6}
+               sx={{
+                  padding: ".5rem!important",
+                  flexGrow: 1,
+                  display: "flex",
+               }}
+            >
+               <Section title="Tasks">
                   <List>
                      {taskDocs.map((document, index) => (
                         <ListItem key={index}>
-                           <ListItemButton
+                           <Controls.ListItemButton
+                              text={document.title}
                               onClick={() =>
                                  openInInfo({ ...document, docType: "task" })
                               }
-                           >
-                              <ListItemText
-                                 align="left"
-                                 primary={document.title}
-                              />
-                           </ListItemButton>
+                           />
                         </ListItem>
                      ))}
                   </List>
