@@ -44,7 +44,7 @@ function App() {
                maxWidth="xl"
                sx={{
                   height: "90vh",
-                  padding: 5,
+                  padding: 3,
                   bgcolor: "plum",
 
                   display: "flex",

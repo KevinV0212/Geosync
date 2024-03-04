@@ -41,7 +41,7 @@ export default function DocumentInfo(props) {
             <Controls.IconButton>
                <ContentCopyIcon />
             </Controls.IconButton>
-            <a href={info.link} target="_blank">
+            <a href={info.link} target="_blank" rel="noreferrer">
                <Controls.IconButton>
                   <OpenInNewIcon />
                </Controls.IconButton>

@@ -10,20 +10,27 @@ export default function Section(props) {
       <Paper
          id="sectionWrapper"
          sx={{
-            flexGrow: 1,
             padding: 2,
             bgcolor: theme.palette.lightGray.main,
 
             flexGrow: 1,
             display: "flex",
             flexDirection: "column",
-            justifyContent: "flex-start",
-            alignItems: "stretch",
-            gap: 2,
          }}
       >
-         <Box id="sectionContent" sx>
+         <Box
+            id="sectionContent"
+            sx={{
+               flexGrow: 1,
+               display: "flex",
+               flexDirection: "column",
+               justifyContent: "flex-start",
+               alignItems: "stretch",
+               gap: 2,
+            }}
+         >
             <Box
+               id="sectionTitle"
                sx={{
                   padding: 1,
                   bgcolor: "black",
@@ -40,7 +47,9 @@ export default function Section(props) {
                </Typography>
             </Box>
             <Card
+               id="sectionContent"
                sx={{
+                  maxHeight: "80%",
                   flexGrow: 1,
                   overflow: "hidden",
                   overflowY: "scroll",
