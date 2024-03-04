@@ -4,18 +4,17 @@ import { Box, Card, Paper, Stack, Typography } from "@mui/material";
 import { useTheme } from "@mui/material";
 import { AddBox } from "@mui/icons-material";
 export default function Section(props) {
-   const { title = null, children } = props;
+   const { title = null, children, ...other } = props;
    const theme = useTheme();
 
    return (
       <Paper
          id="sectionWrapper"
          sx={{
-            maxHeight: "60%",
             padding: 2,
             bgcolor: theme.palette.lightGray.main,
          }}
-         className={`${styles.flexColumn} + ${styles.flexGrow}`}
+         {...other}
       >
          <Stack spacing={2} className={styles.flexColumn}>
             <Box
@@ -25,7 +24,6 @@ export default function Section(props) {
                   bgcolor: "black",
                   borderRadius: 1,
                }}
-               className={styles.flexGrow}
             >
                <Typography
                   variant="h6"
@@ -40,10 +38,11 @@ export default function Section(props) {
             <Card
                id="sectionContent"
                sx={{
+                  flexGrow: 1,
+
                   overflow: "hidden",
                   overflowY: "scroll",
                }}
-               className={`${styles.flexColumn} + ${styles.flexGrow}`}
             >
                {children}
             </Card>

@@ -127,11 +127,11 @@ function Documents() {
 
    return (
       <Stack
-         container
+         direction="column"
          spacing={1}
          sx={{ flexGrow: 1, display: "flex", flexDirection: "column" }}
       >
-         <Stack direction="row" spacing={2} sx={{ paddingX: 1, flexGrow: 0 }}>
+         <Stack direction="row" spacing={2}>
             {renderManagerControls()}
             <Controls.Button
                variant="outlined"
@@ -154,64 +154,44 @@ function Documents() {
                />
             </Controls.Popup>
          </Stack>
-         <Grid
-            container
-            spacing={0}
+         <Stack
+            direction="row"
+            spacing={2}
+            alignItems="stretch"
             sx={{
                flexGrow: 1,
             }}
          >
-            <Grid
-               item
-               sm={12}
-               md={6}
-               sx={{
-                  padding: ".5rem!important",
-                  flexGrow: 1,
-                  display: "flex",
-               }}
-            >
-               <Section title="Mission Statements">
-                  <List>
-                     {missionDocs.map((document, index) => (
-                        <ListItem key={index}>
-                           <Controls.ListItemButton
-                              text={document.title}
-                              onClick={() =>
-                                 openInInfo({ ...document, docType: "mission" })
-                              }
-                           />
-                        </ListItem>
-                     ))}
-                  </List>
-               </Section>
-            </Grid>
-            <Grid
-               item
-               sm={12}
-               md={6}
-               sx={{
-                  padding: ".5rem!important",
-                  flexGrow: 1,
-                  display: "flex",
-               }}
-            >
-               <Section title="Tasks">
-                  <List>
-                     {taskDocs.map((document, index) => (
-                        <ListItem key={index}>
-                           <Controls.ListItemButton
-                              text={document.title}
-                              onClick={() =>
-                                 openInInfo({ ...document, docType: "task" })
-                              }
-                           />
-                        </ListItem>
-                     ))}
-                  </List>
-               </Section>
-            </Grid>
-         </Grid>
+            <Section title="Mission Statements" sx={{ flexGrow: 1 }}>
+               <List>
+                  {missionDocs.map((document, index) => (
+                     <ListItem key={index}>
+                        <Controls.ListItemButton
+                           text={document.title}
+                           onClick={() =>
+                              openInInfo({ ...document, docType: "mission" })
+                           }
+                        />
+                     </ListItem>
+                  ))}
+               </List>
+            </Section>
+
+            <Section title="Tasks" sx={{ flexGrow: 1 }}>
+               <List>
+                  {taskDocs.map((document, index) => (
+                     <ListItem key={index}>
+                        <Controls.ListItemButton
+                           text={document.title}
+                           onClick={() =>
+                              openInInfo({ ...document, docType: "task" })
+                           }
+                        />
+                     </ListItem>
+                  ))}
+               </List>
+            </Section>
+         </Stack>
       </Stack>
    );
 }

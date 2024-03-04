@@ -25,7 +25,7 @@ export default function ListItemButton(props) {
             align="left"
             primary={text}
             primaryTypographyProps={{
-               color: "primary",
+               color: "secondary",
                fontWeight: "medium",
                variant: "body2",
                textTransform: "uppercase",

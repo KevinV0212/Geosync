@@ -1,14 +1,12 @@
-import { createTheme } from "@mui/material/styles";
+import { createTheme } from "@mui/material";
 
-const Theme = createTheme({
+const theme = createTheme({
    palette: {
       primary: {
-         main: "#690005",
-         dark: "#3D0003",
-         darkTrans: "#b99c9b",
+         main: "#000000",
       },
       secondary: {
-         main: "#000000",
+         main: "#690005",
          light: "#FFFFFF",
       },
       warning: {
@@ -41,11 +39,11 @@ const Theme = createTheme({
 
 export const navTheme = createTheme({
    palette: {
-      ...Theme.palette,
+      ...theme.palette,
       text: "#fff",
    },
    breakpoints: {
-      ...Theme.breakpoints,
+      ...theme.breakpoints,
    },
    components: {
       MuiOutlinedInput: {
@@ -64,7 +62,7 @@ export const getDesignTokens = (mode) => ({
       ...(mode === "light"
          ? {
               // palette values for light mode
-              ...Theme.palette,
+              ...theme.palette,
               adornment: {
                  main: "#3F3F3F",
                  light: "#3F3F3F",
@@ -81,7 +79,7 @@ export const getDesignTokens = (mode) => ({
            }
          : {
               // palette values for dark mode
-              ...Theme.palette,
+              ...theme.palette,
               secondary: {
                  main: "#fff",
               },
@@ -104,10 +102,10 @@ export const getDesignTokens = (mode) => ({
       mode,
       ...(mode === "light"
          ? {
-              ...Theme.components,
+              ...theme.components,
            }
          : {
-              ...Theme.components,
+              ...theme.components,
               MuiOutlinedInput: {
                  styleOverrides: {
                     notchedOutline: {
@@ -140,4 +138,4 @@ export const getDesignTokens = (mode) => ({
    },
 });
 
-export default Theme;
+export default theme;
