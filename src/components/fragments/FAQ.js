@@ -16,7 +16,7 @@ export default function FAQ() {
 
 
   return ( 
-    <div style={{backgroundColor: 'black', height: 'calc(100vh - 80px)', width: '100%', flexDirection: 'column', display: 'flex'}}>
+    <div style={{ height: 'calc(100vh - 80px)', width: '100%', flexDirection: 'column', display: 'flex'}}>
       <Typography sx={{color: 'white', fontSize: '20px'}}>Frequently Asked Quetions</Typography>
       <Accordion >
         <AccordionSummary
