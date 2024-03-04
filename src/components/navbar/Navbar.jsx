@@ -58,7 +58,10 @@ export default function Navbar() {
 
    return (
       <ThemeProvider theme={navTheme}>
-         <AppBar position="sticky" sx={{ paddingX: "2rem", paddingY: "1rem" }}>
+         <AppBar
+            position="sticky"
+            sx={{ height: "min(70px, 10vh)", paddingX: "2rem" }}
+         >
             <Container maxWidth="xl">
                <Toolbar disableGutters>
                   <Box

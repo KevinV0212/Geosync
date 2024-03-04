@@ -16,7 +16,7 @@ import {
 import Controls from "../../controls/Controls";
 import AddIcon from "@mui/icons-material/Add";
 import DocumentInfo from "../../info/DocumentInfo";
-import { Grid, List, ListItem, Stack } from "@mui/material";
+import { Box, List, ListItem, Stack } from "@mui/material";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import Section from "../../Section/Section";
@@ -128,10 +128,9 @@ function Documents() {
    return (
       <Stack
          direction="column"
-         spacing={1}
-         sx={{ flexGrow: 1, display: "flex", flexDirection: "column" }}
+         sx={{ height: "100%", display: "flex", gap: "1rem" }}
       >
-         <Stack direction="row" spacing={2}>
+         <Stack id="managerControls" sssssss direction="row" spacing={2}>
             {renderManagerControls()}
             <Controls.Button
                variant="outlined"
@@ -155,42 +154,60 @@ function Documents() {
             </Controls.Popup>
          </Stack>
          <Stack
+            id="documentsWrapper"
             direction="row"
             spacing={2}
             alignItems="stretch"
             sx={{
+               maxHeight: "calc(80%-1rem)",
+
                flexGrow: 1,
+               display: "flex",
+               alignItems: "stretch",
             }}
          >
-            <Section title="Mission Statements" sx={{ flexGrow: 1 }}>
-               <List>
-                  {missionDocs.map((document, index) => (
-                     <ListItem key={index}>
-                        <Controls.ListItemButton
-                           text={document.title}
-                           onClick={() =>
-                              openInInfo({ ...document, docType: "mission" })
-                           }
-                        />
-                     </ListItem>
-                  ))}
-               </List>
-            </Section>
+            <Stack
+               id="documentsContainer"
+               direction="row"
+               spacing={2}
+               sx={{ height: "100%", width: "100%", display: "flex" }}
+            >
+               <Section
+                  title="Mission Statements"
+                  sx={{ height: "100%", flexBasis: 0, flexGrow: 1 }}
+               >
+                  <List>
+                     {missionDocs.map((document, index) => (
+                        <ListItem key={index}>
+                           <Controls.ListItemButton
+                              text={document.title}
+                              onClick={() =>
+                                 openInInfo({ ...document, docType: "mission" })
+                              }
+                           />
+                        </ListItem>
+                     ))}
+                  </List>
+               </Section>
 
-            <Section title="Tasks" sx={{ flexGrow: 1 }}>
-               <List>
-                  {taskDocs.map((document, index) => (
-                     <ListItem key={index}>
-                        <Controls.ListItemButton
-                           text={document.title}
-                           onClick={() =>
-                              openInInfo({ ...document, docType: "task" })
-                           }
-                        />
-                     </ListItem>
-                  ))}
-               </List>
-            </Section>
+               <Section
+                  title="Tasks"
+                  sx={{ height: "100%", flexBasis: 0, flexGrow: 1 }}
+               >
+                  <List>
+                     {taskDocs.map((document, index) => (
+                        <ListItem key={index}>
+                           <Controls.ListItemButton
+                              text={document.title}
+                              onClick={() =>
+                                 openInInfo({ ...document, docType: "task" })
+                              }
+                           />
+                        </ListItem>
+                     ))}
+                  </List>
+               </Section>
+            </Stack>
          </Stack>
       </Stack>
    );

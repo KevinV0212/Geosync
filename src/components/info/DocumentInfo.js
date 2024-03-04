@@ -30,17 +30,22 @@ export default function DocumentInfo(props) {
    }, [recordForView]);
 
    return (
-      <div>
-         <Typography align="left" width={1} paragraph={true}>
+      <Stack spacing={2}>
+         <Typography
+            align="left"
+            width={1}
+            paragraph
+            sx={{ wordWrap: "break-word" }}
+         >
             {info.description}
          </Typography>
          <Stack direction="row" alignItems="center" justifyContent="center">
-            <Typography align="left" width={1} noWrap={true}>
+            <Typography align="left" width={1} noWrap>
                {info.link}
             </Typography>
-            <Controls.IconButton>
+            {/* <Controls.IconButton>
                <ContentCopyIcon />
-            </Controls.IconButton>
+            </Controls.IconButton> */}
             <a href={info.link} target="_blank" rel="noreferrer">
                <Controls.IconButton>
                   <OpenInNewIcon />
@@ -49,22 +54,25 @@ export default function DocumentInfo(props) {
          </Stack>
          <Stack
             direction="row"
+            spacing={2}
             alignItems="center"
             justifyContent="center"
-            spacing={2}
             divider={<Divider orientation="vertical" flexItem />}
          >
+            <Controls.Button
+               variant="outlined"
+               text="Delete"
+               startIcon={<DeleteIcon />}
+               onClick={() => deleteDocument(recordForView)}
+               fullWidth
+            />
             <Controls.Button
                text="Edit"
                startIcon={<EditIcon />}
                onClick={() => openInForm(recordForView)}
-            />
-            <Controls.Button
-               text="Delete"
-               startIcon={<DeleteIcon />}
-               onClick={() => deleteDocument(recordForView)}
+               fullWidth
             />
          </Stack>
-      </div>
+      </Stack>
    );
 }

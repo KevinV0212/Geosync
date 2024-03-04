@@ -47,22 +47,17 @@ function App() {
                   id="fragmentContainer"
                   maxWidth="xl"
                   sx={{
-                     height: "90vh",
-                     padding: 3,
+                     maxHeight: "90vh",
+                     paddingX: 3,
+                     paddingY: 5,
                      bgcolor: "plum",
 
+                     flexGrow: 1,
                      display: "flex",
                      flexDirection: "column",
                   }}
                >
-                  <Box
-                     id="fragmentContent"
-                     sx={{
-                        flexGrow: 1,
-                        display: "flex",
-                        flexDirection: "column",
-                     }}
-                  >
+                  <Box id="fragmentContent" sx={{ flexBasis: 0, flexGrow: 1 }}>
                      <Routes>
                         <Route exact path="/" element={<Home />}></Route>
                         <Route exact path="/map" element={<Map />}></Route>

@@ -1,26 +1,46 @@
 import React from "react";
 import styles from "./Section.module.css";
-import { Box, Card, Paper, Stack, Typography } from "@mui/material";
-import { useTheme } from "@mui/material";
-import { AddBox } from "@mui/icons-material";
+import {
+   Box,
+   Card,
+   CardContent,
+   Paper,
+   Stack,
+   Typography,
+} from "@mui/material";
+import { useTheme } from "@emotion/react";
+
 export default function Section(props) {
-   const { title = null, children, ...other } = props;
    const theme = useTheme();
+   const { title = null, children, ...other } = props;
 
    return (
       <Paper
          id="sectionWrapper"
-         sx={{
-            padding: 2,
-            bgcolor: theme.palette.lightGray.main,
-         }}
+         sx={{ bgcolor: theme.palette.lightGray.main }}
          {...other}
       >
-         <Stack spacing={2} className={styles.flexColumn}>
+         <Stack
+            direction="column"
+            spacing={2}
+            sx={{
+               boxSizing: "border-box",
+
+               height: "100%",
+               width: "100%",
+               padding: 2,
+
+               display: "flex",
+               flexDirection: "column",
+               alignItems: "stretch",
+            }}
+         >
             <Box
                id="sectionTitle"
                sx={{
+                  boxSizing: "border-box",
                   padding: 1,
+
                   bgcolor: "black",
                   borderRadius: 1,
                }}
@@ -36,15 +56,17 @@ export default function Section(props) {
             </Box>
 
             <Card
-               id="sectionContent"
+               id="sectionContentWrapper"
                sx={{
+                  flexBasis: 0,
                   flexGrow: 1,
-
                   overflow: "hidden",
                   overflowY: "scroll",
                }}
             >
-               {children}
+               <CardContent id="sectionContent" sx={{}}>
+                  {children}
+               </CardContent>
             </Card>
          </Stack>
       </Paper>
