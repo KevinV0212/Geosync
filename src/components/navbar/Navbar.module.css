@@ -1,0 +1,11 @@
+.menuItem {
+   border-bottom: 2px solid transparent;
+}
+
+.menuItem:hover {
+   border-bottom: 2px solid #690005;
+}
+
+.selected {
+   border-bottom: 2px solid white !important;
+}

@@ -2,8 +2,10 @@ import React, { useEffect } from "react";
 import { useForm, Form } from "../useForm";
 import Controls from "../controls/Controls";
 
-import { useLocalStorage } from "usehooks-ts";
-import { Typography } from "@mui/material";
+import { Divider, Stack, Typography } from "@mui/material";
+import styles from "./forms.module.css";
+import CancelIcon from "@mui/icons-material/Cancel";
+import CheckIcon from "@mui/icons-material/Check";
 
 const pmesiiItems = [
    { id: "political", title: "Political" },
@@ -102,6 +104,7 @@ export default function MapPinForm(props) {
                value={formData.title}
                onChange={handleInputChange}
                error={errors.title}
+               fullWidth
             />
             <Controls.Input
                name="description"
@@ -109,29 +112,55 @@ export default function MapPinForm(props) {
                value={formData.description}
                onChange={handleInputChange}
                error={errors.description}
+               multiline
+               fullWidth
             />
-            <Controls.Input
-               name="latitude"
-               label="Latitude"
-               value={formData.latitude}
-               inputProps={{ type: "number", min: -90, max: 90, step: "any" }}
-               onChange={handleInputChange}
-               error={errors.latitude}
-            />
-            <Typography>
-               {formData.latitude >= 0 ? "North" : "South"}
-            </Typography>
-
-            <Controls.Input
-               name="longitude"
-               label="Longitude"
-               value={formData.longitude}
-               inputProps={{ type: "number", min: -180, max: 180, step: "any" }}
-               onChange={handleInputChange}
-               error={errors.longitude}
-            />
-            <Typography>{formData.longitude >= 0 ? "East" : "West"}</Typography>
-
+            <Stack direction="row" alignItems="center">
+               <Controls.Input
+                  name="latitude"
+                  label="Latitude"
+                  value={formData.latitude}
+                  inputProps={{
+                     type: "number",
+                     min: -90,
+                     max: 90,
+                     step: "any",
+                  }}
+                  onChange={handleInputChange}
+                  error={errors.latitude}
+                  fullWidth
+               />
+               <Typography
+                  variant="h6"
+                  component="h3"
+                  className={styles.inputSideText}
+               >
+                  {formData.latitude >= 0 ? "North" : "South"}
+               </Typography>
+            </Stack>
+            <Stack direction="row" alignItems="center">
+               <Controls.Input
+                  name="longitude"
+                  label="Longitude"
+                  value={formData.longitude}
+                  inputProps={{
+                     type: "number",
+                     min: -180,
+                     max: 180,
+                     step: "any",
+                  }}
+                  onChange={handleInputChange}
+                  error={errors.longitude}
+                  fullWidth
+               />
+               <Typography
+                  variant="h6"
+                  component="h3"
+                  className={styles.inputSideText}
+               >
+                  {formData.longitude >= 0 ? "East" : "West"}
+               </Typography>
+            </Stack>
             <Controls.RadioGroup
                name="pmesiiCat"
                label="PMESII Category"
@@ -140,14 +169,27 @@ export default function MapPinForm(props) {
                items={pmesiiItems}
                error={errors.pmesiiCat}
             />
-            <div>
+            <Stack
+               direction="row"
+               spacing={2}
+               alignItems="center"
+               justifyContent="center"
+               divider={<Divider orientation="vertical" flexItem />}
+            >
                <Controls.Button
                   variant="outlined"
                   text="Cancel"
+                  startIcon={<CancelIcon />}
                   onClick={resetForm}
+                  fullWidth
                />
-               <Controls.Button type="submit" text="Submit" />
-            </div>
+               <Controls.Button
+                  type="submit"
+                  text="Submit"
+                  startIcon={<CheckIcon />}
+                  fullWidth
+               />
+            </Stack>
          </Form>
       </div>
    );
