@@ -34,22 +34,21 @@ export default function Map() {
       label: country.countryName,
    }));
 
-   function loadCountries() {
-      getAllCountries().then((countries) => {
-         if (countries === null) {
-            return;
-         }
-         countries.sort((countryA, countryB) => {
-            if (countryA.countryName < countryB.countryName) return -1;
-            if (countryA.countryName > countryB.countryName) return 1;
-            return 0;
-         });
-         setCountries(countries);
+   const loadCountries = async () => {
+      const countries = await getAllCountries();
+      if (countries == null) {
+         return;
+      }
+      countries.sort((countryA, countryB) => {
+         if (countryA.countryName < countryB.countryName) return -1;
+         if (countryA.countryName > countryB.countryName) return 1;
+         return 0;
       });
-   }
+      setCountries([...countries]);
+   };
 
    // loads the mappins associated to the currently selected country
-   function loadMapPins() {
+   const loadMapPins = async () => {
       if (!currentCountry) {
          return;
       }
@@ -59,13 +58,12 @@ export default function Map() {
          filters.push(checkboxes[checkbox]);
       }
 
-      getMapPins(countryID, filters).then((pinList) => {
-         if (pinList === null) {
-            return;
-         }
-         setMapPins([...pinList]);
-      });
-   }
+      const pinList = await getMapPins(countryID, filters);
+      if (pinList === null) {
+         return;
+      }
+      setMapPins([...pinList]);
+   };
 
    // Callback function to handle selecting country
    const handleCountrySelect = (country) => {

@@ -1,22 +1,25 @@
 import React, { useEffect, useState } from "react";
-import "./Documents.css";
 import DocumentForm from "../../forms/DocumentForm";
+
 import {
    addTask,
    deleteTask,
    getAllTasks,
    updateTask,
 } from "../../../utils/document/task/taskDocUtil";
+
 import {
    addMission,
    deleteMission,
    getAllMissions,
    updateMission,
 } from "../../../utils/document/mission/missionDocUtil";
+
 import Controls from "../../controls/Controls";
-import AddIcon from "@mui/icons-material/Add";
 import DocumentInfo from "../../info/DocumentInfo";
+
 import { List, ListItem, Stack } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import Section from "../../Section/Section";
@@ -25,15 +28,15 @@ function Documents() {
    const [managerView, setManagerView] = useState(true);
    const handleViewChange = () => setManagerView(!managerView);
 
+   const [taskDocs, setTaskDocs] = useState([]);
+   const [missionDocs, setMissionDocs] = useState([]);
+
    const [formTitle, setFormTitle] = useState("Add Document");
    const [recordForEdit, setRecordForEdit] = useState(null);
    const [recordForView, setRecordForView] = useState(null);
 
    const [openForm, setOpenForm] = useState(false);
    const [openInfo, setOpenInfo] = useState(false);
-
-   const [taskDocs, setTaskDocs] = useState([]);
-   const [missionDocs, setMissionDocs] = useState([]);
 
    // function that loads documents then updates values to their useState values
    const loadDocuments = async () => {

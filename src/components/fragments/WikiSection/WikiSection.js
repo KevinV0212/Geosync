@@ -19,6 +19,23 @@ import { getWikiEntries } from "../../../utils/wiki/wikiUtil";
 
 const numbers = [0, 1, 2, 3, 4, 5];
 
+const PMESII = [
+   "Political",
+   "Military",
+   "Economic",
+   "Social",
+   "Information",
+   "Infrastructure",
+];
+const ASCOPE = [
+   "Areas",
+   "Structure",
+   "Capabilities",
+   "Organization",
+   "People",
+   "Events",
+];
+
 function NewDesign() {
    // Country selector
    // const [currentCountry, setCurrentCountry] = useLocalStorage(
@@ -38,33 +55,31 @@ function NewDesign() {
       label: country.countryName,
    }));
 
-   function loadCountries() {
-      getAllCountries().then((countries) => {
-         if (countries === null) {
-            return;
-         }
-         countries.sort((countryA, countryB) => {
-            if (countryA.countryName < countryB.countryName) return -1;
-            if (countryA.countryName > countryB.countryName) return 1;
-            return 0;
-         });
-         setCountries(countries);
+   const loadCountries = async () => {
+      const countries = await getAllCountries();
+      if (countries == null) {
+         return;
+      }
+      countries.sort((countryA, countryB) => {
+         if (countryA.countryName < countryB.countryName) return -1;
+         if (countryA.countryName > countryB.countryName) return 1;
+         return 0;
       });
-   }
+      setCountries([...countries]);
+   };
 
    // loads wiki entries associated to the currently selected country
-   function loadWikiEntries() {
+   const loadWikiEntries = async () => {
       if (!currentCountry) {
          return;
       }
       const countryID = currentCountry.countryID;
-      getWikiEntries(countryID).then((entryList) => {
-         if (entryList === null) {
-            return;
-         }
-         setWikiEntries([...entryList]);
-      });
-   }
+      const entryList = await getWikiEntries(countryID);
+      if (entryList === null) {
+         return;
+      }
+      setWikiEntries([...entryList]);
+   };
 
    // Callback function to handle selecting country
    const handleCountrySelect = (country) => {
@@ -81,22 +96,6 @@ function NewDesign() {
       setCurrentCountry(temp);
    };
 
-   const PMESII = [
-      "Political",
-      "Military",
-      "Economic",
-      "Social",
-      "Information",
-      "Infrastructure",
-   ];
-   const ASCOPE = [
-      "Areas",
-      "Structure",
-      "Capabilities",
-      "Organization",
-      "People",
-      "Events",
-   ];
    const [selectedASCOPE, setSelectedASCOPE] = useState([
       true,
       true,
