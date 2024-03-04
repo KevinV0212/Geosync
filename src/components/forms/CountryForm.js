@@ -148,7 +148,7 @@ export default function CountryForm(props) {
                )}
                <Controls.Button
                   variant="outlined"
-                  text="Cancel"
+                  text="Clear"
                   startIcon={<CancelIcon />}
                   onClick={resetForm}
                   fullWidth
