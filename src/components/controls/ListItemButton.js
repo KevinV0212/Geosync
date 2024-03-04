@@ -25,7 +25,7 @@ export default function ListItemButton(props) {
             },
          }}
       >
-         <ListItemIcon>
+         <ListItemIcon sx={{ color: theme.palette.secondary.main }}>
             <DescriptionIcon />
          </ListItemIcon>
          <ListItemText

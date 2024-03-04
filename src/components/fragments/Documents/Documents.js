@@ -16,7 +16,7 @@ import {
 import Controls from "../../controls/Controls";
 import AddIcon from "@mui/icons-material/Add";
 import DocumentInfo from "../../info/DocumentInfo";
-import { Box, List, ListItem, Stack } from "@mui/material";
+import { List, ListItem, Stack } from "@mui/material";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import Section from "../../Section/Section";
@@ -35,12 +35,15 @@ function Documents() {
    const [taskDocs, setTaskDocs] = useState([]);
    const [missionDocs, setMissionDocs] = useState([]);
 
+   // function that loads documents then updates values to their useState values
    const loadDocuments = async () => {
       const tasks = await getAllTasks();
       const missions = await getAllMissions();
       setTaskDocs(tasks);
       setMissionDocs(missions);
    };
+
+   // function that renders controls that only managers should have access to
    const renderManagerControls = () => {
       if (managerView) {
          return (
@@ -70,11 +73,13 @@ function Documents() {
       }
    };
 
+   // handles opening popup for document info for selected item
    const openInInfo = (item) => {
       setRecordForView({ ...item });
       setOpenInfo(true);
    };
 
+   // handles on opening edit form for selected item
    const openInForm = (item) => {
       setRecordForEdit({ ...item });
       setFormTitle("Edit Document");
@@ -82,6 +87,7 @@ function Documents() {
       setOpenForm(true);
    };
 
+   // adds new document or modifies existing document
    const addOrEdit = async (document, resetForm) => {
       const requestBody = {
          id: document.id || null,
@@ -108,6 +114,7 @@ function Documents() {
       setOpenForm(false);
    };
 
+   // handles deleting a document
    const deleteDocument = async (document) => {
       if (!window.confirm("Are you sure you want to delete this document?")) {
          return;
@@ -121,6 +128,7 @@ function Documents() {
       setRecordForEdit(null);
       setOpenInfo(false);
    };
+
    useEffect(() => {
       loadDocuments();
    }, []);

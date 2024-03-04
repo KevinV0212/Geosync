@@ -170,7 +170,6 @@ export default function Navbar() {
                            }
                            onClick={() => {
                               navigate(page.link);
-                              console.log(i);
                               setSelected(i);
                            }}
                         >

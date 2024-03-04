@@ -111,16 +111,10 @@ export default function Map() {
 
    const handleViewChange = () => setManagerView(!managerView);
 
+   // Country Form Operations---------------------------------------------------------
    const [openCountryForm, setOpenCountryForm] = useState(false);
    const [countryFormTitle, setCountryFormTitle] = useState("Add Country");
    const [recordForCountry, setRecordForCountry] = useState(null);
-
-   const [currentPin, setCurrentPin] = useState(null);
-   const [openPinForm, setOpenPinForm] = useState(false);
-   const [pinFormTitle, setPinFormTitle] = useState("Add Pin");
-   const [recordForPin, setRecordForPin] = useState(null);
-
-   // Map Operations---------------------------------------------------------
 
    // opens current country's information in form to edit
    const openCountryInForm = () => {
@@ -182,7 +176,11 @@ export default function Map() {
       setOpenCountryForm(false);
    };
 
-   // Pin Operations--------------------------------------------------------------
+   // Pin Form Operations--------------------------------------------------------------
+   const [currentPin, setCurrentPin] = useState(null);
+   const [openPinForm, setOpenPinForm] = useState(false);
+   const [pinFormTitle, setPinFormTitle] = useState("Add Pin");
+   const [recordForPin, setRecordForPin] = useState(null);
 
    // opens currently selected map pin's information in form to edit
    const openPinInForm = () => {
