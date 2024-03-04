@@ -3,7 +3,6 @@ import React, { useEffect } from "react";
 import { useForm, Form } from "../useForm";
 import Controls from "../controls/Controls";
 
-import DeleteIcon from "@mui/icons-material/Delete";
 import CancelIcon from "@mui/icons-material/Cancel";
 import CheckIcon from "@mui/icons-material/Check";
 import { Divider, Stack } from "@mui/material";
@@ -85,6 +84,8 @@ export default function DocumentForm(props) {
                value={formData.description}
                onChange={handleInputChange}
                error={errors.description}
+               multiline
+               fullWidth
             />
             <Controls.Input
                name="link"
@@ -92,6 +93,7 @@ export default function DocumentForm(props) {
                value={formData.link}
                onChange={handleInputChange}
                error={errors.link}
+               fullWidth
             />
             <Controls.RadioGroup
                name="docType"

@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./Section.module.css";
 import { Box, Card, Paper, Stack, Typography } from "@mui/material";
 import { useTheme } from "@mui/material";
+import { AddBox } from "@mui/icons-material";
 export default function Section(props) {
    const { title = null, children } = props;
    const theme = useTheme();
@@ -10,25 +11,13 @@ export default function Section(props) {
       <Paper
          id="sectionWrapper"
          sx={{
+            maxHeight: "60%",
             padding: 2,
             bgcolor: theme.palette.lightGray.main,
-
-            flexGrow: 1,
-            display: "flex",
-            flexDirection: "column",
          }}
+         className={`${styles.flexColumn} + ${styles.flexGrow}`}
       >
-         <Box
-            id="sectionContent"
-            sx={{
-               flexGrow: 1,
-               display: "flex",
-               flexDirection: "column",
-               justifyContent: "flex-start",
-               alignItems: "stretch",
-               gap: 2,
-            }}
-         >
+         <Stack spacing={2} className={styles.flexColumn}>
             <Box
                id="sectionTitle"
                sx={{
@@ -36,6 +25,7 @@ export default function Section(props) {
                   bgcolor: "black",
                   borderRadius: 1,
                }}
+               className={styles.flexGrow}
             >
                <Typography
                   variant="h6"
@@ -46,18 +36,18 @@ export default function Section(props) {
                   {title || ""}
                </Typography>
             </Box>
+
             <Card
                id="sectionContent"
                sx={{
-                  maxHeight: "80%",
-                  flexGrow: 1,
                   overflow: "hidden",
                   overflowY: "scroll",
                }}
+               className={`${styles.flexColumn} + ${styles.flexGrow}`}
             >
                {children}
             </Card>
-         </Box>
+         </Stack>
       </Paper>
    );
 }

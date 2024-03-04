@@ -16,14 +16,12 @@ import {
 import Controls from "../../controls/Controls";
 import AddIcon from "@mui/icons-material/Add";
 import DocumentInfo from "../../info/DocumentInfo";
-import { Grid, List, ListItem, Stack, useTheme } from "@mui/material";
+import { Grid, List, ListItem, Stack } from "@mui/material";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import Section from "../../Section/Section";
 
 function Documents() {
-   const theme = useTheme();
-
    const [managerView, setManagerView] = useState(true);
    const handleViewChange = () => setManagerView(!managerView);
 
