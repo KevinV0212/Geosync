@@ -300,7 +300,6 @@ export default function Map() {
                ></Controls.Button>
             </Stack>
 
-            
             <form className="filters-form">
                <h3 className="filter-title">Filters</h3>
                <div className="filterPMESII">

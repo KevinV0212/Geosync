@@ -1,0 +1,9 @@
+.inputSideText {
+   width: 80px;
+   padding: 0 1rem;
+   text-align: center;
+}
+
+.flexGrow {
+   flex-grow: 1;
+}

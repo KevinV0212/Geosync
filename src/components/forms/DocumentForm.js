@@ -3,6 +3,10 @@ import React, { useEffect } from "react";
 import { useForm, Form } from "../useForm";
 import Controls from "../controls/Controls";
 
+import CancelIcon from "@mui/icons-material/Cancel";
+import CheckIcon from "@mui/icons-material/Check";
+import { Divider, Stack } from "@mui/material";
+
 const docTypeItems = [
    { id: "mission", title: "Mission" },
    { id: "task", title: "Task" },
@@ -64,7 +68,7 @@ export default function DocumentForm(props) {
       }
    }, [recordForEdit]);
    return (
-      <div>
+      <>
          <Form onSubmit={handleSubmit}>
             <Controls.Input
                name="title"
@@ -72,6 +76,7 @@ export default function DocumentForm(props) {
                value={formData.title}
                onChange={handleInputChange}
                error={errors.title}
+               fullWidth
             />
             <Controls.Input
                name="description"
@@ -79,6 +84,8 @@ export default function DocumentForm(props) {
                value={formData.description}
                onChange={handleInputChange}
                error={errors.description}
+               multiline
+               fullWidth
             />
             <Controls.Input
                name="link"
@@ -86,6 +93,7 @@ export default function DocumentForm(props) {
                value={formData.link}
                onChange={handleInputChange}
                error={errors.link}
+               fullWidth
             />
             <Controls.RadioGroup
                name="docType"
@@ -97,15 +105,28 @@ export default function DocumentForm(props) {
                disabled={formData.id ? true : false}
             />
 
-            <div>
+            <Stack
+               direction="row"
+               spacing={2}
+               alignItems="center"
+               justifyContent="center"
+               divider={<Divider orientation="vertical" flexItem />}
+            >
                <Controls.Button
                   variant="outlined"
                   text="Clear"
+                  startIcon={<CancelIcon />}
                   onClick={resetForm}
+                  fullWidth
                />
-               <Controls.Button type="submit" text="Submit" />
-            </div>
+               <Controls.Button
+                  type="submit"
+                  text="Submit"
+                  startIcon={<CheckIcon />}
+                  fullWidth
+               />
+            </Stack>
          </Form>
-      </div>
+      </>
    );
 }

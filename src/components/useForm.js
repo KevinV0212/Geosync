@@ -32,8 +32,14 @@ export function useForm(initialFormData, validateOnChange = false, validate) {
 export function Form(props) {
    const { children, ...other } = props;
    return (
-      <form autoComplete="off" {...other}>
-         <Stack direction="column"> {props.children}</Stack>
+      <form
+         autoComplete="off"
+         {...other}
+         style={{ padding: "0px", margin: "0px" }}
+      >
+         <Stack direction="column" spacing={2}>
+            {props.children}
+         </Stack>
       </form>
    );
 }

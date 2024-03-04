@@ -1,30 +1,25 @@
 import React, { useEffect, useState } from "react";
 import "./Documents.css";
-import Button from "@mui/material/Button";
-import DocumentForm from "../forms/DocumentForm";
+import DocumentForm from "../../forms/DocumentForm";
 import {
    addTask,
    deleteTask,
    getAllTasks,
    updateTask,
-} from "../../utils/document/task/taskDocUtil";
+} from "../../../utils/document/task/taskDocUtil";
 import {
    addMission,
    deleteMission,
    getAllMissions,
    updateMission,
-} from "../../utils/document/mission/missionDocUtil";
-import Controls from "../controls/Controls";
+} from "../../../utils/document/mission/missionDocUtil";
+import Controls from "../../controls/Controls";
 import AddIcon from "@mui/icons-material/Add";
-import DocumentInfo from "../info/DocumentInfo";
-import {
-   List,
-   ListItem,
-   ListItemButton,
-   ListItemText,
-   Stack,
-   Typography,
-} from "@mui/material";
+import DocumentInfo from "../../info/DocumentInfo";
+import { Box, List, ListItem, Stack } from "@mui/material";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import Section from "../../Section/Section";
 
 function Documents() {
    const [managerView, setManagerView] = useState(true);
@@ -102,9 +97,9 @@ function Documents() {
          }
       } else {
          if (document.docType === "mission") {
-            await addMission(document);
+            await addMission(requestBody);
          } else if (document.docType === "task") {
-            await addTask(document);
+            await addTask(requestBody);
          }
       }
       resetForm();
@@ -131,61 +126,90 @@ function Documents() {
    }, []);
 
    return (
-      <div className="lg-container">
-         <Stack>
+      <Stack
+         direction="column"
+         sx={{ height: "100%", display: "flex", gap: "1rem" }}
+      >
+         <Stack id="managerControls" sssssss direction="row" spacing={2}>
             {renderManagerControls()}
-            <Button onClick={handleViewChange}>
-               Change to {managerView ? "user view" : "manager view"}
-            </Button>
-         </Stack>
+            <Controls.Button
+               variant="outlined"
+               startIcon={
+                  managerView ? <VisibilityOffIcon /> : <VisibilityIcon />
+               }
+               onClick={handleViewChange}
+               text={`${managerView ? "User view" : "manager view"}`}
+            ></Controls.Button>
 
-         <Controls.Popup
-            title={recordForView ? recordForView.title : ""}
-            openPopup={openInfo}
-            setOpenPopup={setOpenInfo}
+            <Controls.Popup
+               title={recordForView ? recordForView.title : ""}
+               openPopup={openInfo}
+               setOpenPopup={setOpenInfo}
+            >
+               <DocumentInfo
+                  recordForView={recordForView}
+                  openInForm={openInForm}
+                  deleteDocument={deleteDocument}
+               />
+            </Controls.Popup>
+         </Stack>
+         <Stack
+            id="documentsWrapper"
+            direction="row"
+            spacing={2}
+            alignItems="stretch"
+            sx={{
+               maxHeight: "calc(80%-1rem)",
+
+               flexGrow: 1,
+               display: "flex",
+               alignItems: "stretch",
+            }}
          >
-            <DocumentInfo
-               recordForView={recordForView}
-               openInForm={openInForm}
-               deleteDocument={deleteDocument}
-            />
-         </Controls.Popup>
+            <Stack
+               id="documentsContainer"
+               direction="row"
+               spacing={2}
+               sx={{ height: "100%", width: "100%", display: "flex" }}
+            >
+               <Section
+                  title="Mission Statements"
+                  sx={{ height: "100%", flexBasis: 0, flexGrow: 1 }}
+               >
+                  <List>
+                     {missionDocs.map((document, index) => (
+                        <ListItem key={index}>
+                           <Controls.ListItemButton
+                              text={document.title}
+                              onClick={() =>
+                                 openInInfo({ ...document, docType: "mission" })
+                              }
+                           />
+                        </ListItem>
+                     ))}
+                  </List>
+               </Section>
 
-         <Stack direction="row">
-            <List>
-               <Typography align="left" variant="h6">
-                  Mission Statements
-               </Typography>
-               {missionDocs.map((document, index) => (
-                  <ListItem key={index}>
-                     <ListItemButton
-                        onClick={() =>
-                           openInInfo({ ...document, docType: "mission" })
-                        }
-                     >
-                        <ListItemText align="left" primary={document.title} />
-                     </ListItemButton>
-                  </ListItem>
-               ))}
-            </List>
-            <List>
-               <Typography align="left" variant="h6">
-                  Tasks
-               </Typography>
-               {taskDocs.map((document, index) => (
-                  <ListItem key={index}>
-                     <ListItemButton
-                        onClick={() =>
-                           openInInfo({ ...document, docType: "task" })
-                        }
-                     >
-                        <ListItemText align="left" primary={document.title} />
-                     </ListItemButton>
-                  </ListItem>
-               ))}
-            </List>
+               <Section
+                  title="Tasks"
+                  sx={{ height: "100%", flexBasis: 0, flexGrow: 1 }}
+               >
+                  <List>
+                     {taskDocs.map((document, index) => (
+                        <ListItem key={index}>
+                           <Controls.ListItemButton
+                              text={document.title}
+                              onClick={() =>
+                                 openInInfo({ ...document, docType: "task" })
+                              }
+                           />
+                        </ListItem>
+                     ))}
+                  </List>
+               </Section>
+            </Stack>
          </Stack>
-      </div>
+      </Stack>
    );
 }
 

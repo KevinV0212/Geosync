@@ -1,8 +1,12 @@
 import React, { useEffect } from "react";
 import { useForm, Form } from "../useForm";
 import Controls from "../controls/Controls";
-import { Typography } from "@mui/material";
+import { Divider, Stack, Typography } from "@mui/material";
+import styles from "./forms.module.css";
+
 import DeleteIcon from "@mui/icons-material/Delete";
+import CancelIcon from "@mui/icons-material/Cancel";
+import CheckIcon from "@mui/icons-material/Check";
 
 const initialFormValues = {
    countryID: null,
@@ -66,7 +70,7 @@ export default function CountryForm(props) {
    };
 
    return (
-      <div>
+      <>
          <Form onSubmit={handleSubmit}>
             <Controls.Input
                name="countryName"
@@ -74,35 +78,70 @@ export default function CountryForm(props) {
                value={formData.countryName}
                onChange={handleInputChange}
                error={errors.countryName}
+               fullWidth
             />
-            <Controls.Input
-               name="latitude"
-               label="Latitude"
-               value={formData.latitude}
-               inputProps={{ type: "number", min: -90, max: 90, step: "any" }}
-               onChange={handleInputChange}
-               error={errors.latitude}
-            />
-            <Typography>
-               {formData.latitude >= 0 ? "North" : "South"}
-            </Typography>
+            <Stack direction="row" alignItems="center">
+               <Controls.Input
+                  name="latitude"
+                  label="Latitude"
+                  value={formData.latitude}
+                  inputProps={{
+                     type: "number",
+                     min: -90,
+                     max: 90,
+                     step: "any",
+                  }}
+                  onChange={handleInputChange}
+                  error={errors.latitude}
+                  fullWidth
+               />
+               <Typography
+                  variant="h6"
+                  component="h3"
+                  className={styles.inputSideText}
+               >
+                  {formData.latitude >= 0 ? "North" : "South"}
+               </Typography>
+            </Stack>
+            <Stack direction="row" alignItems="center">
+               <Controls.Input
+                  name="longitude"
+                  label="Longitude"
+                  value={formData.longitude}
+                  inputProps={{
+                     type: "number",
+                     min: -180,
+                     max: 180,
+                     step: "any",
+                  }}
+                  onChange={handleInputChange}
+                  error={errors.longitude}
+                  fullWidth
+               />
+               <Typography
+                  variant="h6"
+                  component="h3"
+                  className={styles.inputSideText}
+               >
+                  {formData.longitude >= 0 ? "East" : "West"}
+               </Typography>
+            </Stack>
 
-            <Controls.Input
-               name="longitude"
-               label="Longitude"
-               value={formData.longitude}
-               inputProps={{ type: "number", min: -180, max: 180, step: "any" }}
-               onChange={handleInputChange}
-               error={errors.longitude}
-            />
-            <Typography>{formData.longitude >= 0 ? "East" : "West"}</Typography>
-            <div>
+            <Stack
+               direction="row"
+               spacing={2}
+               alignItems="center"
+               justifyContent="center"
+               divider={<Divider orientation="vertical" flexItem />}
+            >
                {formData.countryID != null ? (
                   <Controls.Button
                      text="Delete"
                      startIcon={<DeleteIcon />}
                      onClick={() => handleCountryDelete(recordForEdit)}
                      disabled={formData.countryID == null}
+                     sx={{ flexGrow: 1 }}
+                     fullWidth
                   />
                ) : (
                   ""
@@ -110,11 +149,18 @@ export default function CountryForm(props) {
                <Controls.Button
                   variant="outlined"
                   text="Cancel"
+                  startIcon={<CancelIcon />}
                   onClick={resetForm}
+                  fullWidth
                />
-               <Controls.Button type="submit" text="Submit" />
-            </div>
+               <Controls.Button
+                  type="submit"
+                  text="Submit"
+                  startIcon={<CheckIcon />}
+                  fullWidth
+               />
+            </Stack>
          </Form>
-      </div>
+      </>
    );
 }
