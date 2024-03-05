@@ -2,22 +2,22 @@ import React, { useState, useEffect } from "react";
 import Select from "react-select";
 import "./MapFragment.css";
 import { useLocalStorage } from "usehooks-ts";
-import MapPinForm from "../forms/MapPinForm.js";
+import MapPinForm from "../../forms/MapPinForm.js";
 import {
    addCountry,
    deleteCountry,
    getAllCountries,
    updateCountry,
-} from "../../utils/country/countryUtil.js";
+} from "../../../utils/country/countryUtil.js";
 import {
    addMapPin,
    deleteMapPin,
    getMapPins,
    updateMapPin,
-} from "../../utils/map/mapUtil.js";
-import CountryForm from "../forms/CountryForm.js";
-import MapComponent from "../MapComponent.js";
-import Controls from "../controls/Controls.js";
+} from "../../../utils/map/mapUtil.js";
+import CountryForm from "../../forms/CountryForm.js";
+import MapComponent from "../../map-component/MapComponent.js";
+import Controls from "../../reusable/Controls.js";
 import { Stack } from "@mui/material";
 
 export default function Map() {

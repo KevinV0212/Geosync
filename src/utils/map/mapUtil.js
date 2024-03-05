@@ -1,5 +1,5 @@
 import axios from "axios";
-import buildPath from "../../components/Path";
+import buildPath from "../Path";
 
 async function getMapPins(countryID, filters = undefined) {
    if (!countryID) {

@@ -15,14 +15,14 @@ import {
    updateMission,
 } from "../../../utils/document/mission/missionDocUtil";
 
-import Controls from "../../controls/Controls";
+import Controls from "../../reusable/Controls";
 import DocumentInfo from "../../info/DocumentInfo";
 
 import { List, ListItem, Stack } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import Section from "../../Section/Section";
+import Section from "../../section/Section";
 
 function Documents() {
    const [managerView, setManagerView] = useState(true);

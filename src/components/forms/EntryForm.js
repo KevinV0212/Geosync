@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocalStorage } from "usehooks-ts";
-import { Form, useForm } from "../useForm";
-import Controls from "../controls/Controls";
+import { Form, useForm } from "./useForm";
+import Controls from "../reusable/Controls";
 
 import { Button, FormControl } from "@mui/base";
 import {
