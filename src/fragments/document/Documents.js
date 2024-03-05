@@ -24,7 +24,7 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import Section from "../../components/section/Section";
 
-function Documents() {
+export default function Documents() {
    // Handling manager view
    const [managerView, setManagerView] = useState(true);
    const handleViewChange = () => setManagerView(!managerView);
@@ -238,5 +238,3 @@ function Documents() {
       </Stack>
    );
 }
-
-export default Documents;
