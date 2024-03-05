@@ -1,5 +1,5 @@
 import React from "react";
-import { testEntries } from "../../../test_data/wikiTest";
+import { testEntries } from "../../test_data/wikiTest";
 import { Box, Typography } from "@mui/material";
 
 //Passing in PMESII and ASCOPE

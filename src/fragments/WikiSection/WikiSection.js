@@ -14,8 +14,8 @@ import FormControl from "@mui/material/FormControl";
 import { useLocalStorage } from "usehooks-ts";
 import Level1 from "./Level1";
 import { createTheme } from "@mui/material/styles";
-import { getAllCountries } from "../../../utils/country/countryUtil";
-import { getWikiEntries } from "../../../utils/wiki/wikiUtil";
+import { getAllCountries } from "../../utils/country/countryUtil";
+import { getWikiEntries } from "../../utils/wiki/wikiUtil";
 
 const numbers = [0, 1, 2, 3, 4, 5];
 
