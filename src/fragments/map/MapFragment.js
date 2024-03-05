@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Select from "react-select";
-import "./MapFragment.css";
 import { useLocalStorage } from "usehooks-ts";
-import MapPinForm from "../forms/MapPinForm.js";
+
+import "./MapFragment.css";
 import {
    addCountry,
    deleteCountry,
@@ -15,82 +15,35 @@ import {
    getMapPins,
    updateMapPin,
 } from "../../utils/map/mapUtil.js";
-import CountryForm from "../forms/CountryForm.js";
-import MapComponent from "../MapComponent.js";
-import Controls from "../controls/Controls.js";
+
+import MapPinForm from "../../components/forms/MapPinForm.js";
+import CountryForm from "../../components/forms/CountryForm.js";
+import MapComponent from "../../components/map-component/MapComponent.js";
+import Controls from "../../components/reusable/Controls.js";
+
 import { Stack } from "@mui/material";
 
 export default function Map() {
-   // const [currentCountry, setCurrentCountry] = useLocalStorage(
-   //    "current_country",
-   //    null
-   // );
-   const [currentCountry, setCurrentCountry] = useState(null);
+   // Handling manager view
+   const [managerView, setManagerView] = useState(true);
+   const handleViewChange = () => setManagerView(!managerView);
 
-   // Country selector
+   // Data for country
+   const [currentCountry, setCurrentCountry] = useLocalStorage(
+      "current_country",
+      null
+   );
    const [countries, setCountries] = useState([]);
+   // const [currentCountry, setCurrentCountry] = useState(null);
    let listOptions = countries.map((country) => ({
       value: country.id,
       label: country.countryName,
    }));
 
-   function loadCountries() {
-      getAllCountries().then((countries) => {
-         if (countries === null) {
-            return;
-         }
-         countries.sort((countryA, countryB) => {
-            if (countryA.countryName < countryB.countryName) return -1;
-            if (countryA.countryName > countryB.countryName) return 1;
-            return 0;
-         });
-         setCountries(countries);
-      });
-   }
+   // Data for mapPins
+   const [mapPins, setMapPins] = useState([]);
 
-   // loads the mappins associated to the currently selected country
-   function loadMapPins() {
-      if (!currentCountry) {
-         return;
-      }
-      const countryID = currentCountry.countryID;
-      const filters = [];
-      for (const checkbox in checkboxes) {
-         filters.push(checkboxes[checkbox]);
-      }
-
-      getMapPins(countryID, filters).then((pinList) => {
-         if (pinList === null) {
-            return;
-         }
-         setMapPins([...pinList]);
-      });
-   }
-
-   // Callback function to handle selecting country
-   const handleCountrySelect = (country) => {
-      const countryInfo = countries.find(
-         (targetCountry) => targetCountry.id === country.value
-      );
-
-      const temp = {
-         countryID: countryInfo.id,
-         countryName: countryInfo.countryName,
-         latitude: countryInfo.latitude,
-         longitude: countryInfo.longitude,
-      };
-
-      setCurrentCountry(temp);
-   };
-
-   const handleCheckboxChange = (checkboxName) => {
-      setCheckboxes((prevCheckboxes) => ({
-         ...prevCheckboxes,
-         [checkboxName]: !prevCheckboxes[checkboxName],
-      }));
-   };
-
-   // PMESII-PT filters
+   // Handling PMESII filters
    const [checkboxes, setCheckboxes] = useState({
       checkbox1: true,
       checkbox2: true,
@@ -100,29 +53,50 @@ export default function Map() {
       checkbox6: true,
    });
 
-   useEffect(() => {
-      loadCountries();
-      loadMapPins();
-   }, [currentCountry, checkboxes]);
-
-   const [mapPins, setMapPins] = useState([]);
-
-   const [managerView, setManagerView] = useState(true);
-
-   const handleViewChange = () => setManagerView(!managerView);
-
+   // Handling country form popup
    const [openCountryForm, setOpenCountryForm] = useState(false);
    const [countryFormTitle, setCountryFormTitle] = useState("Add Country");
    const [recordForCountry, setRecordForCountry] = useState(null);
 
+   // Handling mapPin form popup
    const [currentPin, setCurrentPin] = useState(null);
    const [openPinForm, setOpenPinForm] = useState(false);
    const [pinFormTitle, setPinFormTitle] = useState("Add Pin");
    const [recordForPin, setRecordForPin] = useState(null);
 
-   // Map Operations---------------------------------------------------------
+   // Function that fetches list of all countries
+   const loadCountries = async () => {
+      const countries = await getAllCountries();
+      if (countries == null) {
+         return;
+      }
+      countries.sort((countryA, countryB) => {
+         if (countryA.countryName < countryB.countryName) return -1;
+         if (countryA.countryName > countryB.countryName) return 1;
+         return 0;
+      });
+      setCountries([...countries]);
+   };
 
-   // opens current country's information in form to edit
+   // Function that fetches list of all mapPins associated with currentCountry
+   const loadMapPins = async () => {
+      if (!currentCountry) {
+         return;
+      }
+      const countryID = currentCountry.countryID;
+      const filters = [];
+      for (const checkbox in checkboxes) {
+         filters.push(checkboxes[checkbox]);
+      }
+
+      const pinList = await getMapPins(countryID, filters);
+      if (pinList === null) {
+         return;
+      }
+      setMapPins([...pinList]);
+   };
+
+   // Function that opens country form with data of current country
    const openCountryInForm = () => {
       setRecordForCountry({
          ...currentCountry,
@@ -131,7 +105,8 @@ export default function Map() {
       setOpenCountryForm(true);
    };
 
-   // either adds or edit country depending on if the entry already has an id
+   // Function that sends request to add/edit country with data from country
+   // After the request, it resets the form and refreshes the country lists
    const addOrEditCountry = async (country, resetForm) => {
       const requestBody = {
          id: country.countryID || null,
@@ -169,7 +144,8 @@ export default function Map() {
       setOpenCountryForm(false);
    };
 
-   // handles deleting the country
+   // Function that sends request to delete country passed in as a parameter
+   // After deleting, it closes country form and refreshes country lists
    const handleCountryDelete = async (country) => {
       if (!window.confirm("Are you sure you want to delete this country?")) {
          return;
@@ -182,9 +158,7 @@ export default function Map() {
       setOpenCountryForm(false);
    };
 
-   // Pin Operations--------------------------------------------------------------
-
-   // opens currently selected map pin's information in form to edit
+   // Function that opens pin add/edit form with data of currently selected pin
    const openPinInForm = () => {
       setRecordForCountry({
          ...currentPin,
@@ -193,7 +167,8 @@ export default function Map() {
       setOpenPinForm(true);
    };
 
-   // either adds or edit country depending on if the pin already has an id
+   // Function that sends request to add/edit mapPin with data from pin
+   // After the request, it resets the form, then refreshes pins and map
    const addOrEditPin = async (pin, resetForm) => {
       let requestBody = {
          countryID: currentCountry.countryID,
@@ -223,7 +198,8 @@ export default function Map() {
       setOpenPinForm(false);
    };
 
-   // handles deleting map pin
+   // Function that sends request to delete document passed in as a parameter
+   // After deleting, it closes that document's info box and refreshes document lists
    const handlePinDelete = async (pin) => {
       if (!window.confirm("Are you sure you want to delete this map pin?")) {
          return;
@@ -235,7 +211,31 @@ export default function Map() {
       setOpenPinForm(false);
    };
 
-   // renders manager specific controls
+   // Function to handle country selector
+   const handleCountrySelect = (country) => {
+      const countryInfo = countries.find(
+         (targetCountry) => targetCountry.id === country.value
+      );
+
+      const temp = {
+         countryID: countryInfo.id,
+         countryName: countryInfo.countryName,
+         latitude: countryInfo.latitude,
+         longitude: countryInfo.longitude,
+      };
+
+      setCurrentCountry(temp);
+   };
+
+   // Function to handle PMESII checkbox filters
+   const handleCheckboxChange = (checkboxName) => {
+      setCheckboxes((prevCheckboxes) => ({
+         ...prevCheckboxes,
+         [checkboxName]: !prevCheckboxes[checkboxName],
+      }));
+   };
+
+   // Function that renders manager specific controls
    const renderManagerControls = () => {
       if (managerView) {
          return (
@@ -287,6 +287,11 @@ export default function Map() {
          );
       }
    };
+
+   useEffect(() => {
+      loadCountries();
+      loadMapPins();
+   }, [currentCountry, checkboxes]);
 
    return (
       <div className="home">

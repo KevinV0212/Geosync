@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 
-import { useForm, Form } from "./useForm";
-import Controls from "../reusable/Controls";
+import { useForm, Form } from "../forms/useForm";
+import Controls from "./Controls";
 
 import CancelIcon from "@mui/icons-material/Cancel";
 import CheckIcon from "@mui/icons-material/Check";

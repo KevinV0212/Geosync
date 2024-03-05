@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import { useForm, Form } from "../useForm";
-import Controls from "../controls/Controls";
+import { useForm, Form } from "./useForm";
+import Controls from "../reusable/Controls";
 
 import { Divider, Stack, Typography } from "@mui/material";
 import styles from "./forms.module.css";
@@ -80,20 +80,20 @@ export default function MapPinForm(props) {
       resetForm,
    ] = useForm(initialFormValues, true, validate);
 
+   // handles submission of form to callback from parent component
+   const handleSubmit = async (e) => {
+      e.preventDefault();
+
+      if (validate()) {
+         addOrEdit(formData, resetForm);
+      }
+   };
+
    useEffect(() => {
       if (recordForEdit != null) {
          setFormData({ ...recordForEdit });
       }
    }, [recordForEdit]);
-
-   // handles submission of form to callback from parent component
-   const handleSubmit = async (e) => {
-      e.preventDefault();
-
-      if (validate) {
-         addOrEdit(formData, resetForm);
-      }
-   };
 
    return (
       <div>
@@ -178,7 +178,7 @@ export default function MapPinForm(props) {
             >
                <Controls.Button
                   variant="outlined"
-                  text="Cancel"
+                  text="Clear"
                   startIcon={<CancelIcon />}
                   onClick={resetForm}
                   fullWidth

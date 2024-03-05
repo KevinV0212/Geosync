@@ -1,7 +1,6 @@
 import React from "react";
-import { testEntries } from "../../../test_data/wikiTest";
-import {Box, Typography} from "@mui/material";
-
+import { testEntries } from "../../test_data/wikiTest";
+import { Box, Typography } from "@mui/material";
 
 //Passing in PMESII and ASCOPE
 function Level2(props) {
@@ -14,11 +13,12 @@ function Level2(props) {
                   element[props.ASCOPE] === true
             )
             .map((item, i) => (
-               <Box sx={{}}>
-                  <Typography sx={{textDecoration: 'underline'}}>{item.Title}</Typography>
+               <Box sx={{}} key={i}>
+                  <Typography sx={{ textDecoration: "underline" }}>
+                     {item.Title}
+                  </Typography>
                   <Typography>{item.Description} </Typography>
                </Box>
-               
             ))}
       </div>
    );

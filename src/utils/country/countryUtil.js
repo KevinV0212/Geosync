@@ -1,5 +1,5 @@
 import axios from "axios";
-import buildPath from "../../components/Path";
+import buildPath from "../Path";
 
 // handles request to get all countries
 async function getAllCountries() {

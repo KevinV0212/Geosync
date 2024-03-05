@@ -1,5 +1,5 @@
 import axios from "axios";
-import buildPath from "../../../components/Path";
+import buildPath from "../../Path";
 
 async function getAllTasks() {
    let url = buildPath("/all_tasks");

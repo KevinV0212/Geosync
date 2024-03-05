@@ -17,7 +17,7 @@ export default function Section(props) {
    return (
       <Paper
          id="sectionWrapper"
-         sx={{ bgcolor: theme.palette.lightGray.main }}
+         sx={{ bgcolor: "theme.palette.lightGray.main" }}
          {...other}
       >
          <Stack

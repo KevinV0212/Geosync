@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Controls from "../controls/Controls";
+import Controls from "../reusable/Controls";
 import { Divider, Stack, Typography } from "@mui/material";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
@@ -15,13 +15,14 @@ const initialInfo = {
 };
 
 export default function DocumentInfo(props) {
+   // Handling form data
    const [info, setInfo] = useState(initialInfo);
-   const { recordForView, openInForm, deleteDocument } = props;
-   //title (in popup title)
-   // description
-   // link
-   // buttons
-   // edit, delete
+   const {
+      recordForView,
+      openInForm,
+      deleteDocument,
+      editable = false,
+   } = props;
 
    useEffect(() => {
       if (recordForView != null) {
@@ -59,19 +60,23 @@ export default function DocumentInfo(props) {
             justifyContent="center"
             divider={<Divider orientation="vertical" flexItem />}
          >
-            <Controls.Button
-               variant="outlined"
-               text="Delete"
-               startIcon={<DeleteIcon />}
-               onClick={() => deleteDocument(recordForView)}
-               fullWidth
-            />
-            <Controls.Button
-               text="Edit"
-               startIcon={<EditIcon />}
-               onClick={() => openInForm(recordForView)}
-               fullWidth
-            />
+            {editable ? (
+               <>
+                  <Controls.Button
+                     variant="outlined"
+                     text="Delete"
+                     startIcon={<DeleteIcon />}
+                     onClick={() => deleteDocument(recordForView)}
+                     fullWidth
+                  />
+                  <Controls.Button
+                     text="Edit"
+                     startIcon={<EditIcon />}
+                     onClick={() => openInForm(recordForView)}
+                     fullWidth
+                  />
+               </>
+            ) : undefined}
          </Stack>
       </Stack>
    );
