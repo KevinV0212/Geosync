@@ -2,22 +2,22 @@ import React, { useState, useEffect } from "react";
 import Select from "react-select";
 import "./MapFragment.css";
 import { useLocalStorage } from "usehooks-ts";
-import MapPinForm from "../forms/MapPinForm.js";
+import MapPinForm from "../../forms/MapPinForm.js";
 import {
    addCountry,
    deleteCountry,
    getAllCountries,
    updateCountry,
-} from "../../utils/country/countryUtil.js";
+} from "../../../utils/country/countryUtil.js";
 import {
    addMapPin,
    deleteMapPin,
    getMapPins,
    updateMapPin,
-} from "../../utils/map/mapUtil.js";
-import CountryForm from "../forms/CountryForm.js";
-import MapComponent from "../MapComponent.js";
-import Controls from "../controls/Controls.js";
+} from "../../../utils/map/mapUtil.js";
+import CountryForm from "../../forms/CountryForm.js";
+import MapComponent from "../../map-component/MapComponent.js";
+import Controls from "../../reusable/Controls.js";
 import { Stack } from "@mui/material";
 
 export default function Map() {
@@ -34,22 +34,21 @@ export default function Map() {
       label: country.countryName,
    }));
 
-   function loadCountries() {
-      getAllCountries().then((countries) => {
-         if (countries === null) {
-            return;
-         }
-         countries.sort((countryA, countryB) => {
-            if (countryA.countryName < countryB.countryName) return -1;
-            if (countryA.countryName > countryB.countryName) return 1;
-            return 0;
-         });
-         setCountries(countries);
+   const loadCountries = async () => {
+      const countries = await getAllCountries();
+      if (countries == null) {
+         return;
+      }
+      countries.sort((countryA, countryB) => {
+         if (countryA.countryName < countryB.countryName) return -1;
+         if (countryA.countryName > countryB.countryName) return 1;
+         return 0;
       });
-   }
+      setCountries([...countries]);
+   };
 
    // loads the mappins associated to the currently selected country
-   function loadMapPins() {
+   const loadMapPins = async () => {
       if (!currentCountry) {
          return;
       }
@@ -59,13 +58,12 @@ export default function Map() {
          filters.push(checkboxes[checkbox]);
       }
 
-      getMapPins(countryID, filters).then((pinList) => {
-         if (pinList === null) {
-            return;
-         }
-         setMapPins([...pinList]);
-      });
-   }
+      const pinList = await getMapPins(countryID, filters);
+      if (pinList === null) {
+         return;
+      }
+      setMapPins([...pinList]);
+   };
 
    // Callback function to handle selecting country
    const handleCountrySelect = (country) => {
@@ -111,16 +109,10 @@ export default function Map() {
 
    const handleViewChange = () => setManagerView(!managerView);
 
+   // Country Form Operations---------------------------------------------------------
    const [openCountryForm, setOpenCountryForm] = useState(false);
    const [countryFormTitle, setCountryFormTitle] = useState("Add Country");
    const [recordForCountry, setRecordForCountry] = useState(null);
-
-   const [currentPin, setCurrentPin] = useState(null);
-   const [openPinForm, setOpenPinForm] = useState(false);
-   const [pinFormTitle, setPinFormTitle] = useState("Add Pin");
-   const [recordForPin, setRecordForPin] = useState(null);
-
-   // Map Operations---------------------------------------------------------
 
    // opens current country's information in form to edit
    const openCountryInForm = () => {
@@ -182,7 +174,11 @@ export default function Map() {
       setOpenCountryForm(false);
    };
 
-   // Pin Operations--------------------------------------------------------------
+   // Pin Form Operations--------------------------------------------------------------
+   const [currentPin, setCurrentPin] = useState(null);
+   const [openPinForm, setOpenPinForm] = useState(false);
+   const [pinFormTitle, setPinFormTitle] = useState("Add Pin");
+   const [recordForPin, setRecordForPin] = useState(null);
 
    // opens currently selected map pin's information in form to edit
    const openPinInForm = () => {

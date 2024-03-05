@@ -1,46 +1,53 @@
 import React, { useEffect, useState } from "react";
-import "./Documents.css";
 import DocumentForm from "../../forms/DocumentForm";
+
 import {
    addTask,
    deleteTask,
    getAllTasks,
    updateTask,
 } from "../../../utils/document/task/taskDocUtil";
+
 import {
    addMission,
    deleteMission,
    getAllMissions,
    updateMission,
 } from "../../../utils/document/mission/missionDocUtil";
-import Controls from "../../controls/Controls";
-import AddIcon from "@mui/icons-material/Add";
+
+import Controls from "../../reusable/Controls";
 import DocumentInfo from "../../info/DocumentInfo";
-import { Box, List, ListItem, Stack } from "@mui/material";
+
+import { List, ListItem, Stack } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import Section from "../../Section/Section";
+import Section from "../../section/Section";
 
 function Documents() {
    const [managerView, setManagerView] = useState(true);
    const handleViewChange = () => setManagerView(!managerView);
 
-   const [formTitle, setFormTitle] = useState("Add Document");
-   const [recordForEdit, setRecordForEdit] = useState(null);
-   const [recordForView, setRecordForView] = useState(null);
-
-   const [openForm, setOpenForm] = useState(false);
-   const [openInfo, setOpenInfo] = useState(false);
-
+   // Data for lists
    const [taskDocs, setTaskDocs] = useState([]);
    const [missionDocs, setMissionDocs] = useState([]);
 
+   // handles popups
+   const [formTitle, setFormTitle] = useState("Add Document");
+   const [recordForEdit, setRecordForEdit] = useState(null);
+   const [recordForView, setRecordForView] = useState(null);
+   const [openForm, setOpenForm] = useState(false);
+   const [openInfo, setOpenInfo] = useState(false);
+
+   // function that loads documents then updates values to their useState values
    const loadDocuments = async () => {
       const tasks = await getAllTasks();
       const missions = await getAllMissions();
       setTaskDocs(tasks);
       setMissionDocs(missions);
    };
+
+   // function that renders controls that only managers should have access to
    const renderManagerControls = () => {
       if (managerView) {
          return (
@@ -70,11 +77,13 @@ function Documents() {
       }
    };
 
+   // handles opening popup for document info for selected item
    const openInInfo = (item) => {
       setRecordForView({ ...item });
       setOpenInfo(true);
    };
 
+   // handles on opening edit form for selected item
    const openInForm = (item) => {
       setRecordForEdit({ ...item });
       setFormTitle("Edit Document");
@@ -82,6 +91,7 @@ function Documents() {
       setOpenForm(true);
    };
 
+   // adds new document or modifies existing document
    const addOrEdit = async (document, resetForm) => {
       const requestBody = {
          id: document.id || null,
@@ -108,6 +118,7 @@ function Documents() {
       setOpenForm(false);
    };
 
+   // handles deleting a document
    const deleteDocument = async (document) => {
       if (!window.confirm("Are you sure you want to delete this document?")) {
          return;
@@ -121,6 +132,7 @@ function Documents() {
       setRecordForEdit(null);
       setOpenInfo(false);
    };
+
    useEffect(() => {
       loadDocuments();
    }, []);
@@ -177,16 +189,21 @@ function Documents() {
                   sx={{ height: "100%", flexBasis: 0, flexGrow: 1 }}
                >
                   <List>
-                     {missionDocs.map((document, index) => (
-                        <ListItem key={index}>
-                           <Controls.ListItemButton
-                              text={document.title}
-                              onClick={() =>
-                                 openInInfo({ ...document, docType: "mission" })
-                              }
-                           />
-                        </ListItem>
-                     ))}
+                     {missionDocs !== null
+                        ? missionDocs.map((document, index) => (
+                             <ListItem key={index}>
+                                <Controls.ListItemButton
+                                   text={document.title}
+                                   onClick={() =>
+                                      openInInfo({
+                                         ...document,
+                                         docType: "mission",
+                                      })
+                                   }
+                                />
+                             </ListItem>
+                          ))
+                        : undefined}
                   </List>
                </Section>
 
@@ -195,16 +212,21 @@ function Documents() {
                   sx={{ height: "100%", flexBasis: 0, flexGrow: 1 }}
                >
                   <List>
-                     {taskDocs.map((document, index) => (
-                        <ListItem key={index}>
-                           <Controls.ListItemButton
-                              text={document.title}
-                              onClick={() =>
-                                 openInInfo({ ...document, docType: "task" })
-                              }
-                           />
-                        </ListItem>
-                     ))}
+                     {taskDocs !== null
+                        ? taskDocs.map((document, index) => (
+                             <ListItem key={index}>
+                                <Controls.ListItemButton
+                                   text={document.title}
+                                   onClick={() =>
+                                      openInInfo({
+                                         ...document,
+                                         docType: "task",
+                                      })
+                                   }
+                                />
+                             </ListItem>
+                          ))
+                        : undefined}
                   </List>
                </Section>
             </Stack>

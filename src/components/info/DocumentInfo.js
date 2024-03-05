@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Controls from "../controls/Controls";
+import Controls from "../reusable/Controls";
 import { Divider, Stack, Typography } from "@mui/material";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";

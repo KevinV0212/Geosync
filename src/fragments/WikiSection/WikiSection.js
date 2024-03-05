@@ -1,5 +1,5 @@
 import { Box, ThemeProvider } from "@mui/system";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Typography } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -14,19 +14,68 @@ import FormControl from "@mui/material/FormControl";
 import { useLocalStorage } from "usehooks-ts";
 import Level1 from "./Level1";
 import { createTheme } from "@mui/material/styles";
+import { getAllCountries } from "../../../utils/country/countryUtil";
+import { getWikiEntries } from "../../../utils/wiki/wikiUtil";
+
+const numbers = [0, 1, 2, 3, 4, 5];
+
+const PMESII = [
+   "Political",
+   "Military",
+   "Economic",
+   "Social",
+   "Information",
+   "Infrastructure",
+];
+const ASCOPE = [
+   "Areas",
+   "Structure",
+   "Capabilities",
+   "Organization",
+   "People",
+   "Events",
+];
 
 function NewDesign() {
-   const numbers = [0, 1, 2, 3, 4, 5];
-   // Country selector
-   const [currentCountry, setCurrentCountry] = useLocalStorage(
-      "current_country",
-      null
-   );
+   const [currentCountry, setCurrentCountry] = useState(null);
    const [countries, setCountries] = useState([]);
+
+   const [wikiEntries, setWikiEntries] = useState([]);
+   const [managerView, setManagerView] = useState(true);
+
+   const handleViewChange = () => setManagerView(!managerView);
+
    let listOptions = countries.map((country) => ({
       value: country.id,
       label: country.countryName,
    }));
+
+   const loadCountries = async () => {
+      const countries = await getAllCountries();
+      if (countries == null) {
+         return;
+      }
+      countries.sort((countryA, countryB) => {
+         if (countryA.countryName < countryB.countryName) return -1;
+         if (countryA.countryName > countryB.countryName) return 1;
+         return 0;
+      });
+      setCountries([...countries]);
+   };
+
+   // loads wiki entries associated to the currently selected country
+   const loadWikiEntries = async () => {
+      if (!currentCountry) {
+         return;
+      }
+      const countryID = currentCountry.countryID;
+      const entryList = await getWikiEntries(countryID);
+      if (entryList === null) {
+         return;
+      }
+      setWikiEntries([...entryList]);
+   };
+
    // Callback function to handle selecting country
    const handleCountrySelect = (country) => {
       const countryInfo = countries.find(
@@ -42,22 +91,6 @@ function NewDesign() {
       setCurrentCountry(temp);
    };
 
-   const PMESII = [
-      "Political",
-      "Military",
-      "Economic",
-      "Social",
-      "Information",
-      "Infrastructure",
-   ];
-   const ASCOPE = [
-      "Areas",
-      "Structure",
-      "Capabilities",
-      "Organization",
-      "People",
-      "Events",
-   ];
    const [selectedASCOPE, setSelectedASCOPE] = useState([
       true,
       true,
@@ -147,6 +180,11 @@ function NewDesign() {
       },
    });
 
+   useEffect(() => {
+      loadCountries();
+      loadWikiEntries();
+   }, [currentCountry]);
+
    return (
       <ThemeProvider theme={theme}>
          <Box
@@ -197,7 +235,7 @@ function NewDesign() {
                   </Box>
                   <Box sx={{ width: "90%" }}>
                      {PMESII.map((item, i) => (
-                        <div>
+                        <div key={i}>
                            <Accordion sx={{ border: 1, borderColor: "black" }}>
                               <AccordionSummary
                                  expandIcon={<ArrowDropDownIcon />}
@@ -240,6 +278,7 @@ function NewDesign() {
                               <AccordionDetails>
                                  {ASCOPE.map((item, j) => (
                                     <FormControlLabel
+                                       key={j}
                                        sx={{
                                           display: "flex",
                                           flexDirection: "row",
@@ -393,7 +432,7 @@ function NewDesign() {
                      }}
                   >
                      {PMESII.map((item, i) => (
-                        <div>
+                        <div key={i}>
                            {selectedPMESII[i] && (
                               <Accordion
                                  defaultExpanded

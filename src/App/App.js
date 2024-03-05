@@ -1,11 +1,11 @@
 import styles from "./App.module.css";
 import Navbar from "../components/navbar/Navbar";
-import Home from "../components/fragments/Contact/Home";
-import Contact from "../components/fragments/Contact/Contact";
-import Documents from "../components/fragments/Documents/Documents";
-import FAQ from "../components/fragments/FAQ";
-import Map from "../components/fragments/MapFragment";
-import Wiki from "../components/fragments/Wiki";
+import Home from "../components/fragments/home/Home";
+import Contact from "../components/fragments/contact/Contact";
+import Documents from "../components/fragments/document/Documents";
+import FAQ from "../components/fragments/faq/FAQ";
+import Map from "../components/fragments/map/MapFragment";
+import Wiki from "../components/fragments/wiki/Wiki";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { useEffect } from "react";
 import axios from "axios";
@@ -47,6 +47,7 @@ function App() {
                   id="fragmentContainer"
                   maxWidth="xl"
                   sx={{
+                     boxSizing: "border-box",
                      maxHeight: "90vh",
                      paddingX: 3,
                      paddingY: 5,
