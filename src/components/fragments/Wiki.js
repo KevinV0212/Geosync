@@ -5,7 +5,7 @@ import EntryForm from "../forms/EntryForm";
 function Wiki() {
    return (
       <div>
-         <EntryForm />
+         {/* <EntryForm /> */}
          <WikiSection />
       </div>
    );

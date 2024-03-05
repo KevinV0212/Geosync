@@ -189,16 +189,21 @@ function Documents() {
                   sx={{ height: "100%", flexBasis: 0, flexGrow: 1 }}
                >
                   <List>
-                     {missionDocs.map((document, index) => (
-                        <ListItem key={index}>
-                           <Controls.ListItemButton
-                              text={document.title}
-                              onClick={() =>
-                                 openInInfo({ ...document, docType: "mission" })
-                              }
-                           />
-                        </ListItem>
-                     ))}
+                     {missionDocs !== null
+                        ? missionDocs.map((document, index) => (
+                             <ListItem key={index}>
+                                <Controls.ListItemButton
+                                   text={document.title}
+                                   onClick={() =>
+                                      openInInfo({
+                                         ...document,
+                                         docType: "mission",
+                                      })
+                                   }
+                                />
+                             </ListItem>
+                          ))
+                        : undefined}
                   </List>
                </Section>
 
@@ -207,16 +212,21 @@ function Documents() {
                   sx={{ height: "100%", flexBasis: 0, flexGrow: 1 }}
                >
                   <List>
-                     {taskDocs.map((document, index) => (
-                        <ListItem key={index}>
-                           <Controls.ListItemButton
-                              text={document.title}
-                              onClick={() =>
-                                 openInInfo({ ...document, docType: "task" })
-                              }
-                           />
-                        </ListItem>
-                     ))}
+                     {taskDocs !== null
+                        ? taskDocs.map((document, index) => (
+                             <ListItem key={index}>
+                                <Controls.ListItemButton
+                                   text={document.title}
+                                   onClick={() =>
+                                      openInInfo({
+                                         ...document,
+                                         docType: "task",
+                                      })
+                                   }
+                                />
+                             </ListItem>
+                          ))
+                        : undefined}
                   </List>
                </Section>
             </Stack>

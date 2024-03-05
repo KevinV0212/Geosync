@@ -58,7 +58,7 @@ export default function Navbar() {
 
    return (
       <ThemeProvider theme={navTheme}>
-         <AppBar position="sticky" sx={{ height: "10vh", paddingX: "2rem" }}>
+         <AppBar position="sticky" sx={{ paddingX: "2rem" }}>
             <Container maxWidth="xl">
                <Toolbar disableGutters>
                   <Box
@@ -66,7 +66,7 @@ export default function Navbar() {
                      src={aiLogo}
                      sx={{
                         width: "65px",
-                        display: { xs: "none", md: "flex" },
+                        display: { xs: "none", lg: "flex" },
                         mr: 1,
                      }}
                      alt="ARSOF logo"
@@ -77,7 +77,7 @@ export default function Navbar() {
                      component="h1"
                      sx={{
                         mr: 2,
-                        display: { xs: "none", md: "flex" },
+                        display: { xs: "none", lg: "flex" },
                         fontWeight: 700,
                      }}
                   >
@@ -85,7 +85,7 @@ export default function Navbar() {
                   </Typography>
 
                   <Box
-                     sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}
+                     sx={{ flexGrow: 1, display: { xs: "flex", lg: "none" } }}
                   >
                      <IconButton
                         size="large"
@@ -109,7 +109,7 @@ export default function Navbar() {
                         open={Boolean(anchorElNav)}
                         onClose={handleCloseNavMenu}
                         sx={{
-                           display: { xs: "block", md: "none" },
+                           display: { xs: "block", lg: "none" },
                         }}
                      >
                         {pages.map((page, i) => (
@@ -138,7 +138,7 @@ export default function Navbar() {
                      sx={{
                         width: "65px",
                         mr: 1,
-                        display: { xs: "flex", md: "none" },
+                        display: { xs: "flex", lg: "none" },
                      }}
                      alt="ARSOF logo"
                   />
@@ -151,13 +151,13 @@ export default function Navbar() {
                         fontWeight: 700,
 
                         flexGrow: 1,
-                        display: { xs: "flex", md: "none" },
+                        display: { xs: "flex", lg: "none" },
                      }}
                   >
                      GeoSync
                   </Typography>
                   <Box
-                     sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}
+                     sx={{ flexGrow: 1, display: { xs: "none", lg: "flex" } }}
                   >
                      {pages.map((page, i) => (
                         <MenuItem
