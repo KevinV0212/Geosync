@@ -16,7 +16,12 @@ const initialInfo = {
 
 export default function DocumentInfo(props) {
    const [info, setInfo] = useState(initialInfo);
-   const { recordForView, openInForm, deleteDocument } = props;
+   const {
+      recordForView,
+      openInForm,
+      deleteDocument,
+      editable = false,
+   } = props;
    //title (in popup title)
    // description
    // link
@@ -59,19 +64,23 @@ export default function DocumentInfo(props) {
             justifyContent="center"
             divider={<Divider orientation="vertical" flexItem />}
          >
-            <Controls.Button
-               variant="outlined"
-               text="Delete"
-               startIcon={<DeleteIcon />}
-               onClick={() => deleteDocument(recordForView)}
-               fullWidth
-            />
-            <Controls.Button
-               text="Edit"
-               startIcon={<EditIcon />}
-               onClick={() => openInForm(recordForView)}
-               fullWidth
-            />
+            {editable ? (
+               <>
+                  <Controls.Button
+                     variant="outlined"
+                     text="Delete"
+                     startIcon={<DeleteIcon />}
+                     onClick={() => deleteDocument(recordForView)}
+                     fullWidth
+                  />
+                  <Controls.Button
+                     text="Edit"
+                     startIcon={<EditIcon />}
+                     onClick={() => openInForm(recordForView)}
+                     fullWidth
+                  />
+               </>
+            ) : undefined}
          </Stack>
       </Stack>
    );
