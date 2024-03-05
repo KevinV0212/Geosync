@@ -15,6 +15,7 @@ const initialInfo = {
 };
 
 export default function DocumentInfo(props) {
+   // Handling form data
    const [info, setInfo] = useState(initialInfo);
    const {
       recordForView,
@@ -22,11 +23,6 @@ export default function DocumentInfo(props) {
       deleteDocument,
       editable = false,
    } = props;
-   //title (in popup title)
-   // description
-   // link
-   // buttons
-   // edit, delete
 
    useEffect(() => {
       if (recordForView != null) {
