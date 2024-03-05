@@ -28,13 +28,14 @@ function Documents() {
    const [managerView, setManagerView] = useState(true);
    const handleViewChange = () => setManagerView(!managerView);
 
+   // Data for lists
    const [taskDocs, setTaskDocs] = useState([]);
    const [missionDocs, setMissionDocs] = useState([]);
 
+   // handles popups
    const [formTitle, setFormTitle] = useState("Add Document");
    const [recordForEdit, setRecordForEdit] = useState(null);
    const [recordForView, setRecordForView] = useState(null);
-
    const [openForm, setOpenForm] = useState(false);
    const [openInfo, setOpenInfo] = useState(false);
 

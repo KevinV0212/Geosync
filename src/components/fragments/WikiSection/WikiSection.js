@@ -37,11 +37,6 @@ const ASCOPE = [
 ];
 
 function NewDesign() {
-   // Country selector
-   // const [currentCountry, setCurrentCountry] = useLocalStorage(
-   //    "current_country",
-   //    null
-   // );
    const [currentCountry, setCurrentCountry] = useState(null);
    const [countries, setCountries] = useState([]);
 
