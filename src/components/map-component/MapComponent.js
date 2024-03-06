@@ -40,9 +40,10 @@ export default function MapComponent({ mapPins }) {
                "esri/WebMap",
                "esri/Graphic",
                "esri/layers/GraphicsLayer",
+               "esri/layers/FeatureLayer",
             ],
             { css: true }
-         ).then(([MapView, WebMap, Graphic, GraphicsLayer]) => {
+         ).then(([MapView, WebMap, Graphic, GraphicsLayer, FeatureLayer]) => {
             const webmap = new WebMap({
                basemap: "gray-vector",
             });
