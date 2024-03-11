@@ -4,16 +4,6 @@ import Search from "@arcgis/core/widgets/Search";
 import { loadModules } from "esri-loader";
 import { useEffect, useRef } from "react";
 
-import {
-   addMapPin,
-   deleteMapPin,
-   getMapPins,
-   updateMapPin,
-} from "../../utils/map/mapUtil.js";
-
-import MapPinForm from "../../components/forms/MapPinForm.js";
-import Controls from "../../components/reusable/Controls.js";
-
 export default function MapComponent({ mapPins }) {
    const mapDiv = useRef(null);
 
@@ -69,7 +59,7 @@ export default function MapComponent({ mapPins }) {
 
             const pinsPopup = {
                title: "{title}",
-               content: '<b>Description:</b> {description}<br><button>Edit</button>'
+               content: '<b>Description:</b> {description}<br><Button variant="contained">Edit</Button>'
              };
 
             // const graphicsLayer = new GraphicsLayer();
