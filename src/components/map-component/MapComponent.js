@@ -59,7 +59,7 @@ export default function MapComponent({ mapPins }) {
 
             const pinsPopup = {
                title: "{title}",
-               content: '<b>Description:</b> {description}<br><Button variant="contained">Edit</Button>'
+               content: '<b>Description:</b> {description}<br><button>Edit</button>'
              };
 
             // const graphicsLayer = new GraphicsLayer();
