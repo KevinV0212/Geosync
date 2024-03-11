@@ -1,39 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import DocumentForm from "../../components/forms/DocumentForm";
 import Box from "@mui/material/Box";
 
 import {
-   addTask,
-   deleteTask,
    getAllTasks,
    updateTask,
 } from "../../utils/document/task/taskDocUtil";
 
 import {
-   addMission,
-   deleteMission,
    getAllMissions,
-   updateMission,
 } from "../../utils/document/mission/missionDocUtil";
 
 import Controls from "../../components/reusable/Controls";
 import DocumentInfo from "../../components/info/DocumentInfo";
 
 import { List, ListItem, Stack } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import Section from "../../components/Section/Section";
 import aiLogo from "../../assets/map.png";
 
 export default function Documents() {
-   const navigate = useNavigate();
-
-   // Handling manager view
-   const [managerView, setManagerView] = useState(true);
-   const handleViewChange = () => setManagerView(!managerView);
-
    // Data for document lists
    const [taskDocs, setTaskDocs] = useState([]);
    const [missionDocs, setMissionDocs] = useState([]);
@@ -80,6 +65,16 @@ export default function Documents() {
          direction="column"
          sx={{ height: "100%", display: "flex", gap: "1rem" }}
       >
+         <Controls.Popup
+               title={recordForView ? recordForView.title : ""}
+               openPopup={openInfo}
+               setOpenPopup={setOpenInfo}
+            >
+               <DocumentInfo
+                  recordForView={recordForView}
+                  openInForm={openInForm}
+               />
+         </Controls.Popup>
          <Stack
             id="documentsWrapper"
             direction="row"
