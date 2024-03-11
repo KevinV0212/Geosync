@@ -22,7 +22,7 @@ import { List, ListItem, Stack } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import Section from "../../components/section/Section";
+import Section from "../../components/Section/Section";
 
 export default function Documents() {
    // Handling manager view

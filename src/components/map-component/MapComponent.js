@@ -8,7 +8,7 @@ export default function MapComponent({ mapPins }) {
    const mapDiv = useRef(null);
 
    // function that creates a pointGraphic from a latitude, longitude, and color
-   const createPointGraphic = (latitude, longitude, color) => {
+   const createPointGraphic = (latitude, longitude, color, elem, template) => {
       const point = {
          type: "point",
          latitude: latitude,
@@ -23,6 +23,8 @@ export default function MapComponent({ mapPins }) {
       const pointGraphic = new Graphic({
          geometry: point,
          symbol: simpleMarkerSymbol,
+         attributes: elem,
+         popupTemplate: template,
       });
 
       return pointGraphic;
@@ -40,9 +42,10 @@ export default function MapComponent({ mapPins }) {
                "esri/WebMap",
                "esri/Graphic",
                "esri/layers/GraphicsLayer",
+               "esri/layers/FeatureLayer",
             ],
             { css: true }
-         ).then(([MapView, WebMap, Graphic, GraphicsLayer]) => {
+         ).then(([MapView, WebMap, Graphic, GraphicsLayer, FeatureLayer]) => {
             const webmap = new WebMap({
                basemap: "gray-vector",
             });
@@ -54,7 +57,12 @@ export default function MapComponent({ mapPins }) {
                container: mapDiv.current, // The id or node representing the DOM element containing the view.
             });
 
-            const graphicsLayer = new GraphicsLayer();
+            const pinsPopup = {
+               title: "{title}",
+               content: '<b>Description:</b> {description}<br><Button variant="contained">Edit</Button>'
+             };
+
+            // const graphicsLayer = new GraphicsLayer();
             // graphicsLayer
             //    .when(() => {
             //       return graphicsLayer.queryExtent();
@@ -72,10 +80,11 @@ export default function MapComponent({ mapPins }) {
             //    index: 2,
             // });
 
-            webmap.add(graphicsLayer);
-
+            // webmap.add(graphicsLayer);
+            const graphicsArray = [];
             if (mapPins) {
                let len = mapPins.length;
+               console.log(mapPins);
                for (let i = 0; i < len; i++) {
                   let long = mapPins[i]["longitude"];
                   let lat = mapPins[i]["latitude"];
@@ -96,10 +105,14 @@ export default function MapComponent({ mapPins }) {
                      color[1] = 203;
                      color[2] = 5;
                   }
-                  const pointGraphic = createPointGraphic(lat, long, color);
-                  graphicsLayer.add(pointGraphic);
+                  const pointGraphic = createPointGraphic(lat, long, color, mapPins[i], pinsPopup);
+                  graphicsArray.push(pointGraphic);
                }
             }
+            const graphicsLayer = new GraphicsLayer({
+               graphics: graphicsArray
+             });
+            webmap.add(graphicsLayer);
          });
          return () => view && view.destroy();
       }
