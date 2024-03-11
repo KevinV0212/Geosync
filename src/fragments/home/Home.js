@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import DocumentForm from "../../components/forms/DocumentForm";
 import Box from "@mui/material/Box";
 
@@ -27,6 +28,8 @@ import Section from "../../components/Section/Section";
 import aiLogo from "../../assets/map.png";
 
 export default function Documents() {
+   const navigate = useNavigate();
+
    // Handling manager view
    const [managerView, setManagerView] = useState(true);
    const handleViewChange = () => setManagerView(!managerView);
@@ -67,80 +70,6 @@ export default function Documents() {
    function navigateToMap() {
       window.location.href = "/map";
    }
-
-   // Function that sends request to add/edit form with data from document
-   // After the request, it resets the form and refreshes the document lists
-   const addOrEdit = async (document, resetForm) => {
-      const requestBody = {
-         id: document.id || null,
-         title: document.title,
-         description: document.description,
-         link: document.link,
-      };
-      if (document.id) {
-         if (document.docType === "mission") {
-            await updateMission(document);
-         } else if (document.docType === "task") {
-            await updateTask(document);
-         }
-      } else {
-         if (document.docType === "mission") {
-            await addMission(requestBody);
-         } else if (document.docType === "task") {
-            await addTask(requestBody);
-         }
-      }
-      resetForm();
-      loadDocuments();
-      setRecordForEdit(null);
-      setOpenForm(false);
-   };
-
-   // Function that sends request to delete document passed in as a parameter
-   // After deleting, it closes that document's info box and refreshes document lists
-   const deleteDocument = async (document) => {
-      if (!window.confirm("Are you sure you want to delete this document?")) {
-         return;
-      }
-      if (document.docType === "mission") {
-         await deleteMission(document.id);
-      } else if (document.docType === "task") {
-         await deleteTask(document.id);
-      }
-      loadDocuments();
-      setRecordForEdit(null);
-      setOpenInfo(false);
-   };
-
-   // Function that renders manager specific controls
-   const renderManagerControls = () => {
-      if (managerView) {
-         return (
-            <>
-               <Controls.Button
-                  text="Add Document"
-                  startIcon={<AddIcon />}
-                  onClick={() => {
-                     setRecordForEdit(null);
-                     setFormTitle("Add Document");
-                     setOpenForm(true);
-                  }}
-               />
-
-               <Controls.Popup
-                  title={formTitle}
-                  openPopup={openForm}
-                  setOpenPopup={setOpenForm}
-               >
-                  <DocumentForm
-                     addOrEdit={addOrEdit}
-                     recordForEdit={recordForEdit}
-                  />
-               </Controls.Popup>
-            </>
-         );
-      }
-   };
 
    useEffect(() => {
       loadDocuments();
@@ -221,16 +150,20 @@ export default function Documents() {
                   sx={{ height: "100%", flexBasis: 0, flexGrow: 1 }}
                >
                   <List>
-                     {/* <Box
+                      <Box
                         component="img"
                         src={aiLogo}
                         sx={{
-                           width: "auto",
+                           width: "400px",
                            display: { xs: "none", lg: "flex" },
                            mr: 1,
+                           justify: "center",
                         }}
-                        alt="ARSOF logo"
-                     /> */}
+                        alt="Map logo"
+                        onClick={() => {
+                           navigateToMap();
+                        }}
+                     />
                   </List>
                </Section>
             </Stack>
