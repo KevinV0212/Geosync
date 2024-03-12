@@ -8,23 +8,49 @@ export default function MapComponent({ mapPins }) {
    const mapDiv = useRef(null);
 
    // function that creates a pointGraphic from a latitude, longitude, and color
-   const createPointGraphic = (latitude, longitude, color, elem, template) => {
+   const createPointGraphic = (latitude, longitude, elem, template, filter) => {
       const point = {
          type: "point",
          latitude: latitude,
          longitude: longitude,
       };
-      const simpleMarkerSymbol = {
-         type: "simple-marker",
-         size: 5,
-         color: color,
-         outline: null,
-      };
+      // Set symbol URL based on the filter
+      let symbolUrl;
+      switch (filter) {
+         case "political":
+            symbolUrl = "https://static.thenounproject.com/png/955295-200.png";
+            break;
+         case "military":
+            symbolUrl = "https://static.thenounproject.com/png/2005533-200.png";
+            break;
+         case "economy":
+            symbolUrl = "https://static.thenounproject.com/png/3734368-200.png";
+            break;
+         case "social":
+            symbolUrl = "https://static.thenounproject.com/png/3583844-200.png";
+            break;
+         case "information":
+            symbolUrl = "https://static.thenounproject.com/png/38005-200.png";
+            break;
+         case "infrastructure":
+            symbolUrl = "https://static.thenounproject.com/png/2496421-200.png";
+            break;
+         default:
+            // Default symbol URL
+            symbolUrl = "https://static.thenounproject.com/png/368360-200.png";
+            break;
+      }
+
       const pointGraphic = new Graphic({
-         geometry: point,
-         symbol: simpleMarkerSymbol,
-         attributes: elem,
-         popupTemplate: template,
+        geometry: point,
+        attributes: elem,
+        popupTemplate: template,
+        symbol: {
+            type: "picture-marker",
+            url: symbolUrl,
+            width: "64px",
+            height: "64px"
+        }
       });
 
       return pointGraphic;
@@ -88,24 +114,21 @@ export default function MapComponent({ mapPins }) {
                for (let i = 0; i < len; i++) {
                   let long = mapPins[i]["longitude"];
                   let lat = mapPins[i]["latitude"];
-                  let color = [0, 0, 0];
+                  let flag = "";
                   if (mapPins[i]["political"]) {
-                     color[0] = 255;
+                     flag = "political";
                   } else if (mapPins[i]["military"]) {
-                     color[2] = 255;
+                     flag = "military";
                   } else if (mapPins[i]["economy"]) {
-                     color[1] = 255;
+                     flag = "economy";
                   } else if (mapPins[i]["social"]) {
-                     color = [255, 0, 255];
+                     flag = "social";
                   } else if (mapPins[i]["information"]) {
-                     color[1] = 139;
-                     color[2] = 139;
+                     flag = "information";
                   } else if (mapPins[i]["infrastructure"]) {
-                     color[0] = 255;
-                     color[1] = 203;
-                     color[2] = 5;
+                     flag = "infrastructure";
                   }
-                  const pointGraphic = createPointGraphic(lat, long, color, mapPins[i], pinsPopup);
+                  const pointGraphic = createPointGraphic(lat, long, mapPins[i], pinsPopup, flag);
                   graphicsArray.push(pointGraphic);
                }
             }
