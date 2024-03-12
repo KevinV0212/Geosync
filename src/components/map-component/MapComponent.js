@@ -48,8 +48,8 @@ export default function MapComponent({ mapPins }) {
         symbol: {
             type: "picture-marker",
             url: symbolUrl,
-            width: "64px",
-            height: "64px"
+            width: "40px",
+            height: "40px"
         }
       });
 
