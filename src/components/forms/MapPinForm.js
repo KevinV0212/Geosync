@@ -46,16 +46,18 @@ export default function MapPinForm(props) {
             ? ""
             : "This field is required.";
       if ("latitude" in fieldData) {
-         temp.latitude =
-            fieldData.latitude || fieldData.latitude === 0
-               ? ""
-               : "This field is required.";
+         if (!fieldData.latitude && fieldData.latitude !== 0)
+            temp.latitude = "This field is required.";
+         else if (fieldData.latitude < -90 || fieldData.latitude > 90)
+            temp.latitude = "Valid Range: [-90,90]";
+         else temp.latitude = "";
       }
       if ("longitude" in fieldData) {
-         temp.longitude =
-            fieldData.longitude || fieldData.longitude === 0
-               ? ""
-               : "This field is required.";
+         if (!fieldData.longitude && fieldData.longitude !== 0)
+            temp.longitude = "This field is required.";
+         else if (fieldData.longitude < -180 || fieldData.longitude > 180)
+            temp.longitude = "Valid Range: [-180,180]";
+         else temp.longitude = "";
       }
 
       if ("pmesiiCat" in fieldData)
@@ -102,6 +104,9 @@ export default function MapPinForm(props) {
                name="title"
                label="Title"
                value={formData.title}
+               inputProps={{
+                  maxlength: "100",
+               }}
                onChange={handleInputChange}
                error={errors.title}
                fullWidth
@@ -110,6 +115,9 @@ export default function MapPinForm(props) {
                name="description"
                label="Description"
                value={formData.description}
+               inputProps={{
+                  maxlength: "65535",
+               }}
                onChange={handleInputChange}
                error={errors.description}
                multiline
@@ -122,8 +130,6 @@ export default function MapPinForm(props) {
                   value={formData.latitude}
                   inputProps={{
                      type: "number",
-                     min: -90,
-                     max: 90,
                      step: "any",
                   }}
                   onChange={handleInputChange}
@@ -145,8 +151,6 @@ export default function MapPinForm(props) {
                   value={formData.longitude}
                   inputProps={{
                      type: "number",
-                     min: -180,
-                     max: 180,
                      step: "any",
                   }}
                   onChange={handleInputChange}

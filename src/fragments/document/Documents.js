@@ -22,9 +22,9 @@ import { List, ListItem, Stack } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import Section from "../../components/Section/Section";
+import Section from "../../components/section/Section";
 
-export default function Documents() {
+function Documents() {
    // Handling manager view
    const [managerView, setManagerView] = useState(true);
    const handleViewChange = () => setManagerView(!managerView);
@@ -238,3 +238,5 @@ export default function Documents() {
       </Stack>
    );
 }
+
+export default Documents;

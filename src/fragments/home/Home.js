@@ -1,21 +1,15 @@
 import React, { useEffect, useState } from "react";
-import DocumentForm from "../../components/forms/DocumentForm";
 import Box from "@mui/material/Box";
 
-import {
-   getAllTasks,
-   updateTask,
-} from "../../utils/document/task/taskDocUtil";
+import { getAllTasks, updateTask } from "../../utils/document/task/taskDocUtil";
 
-import {
-   getAllMissions,
-} from "../../utils/document/mission/missionDocUtil";
+import { getAllMissions } from "../../utils/document/mission/missionDocUtil";
 
 import Controls from "../../components/reusable/Controls";
 import DocumentInfo from "../../components/info/DocumentInfo";
 
 import { List, ListItem, Stack } from "@mui/material";
-import Section from "../../components/Section/Section";
+import Section from "../../components/section/Section";
 import aiLogo from "../../assets/map.png";
 
 export default function Documents() {
@@ -66,14 +60,14 @@ export default function Documents() {
          sx={{ height: "100%", display: "flex", gap: "1rem" }}
       >
          <Controls.Popup
-               title={recordForView ? recordForView.title : ""}
-               openPopup={openInfo}
-               setOpenPopup={setOpenInfo}
-            >
-               <DocumentInfo
-                  recordForView={recordForView}
-                  openInForm={openInForm}
-               />
+            title={recordForView ? recordForView.title : ""}
+            openPopup={openInfo}
+            setOpenPopup={setOpenInfo}
+         >
+            <DocumentInfo
+               recordForView={recordForView}
+               openInForm={openInForm}
+            />
          </Controls.Popup>
          <Stack
             id="documentsWrapper"
@@ -145,7 +139,7 @@ export default function Documents() {
                   sx={{ height: "100%", flexBasis: 0, flexGrow: 1 }}
                >
                   <List>
-                      <Box
+                     <Box
                         component="img"
                         src={aiLogo}
                         sx={{
@@ -166,4 +160,3 @@ export default function Documents() {
       </Stack>
    );
 }
-

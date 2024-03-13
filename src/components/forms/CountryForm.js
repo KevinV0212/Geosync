@@ -27,16 +27,18 @@ export default function CountryForm(props) {
             ? ""
             : "This field is required.";
       if ("latitude" in fieldData) {
-         temp.latitude =
-            fieldData.latitude || fieldData.latitude === 0
-               ? ""
-               : "This field is required.";
+         if (!fieldData.latitude && fieldData.latitude !== 0)
+            temp.latitude = "This field is required.";
+         else if (fieldData.latitude < -90 || fieldData.latitude > 90)
+            temp.latitude = "Valid Range: [-90,90]";
+         else temp.latitude = "";
       }
       if ("longitude" in fieldData) {
-         temp.longitude =
-            fieldData.longitude || fieldData.longitude === 0
-               ? ""
-               : "This field is required.";
+         if (!fieldData.longitude && fieldData.longitude !== 0)
+            temp.longitude = "This field is required.";
+         else if (fieldData.longitude < -180 || fieldData.longitude > 180)
+            temp.longitude = "Valid Range: [-180,180]";
+         else temp.longitude = "";
       }
 
       setErrors({
@@ -76,6 +78,9 @@ export default function CountryForm(props) {
                name="countryName"
                label="Country Name"
                value={formData.countryName}
+               inputProps={{
+                  maxlength: "100",
+               }}
                onChange={handleInputChange}
                error={errors.countryName}
                fullWidth
@@ -87,8 +92,6 @@ export default function CountryForm(props) {
                   value={formData.latitude}
                   inputProps={{
                      type: "number",
-                     min: -90,
-                     max: 90,
                      step: "any",
                   }}
                   onChange={handleInputChange}
@@ -110,8 +113,6 @@ export default function CountryForm(props) {
                   value={formData.longitude}
                   inputProps={{
                      type: "number",
-                     min: -180,
-                     max: 180,
                      step: "any",
                   }}
                   onChange={handleInputChange}
