@@ -112,6 +112,9 @@ export default function EntryForm(props) {
                name="title"
                label="Title"
                value={formData.title}
+               inputProps={{
+                  maxlength: "100",
+               }}
                onChange={handleInputChange}
                error={errors.title}
                fullWidth
@@ -120,6 +123,9 @@ export default function EntryForm(props) {
                name="description"
                label="Description"
                value={formData.description}
+               inputProps={{
+                  maxlength: "65535",
+               }}
                onChange={handleInputChange}
                error={errors.description}
                multiline

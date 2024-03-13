@@ -74,6 +74,9 @@ export default function DocumentForm(props) {
                name="title"
                label="Title"
                value={formData.title}
+               inputProps={{
+                  maxlength: "100",
+               }}
                onChange={handleInputChange}
                error={errors.title}
                fullWidth
@@ -82,6 +85,9 @@ export default function DocumentForm(props) {
                name="description"
                label="Description"
                value={formData.description}
+               inputProps={{
+                  maxlength: "1000",
+               }}
                onChange={handleInputChange}
                error={errors.description}
                multiline
@@ -91,6 +97,9 @@ export default function DocumentForm(props) {
                name="link"
                label="Link"
                value={formData.link}
+               inputProps={{
+                  maxlength: "1000",
+               }}
                onChange={handleInputChange}
                error={errors.link}
                fullWidth
