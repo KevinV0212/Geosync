@@ -5,7 +5,11 @@ import Controls from "../reusable/Controls";
 
 import CancelIcon from "@mui/icons-material/Cancel";
 import CheckIcon from "@mui/icons-material/Check";
-import { Divider, Stack } from "@mui/material";
+import TitleIcon from "@mui/icons-material/Title";
+import MessageIcon from "@mui/icons-material/Message";
+import InsertLinkIcon from "@mui/icons-material/InsertLink";
+
+import { Divider, InputAdornment, Stack } from "@mui/material";
 
 const docTypeItems = [
    { id: "mission", title: "Mission" },
@@ -74,34 +78,73 @@ export default function DocumentForm(props) {
                name="title"
                label="Title"
                value={formData.title}
+               InputProps={{
+                  startAdornment: (
+                     <InputAdornment position="start">
+                        <TitleIcon />
+                     </InputAdornment>
+                  ),
+                  endAdornment: (
+                     <InputAdornment position="end">
+                        {`${formData.title.length} / 100`}
+                     </InputAdornment>
+                  ),
+               }}
                inputProps={{
                   maxlength: "100",
                }}
                onChange={handleInputChange}
                error={errors.title}
+               required
                fullWidth
             />
             <Controls.Input
                name="description"
                label="Description"
                value={formData.description}
+               InputProps={{
+                  startAdornment: (
+                     <InputAdornment position="start">
+                        <MessageIcon />
+                     </InputAdornment>
+                  ),
+                  endAdornment: (
+                     <InputAdornment position="end">
+                        {`${formData.description.length} / 1000`}
+                     </InputAdornment>
+                  ),
+               }}
                inputProps={{
                   maxlength: "1000",
                }}
                onChange={handleInputChange}
                error={errors.description}
                multiline
+               required
                fullWidth
             />
             <Controls.Input
                name="link"
                label="Link"
                value={formData.link}
+               InputProps={{
+                  startAdornment: (
+                     <InputAdornment position="start">
+                        <InsertLinkIcon />
+                     </InputAdornment>
+                  ),
+                  endAdornment: (
+                     <InputAdornment position="end">
+                        {`${formData.link.length} / 1000`}
+                     </InputAdornment>
+                  ),
+               }}
                inputProps={{
                   maxlength: "1000",
                }}
                onChange={handleInputChange}
                error={errors.link}
+               required
                fullWidth
             />
             <Controls.RadioGroup
@@ -112,6 +155,7 @@ export default function DocumentForm(props) {
                items={docTypeItems}
                error={errors.docType}
                disabled={formData.id ? true : false}
+               required
             />
 
             <Stack

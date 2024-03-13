@@ -1,21 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useLocalStorage } from "usehooks-ts";
 import { Form, useForm } from "./useForm";
 import Controls from "../reusable/Controls";
 
-import { Button, FormControl } from "@mui/base";
-import {
-   Divider,
-   FormControlLabel,
-   FormGroup,
-   FormLabel,
-   Radio,
-   RadioGroup,
-   Stack,
-   TextField,
-} from "@mui/material";
+import { Divider, InputAdornment, Stack } from "@mui/material";
 import CancelIcon from "@mui/icons-material/Cancel";
 import CheckIcon from "@mui/icons-material/Check";
+import TitleIcon from "@mui/icons-material/Title";
+import MessageIcon from "@mui/icons-material/Message";
 
 const pmesiiItems = [
    { id: "political", title: "Political" },
@@ -106,29 +97,55 @@ export default function EntryForm(props) {
    }, [recordForEdit]);
 
    return (
-      <div>
+      <>
          <Form onSubmit={handleSubmit}>
             <Controls.Input
                name="title"
                label="Title"
                value={formData.title}
+               InputProps={{
+                  startAdornment: (
+                     <InputAdornment position="start">
+                        <TitleIcon />
+                     </InputAdornment>
+                  ),
+                  endAdornment: (
+                     <InputAdornment position="end">
+                        {`${formData.title.length} / 100`}
+                     </InputAdornment>
+                  ),
+               }}
                inputProps={{
                   maxlength: "100",
                }}
                onChange={handleInputChange}
                error={errors.title}
+               required
                fullWidth
             />
             <Controls.Input
                name="description"
                label="Description"
                value={formData.description}
+               InputProps={{
+                  startAdornment: (
+                     <InputAdornment position="start">
+                        <MessageIcon />
+                     </InputAdornment>
+                  ),
+                  endAdornment: (
+                     <InputAdornment position="end">
+                        {`${formData.description.length} / 1000`}
+                     </InputAdornment>
+                  ),
+               }}
                inputProps={{
-                  maxlength: "65535",
+                  maxlength: "1000",
                }}
                onChange={handleInputChange}
                error={errors.description}
                multiline
+               required
                fullWidth
             />
             <Controls.RadioGroup
@@ -138,6 +155,7 @@ export default function EntryForm(props) {
                onChange={handleInputChange}
                items={pmesiiItems}
                error={errors.pmesiiCat}
+               required
             />
             <Controls.RadioGroup
                name="ascopeCat"
@@ -146,6 +164,7 @@ export default function EntryForm(props) {
                onChange={handleInputChange}
                items={ascopeItems}
                error={errors.ascopeCat}
+               required
             />
 
             <Stack
@@ -170,6 +189,6 @@ export default function EntryForm(props) {
                />
             </Stack>
          </Form>
-      </div>
+      </>
    );
 }

@@ -2,10 +2,13 @@ import React, { useEffect } from "react";
 import { useForm, Form } from "./useForm";
 import Controls from "../reusable/Controls";
 
-import { Divider, Stack, Typography } from "@mui/material";
+import { Divider, InputAdornment, Stack, Typography } from "@mui/material";
 import styles from "./forms.module.css";
 import CancelIcon from "@mui/icons-material/Cancel";
 import CheckIcon from "@mui/icons-material/Check";
+import TitleIcon from "@mui/icons-material/Title";
+import MessageIcon from "@mui/icons-material/Message";
+import PinDropIcon from "@mui/icons-material/PinDrop";
 
 const pmesiiItems = [
    { id: "political", title: "Political" },
@@ -104,23 +107,49 @@ export default function MapPinForm(props) {
                name="title"
                label="Title"
                value={formData.title}
+               InputProps={{
+                  startAdornment: (
+                     <InputAdornment position="start">
+                        <TitleIcon />
+                     </InputAdornment>
+                  ),
+                  endAdornment: (
+                     <InputAdornment position="end">
+                        {`${formData.title.length} / 100`}
+                     </InputAdornment>
+                  ),
+               }}
                inputProps={{
                   maxlength: "100",
                }}
                onChange={handleInputChange}
                error={errors.title}
+               required
                fullWidth
             />
             <Controls.Input
                name="description"
                label="Description"
                value={formData.description}
+               InputProps={{
+                  startAdornment: (
+                     <InputAdornment position="start">
+                        <MessageIcon />
+                     </InputAdornment>
+                  ),
+                  endAdornment: (
+                     <InputAdornment position="end">
+                        {`${formData.description.length} / 1000`}
+                     </InputAdornment>
+                  ),
+               }}
                inputProps={{
-                  maxlength: "65535",
+                  maxlength: "1000",
                }}
                onChange={handleInputChange}
                error={errors.description}
                multiline
+               required
                fullWidth
             />
             <Stack direction="row" alignItems="center">
@@ -128,42 +157,46 @@ export default function MapPinForm(props) {
                   name="latitude"
                   label="Latitude"
                   value={formData.latitude}
-                  inputProps={{
+                  InputProps={{
                      type: "number",
                      step: "any",
+                     startAdornment: (
+                        <InputAdornment position="start">
+                           <PinDropIcon />
+                        </InputAdornment>
+                     ),
+                     endAdornment: (
+                        <InputAdornment position="end">{`deg (${formData.latitude >= 0 ? "North" : "South"})`}</InputAdornment>
+                     ),
                   }}
                   onChange={handleInputChange}
                   error={errors.latitude}
+                  required
                   fullWidth
                />
-               <Typography
-                  variant="h6"
-                  component="h3"
-                  className={styles.inputSideText}
-               >
-                  {formData.latitude >= 0 ? "North" : "South"}
-               </Typography>
             </Stack>
             <Stack direction="row" alignItems="center">
                <Controls.Input
                   name="longitude"
                   label="Longitude"
                   value={formData.longitude}
-                  inputProps={{
+                  InputProps={{
                      type: "number",
                      step: "any",
+                     startAdornment: (
+                        <InputAdornment position="start">
+                           <PinDropIcon />
+                        </InputAdornment>
+                     ),
+                     endAdornment: (
+                        <InputAdornment position="end">{`deg (${formData.longitude >= 0 ? "East" : "West"})`}</InputAdornment>
+                     ),
                   }}
                   onChange={handleInputChange}
                   error={errors.longitude}
+                  required
                   fullWidth
                />
-               <Typography
-                  variant="h6"
-                  component="h3"
-                  className={styles.inputSideText}
-               >
-                  {formData.longitude >= 0 ? "East" : "West"}
-               </Typography>
             </Stack>
             <Controls.RadioGroup
                name="pmesiiCat"
@@ -172,6 +205,7 @@ export default function MapPinForm(props) {
                onChange={handleInputChange}
                items={pmesiiItems}
                error={errors.pmesiiCat}
+               required
             />
             <Stack
                direction="row"
