@@ -53,31 +53,30 @@ export default function DocumentInfo(props) {
                </Controls.IconButton>
             </a>
          </Stack>
-         <Stack
-            direction="row"
-            spacing={2}
-            alignItems="center"
-            justifyContent="center"
-            divider={<Divider orientation="vertical" flexItem />}
-         >
-            {editable ? (
-               <>
-                  <Controls.Button
-                     variant="outlined"
-                     text="Delete"
-                     startIcon={<DeleteIcon />}
-                     onClick={() => deleteDocument(recordForView)}
-                     fullWidth
-                  />
-                  <Controls.Button
-                     text="Edit"
-                     startIcon={<EditIcon />}
-                     onClick={() => openInForm(recordForView)}
-                     fullWidth
-                  />
-               </>
-            ) : undefined}
-         </Stack>
+
+         {editable ? (
+            <Stack
+               direction="row"
+               spacing={2}
+               alignItems="center"
+               justifyContent="center"
+               divider={<Divider orientation="vertical" flexItem />}
+            >
+               <Controls.Button
+                  variant="outlined"
+                  text="Delete"
+                  startIcon={<DeleteIcon />}
+                  onClick={() => deleteDocument(recordForView)}
+                  fullWidth
+               />
+               <Controls.Button
+                  text="Edit"
+                  startIcon={<EditIcon />}
+                  onClick={() => openInForm(recordForView)}
+                  fullWidth
+               />
+            </Stack>
+         ) : undefined}
       </Stack>
    );
 }

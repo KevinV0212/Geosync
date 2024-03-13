@@ -1,12 +1,14 @@
 import React, { useEffect } from "react";
 import { useForm, Form } from "./useForm";
 import Controls from "../reusable/Controls";
-import { Divider, Stack, Typography } from "@mui/material";
+import { Divider, InputAdornment, Stack } from "@mui/material";
 import styles from "./forms.module.css";
 
 import DeleteIcon from "@mui/icons-material/Delete";
 import CancelIcon from "@mui/icons-material/Cancel";
 import CheckIcon from "@mui/icons-material/Check";
+import TitleIcon from "@mui/icons-material/Title";
+import PinDropIcon from "@mui/icons-material/PinDrop";
 
 const initialFormValues = {
    countryID: null,
@@ -78,11 +80,24 @@ export default function CountryForm(props) {
                name="countryName"
                label="Country Name"
                value={formData.countryName}
+               InputProps={{
+                  startAdornment: (
+                     <InputAdornment position="start">
+                        <TitleIcon />
+                     </InputAdornment>
+                  ),
+                  endAdornment: (
+                     <InputAdornment position="end">
+                        {`${formData.countryName.length} / 100`}
+                     </InputAdornment>
+                  ),
+               }}
                inputProps={{
-                  maxlength: "100",
+                  maxLength: 100,
                }}
                onChange={handleInputChange}
                error={errors.countryName}
+               required
                fullWidth
             />
             <Stack direction="row" alignItems="center">
@@ -90,42 +105,46 @@ export default function CountryForm(props) {
                   name="latitude"
                   label="Latitude"
                   value={formData.latitude}
-                  inputProps={{
+                  InputProps={{
                      type: "number",
                      step: "any",
+                     startAdornment: (
+                        <InputAdornment position="start">
+                           <PinDropIcon />
+                        </InputAdornment>
+                     ),
+                     endAdornment: (
+                        <InputAdornment position="end">{`deg (${formData.latitude >= 0 ? "North" : "South"})`}</InputAdornment>
+                     ),
                   }}
                   onChange={handleInputChange}
                   error={errors.latitude}
+                  required
                   fullWidth
                />
-               <Typography
-                  variant="h6"
-                  component="h3"
-                  className={styles.inputSideText}
-               >
-                  {formData.latitude >= 0 ? "North" : "South"}
-               </Typography>
             </Stack>
             <Stack direction="row" alignItems="center">
                <Controls.Input
                   name="longitude"
                   label="Longitude"
                   value={formData.longitude}
-                  inputProps={{
+                  InputProps={{
                      type: "number",
                      step: "any",
+                     startAdornment: (
+                        <InputAdornment position="start">
+                           <PinDropIcon />
+                        </InputAdornment>
+                     ),
+                     endAdornment: (
+                        <InputAdornment position="end">{`deg (${formData.longitude >= 0 ? "East" : "West"})`}</InputAdornment>
+                     ),
                   }}
                   onChange={handleInputChange}
                   error={errors.longitude}
+                  required
                   fullWidth
                />
-               <Typography
-                  variant="h6"
-                  component="h3"
-                  className={styles.inputSideText}
-               >
-                  {formData.longitude >= 0 ? "East" : "West"}
-               </Typography>
             </Stack>
 
             <Stack
