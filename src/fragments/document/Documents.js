@@ -44,6 +44,9 @@ function Documents() {
    const loadDocuments = async () => {
       const tasks = await getAllTasks();
       const missions = await getAllMissions();
+      if (missions == null || tasks == null) {
+         return;
+      }
       setTaskDocs(tasks);
       setMissionDocs(missions);
    };

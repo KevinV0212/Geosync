@@ -12,13 +12,7 @@ import { useTheme } from "@emotion/react";
 
 export default function Section(props) {
    const theme = useTheme();
-   const {
-      title = null,
-      padding = 0,
-      contentCard = false,
-      children,
-      ...other
-   } = props;
+   const { title, padding, contentCard, children, ...other } = props;
 
    return (
       <Box {...other}>
@@ -37,8 +31,7 @@ export default function Section(props) {
                   boxSizing: "border-box",
                   height: "100%",
                   width: "100%",
-                  padding: padding,
-
+                  padding: padding || 0 ? padding : 0,
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "stretch",
@@ -72,11 +65,15 @@ export default function Section(props) {
                      sx={{
                         flexBasis: 0,
                         flexGrow: 1,
+
+                        display: "flex",
+                        flexDirection: "column",
+
                         overflow: "hidden",
-                        overflowY: "scroll",
+                        overflowY: "auto",
                      }}
                   >
-                     <CardContent id="sectionContent" sx={{}}>
+                     <CardContent id="sectionContent" sx={{ flexGrow: 1 }}>
                         {children}
                      </CardContent>
                   </Card>
