@@ -153,6 +153,7 @@ export default function DocumentForm(props) {
                value={formData.docType}
                onChange={handleInputChange}
                items={docTypeItems}
+               あｗｄ
                error={errors.docType}
                disabled={formData.id ? true : false}
                required

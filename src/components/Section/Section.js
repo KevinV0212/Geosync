@@ -12,63 +12,79 @@ import { useTheme } from "@emotion/react";
 
 export default function Section(props) {
    const theme = useTheme();
-   const { title = null, children, ...other } = props;
+   const {
+      title = null,
+      padding = 0,
+      contentCard = false,
+      children,
+      ...other
+   } = props;
 
    return (
-      <Paper
-         id="sectionWrapper"
-         sx={{ bgcolor: "theme.palette.lightGray.main" }}
-         {...other}
-      >
-         <Stack
-            direction="column"
-            spacing={2}
+      <Box {...other}>
+         <Paper
+            id="sectionWrapper"
             sx={{
-               boxSizing: "border-box",
-
                height: "100%",
                width: "100%",
-               padding: 2,
-
-               display: "flex",
-               flexDirection: "column",
-               alignItems: "stretch",
+               bgcolor: theme.palette.lightGray.main,
             }}
          >
-            <Box
-               id="sectionTitle"
+            <Stack
+               direction="column"
+               spacing={2}
                sx={{
                   boxSizing: "border-box",
-                  padding: 1,
+                  height: "100%",
+                  width: "100%",
+                  padding: padding,
 
-                  bgcolor: "black",
-                  borderRadius: 1,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "stretch",
                }}
             >
-               <Typography
-                  variant="h6"
-                  component="h2"
-                  align="center"
-                  color="common.white"
-               >
-                  {title || ""}
-               </Typography>
-            </Box>
+               {title ? (
+                  <Box
+                     id="sectionTitle"
+                     sx={{
+                        boxSizing: "border-box",
+                        padding: 1,
 
-            <Card
-               id="sectionContentWrapper"
-               sx={{
-                  flexBasis: 0,
-                  flexGrow: 1,
-                  overflow: "hidden",
-                  overflowY: "scroll",
-               }}
-            >
-               <CardContent id="sectionContent" sx={{}}>
-                  {children}
-               </CardContent>
-            </Card>
-         </Stack>
-      </Paper>
+                        bgcolor: "black",
+                        borderRadius: 1,
+                     }}
+                  >
+                     <Typography
+                        variant="h6"
+                        component="h2"
+                        align="center"
+                        color="common.white"
+                     >
+                        {title || ""}
+                     </Typography>
+                  </Box>
+               ) : undefined}
+
+               {contentCard ? (
+                  <Card
+                     id="sectionContentWrapper"
+                     sx={{
+                        flexBasis: 0,
+                        flexGrow: 1,
+                        overflow: "hidden",
+                        overflowY: "scroll",
+                     }}
+                  >
+                     <CardContent id="sectionContent" sx={{}}>
+                        {children}
+                     </CardContent>
+                  </Card>
+               ) : (
+                  children
+               )}
+            </Stack>
+         </Paper>
+      </Box>
    );
 }

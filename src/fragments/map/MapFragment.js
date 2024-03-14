@@ -21,7 +21,8 @@ import CountryForm from "../../components/forms/CountryForm.js";
 import MapComponent from "../../components/map-component/MapComponent.js";
 import Controls from "../../components/reusable/Controls.js";
 
-import { Stack } from "@mui/material";
+import { Box, Stack } from "@mui/material";
+import Section from "../../components/section/Section.js";
 
 export default function Map() {
    // Handling manager view
@@ -294,82 +295,65 @@ export default function Map() {
    }, [currentCountry, checkboxes]);
 
    return (
-      <div className="home">
-         <div className="filters-container">
-            <Stack className="button-div" spacing={1}>
-               {renderManagerControls()}
-               <Controls.Button
-                  variant="outlined"
-                  text={`${managerView ? "User view" : "Manager view"}`}
-                  onClick={handleViewChange}
-               ></Controls.Button>
-            </Stack>
+      <Stack
+         id="pageContainer"
+         direction="row"
+         spacing={2}
+         alignItems="stretch"
+      >
+         <Stack direction="column" spacing={2}>
+            <Section
+               className="filters-container"
+               padding={2}
+               sx={{ flexGrow: 1 }}
+            >
+               <Stack className="manager-controls" spacing={1}>
+                  {renderManagerControls()}
+                  <Controls.Button
+                     variant="outlined"
+                     text={`${managerView ? "User view" : "Manager view"}`}
+                     onClick={handleViewChange}
+                  ></Controls.Button>
+               </Stack>
+            </Section>
+            <Section title="Filters" padding={2} sx={{ flexGrow: 1 }}>
+               <Stack direction="column" spacing={0}>
+                  <Controls.Checkbox
+                     text="Political"
+                     checked={checkboxes.checkbox1}
+                     onChange={() => handleCheckboxChange("checkbox1")}
+                  />
+                  <Controls.Checkbox
+                     text="Military"
+                     checked={checkboxes.checkbox2}
+                     onChange={() => handleCheckboxChange("checkbox2")}
+                  />
+                  <Controls.Checkbox
+                     text="Economic"
+                     checked={checkboxes.checkbox3}
+                     onChange={() => handleCheckboxChange("checkbox3")}
+                  />
+                  <Controls.Checkbox
+                     text="Social"
+                     checked={checkboxes.checkbox4}
+                     onChange={() => handleCheckboxChange("checkbox4")}
+                  />
+                  <Controls.Checkbox
+                     text="Information"
+                     checked={checkboxes.checkbox5}
+                     onChange={() => handleCheckboxChange("checkbox5")}
+                  />
 
-            <form className="filters-form">
-               <h3 className="filter-title">Filters</h3>
-               <div className="filterPMESII">
-                  <label>
-                     <input
-                        type="checkbox"
-                        checked={checkboxes.checkbox1}
-                        onChange={() => handleCheckboxChange("checkbox1")}
-                     />
-                     Political
-                  </label>
-               </div>
-               <div className="filterPMESII">
-                  <label>
-                     <input
-                        type="checkbox"
-                        checked={checkboxes.checkbox2}
-                        onChange={() => handleCheckboxChange("checkbox2")}
-                     />
-                     Military
-                  </label>
-               </div>
-               <div className="filterPMESII">
-                  <label>
-                     <input
-                        type="checkbox"
-                        checked={checkboxes.checkbox3}
-                        onChange={() => handleCheckboxChange("checkbox3")}
-                     />
-                     Economic
-                  </label>
-               </div>
-               <div className="filterPMESII">
-                  <label>
-                     <input
-                        type="checkbox"
-                        checked={checkboxes.checkbox4}
-                        onChange={() => handleCheckboxChange("checkbox4")}
-                     />
-                     Social
-                  </label>
-               </div>
-               <div className="filterPMESII">
-                  <label>
-                     <input
-                        type="checkbox"
-                        checked={checkboxes.checkbox5}
-                        onChange={() => handleCheckboxChange("checkbox5")}
-                     />
-                     Information
-                  </label>
-               </div>
-               <div className="filterPMESII">
-                  <label>
-                     <input
-                        type="checkbox"
-                        checked={checkboxes.checkbox6}
-                        onChange={() => handleCheckboxChange("checkbox6")}
-                     />
-                     Infrastructure
-                  </label>
-               </div>
-            </form>
-         </div>
-         <div className="map-container">
+                  <Controls.Checkbox
+                     text="Infrastructure"
+                     checked={checkboxes.checkbox6}
+                     onChange={() => handleCheckboxChange("checkbox6")}
+                  />
+               </Stack>
+            </Section>
+         </Stack>
+
+         <Section padding={2} sx={{ minWidth: "500px", flexGrow: 1 }}>
             <Select
                className="country-selector"
                placeholder="Select a Country"
@@ -384,9 +368,8 @@ export default function Map() {
                }
                onChange={handleCountrySelect}
             />
-            {/* <div className="map" ref={mapElem}></div> */}
             <MapComponent mapPins={mapPins} />
-         </div>
-      </div>
+         </Section>
+      </Stack>
    );
 }
