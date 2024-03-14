@@ -176,7 +176,7 @@ export default function Navbar() {
                   </Box>
 
                   <Box sx={{ flexGrow: 0 }}>
-                     <Tooltip
+                     {/* <Tooltip
                         title={mode === "dark" ? "Light Mode" : "Dark Mode"}
                      >
                         <IconButton onClick={toggleColorMode}>
@@ -191,7 +191,7 @@ export default function Navbar() {
                         <IconButton onClick={handleOpenUserMenu}>
                            <AccountCircleIcon sx={{ color: "#FFFFFF" }} />
                         </IconButton>
-                     </Tooltip>
+                     </Tooltip> */}
                      <Menu
                         sx={{ mt: "45px" }}
                         id="menu-appbar"

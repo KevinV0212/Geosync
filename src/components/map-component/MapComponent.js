@@ -42,15 +42,15 @@ export default function MapComponent({ mapPins }) {
       }
 
       const pointGraphic = new Graphic({
-        geometry: point,
-        attributes: elem,
-        popupTemplate: template,
-        symbol: {
+         geometry: point,
+         attributes: elem,
+         popupTemplate: template,
+         symbol: {
             type: "picture-marker",
             url: symbolUrl,
             width: "64px",
-            height: "64px"
-        }
+            height: "64px",
+         },
       });
 
       return pointGraphic;
@@ -85,8 +85,9 @@ export default function MapComponent({ mapPins }) {
 
             const pinsPopup = {
                title: "{title}",
-               content: '<b>Description:</b> {description}<br><Button variant="contained">Edit</Button>'
-             };
+               content:
+                  '<b>Description:</b> {description}<br><Button variant="contained">Edit</Button>',
+            };
 
             // const graphicsLayer = new GraphicsLayer();
             // graphicsLayer
@@ -128,13 +129,19 @@ export default function MapComponent({ mapPins }) {
                   } else if (mapPins[i]["infrastructure"]) {
                      flag = "infrastructure";
                   }
-                  const pointGraphic = createPointGraphic(lat, long, mapPins[i], pinsPopup, flag);
+                  const pointGraphic = createPointGraphic(
+                     lat,
+                     long,
+                     mapPins[i],
+                     pinsPopup,
+                     flag
+                  );
                   graphicsArray.push(pointGraphic);
                }
             }
             const graphicsLayer = new GraphicsLayer({
-               graphics: graphicsArray
-             });
+               graphics: graphicsArray,
+            });
             webmap.add(graphicsLayer);
          });
          return () => view && view.destroy();
@@ -144,7 +151,12 @@ export default function MapComponent({ mapPins }) {
       <div
          className="mapDiv"
          ref={mapDiv}
-         style={{height: "83%", backgroundColor: "white", padding: "10px", borderRadius: "4px" }}
+         style={{
+            flexGrow: 1,
+            backgroundColor: "white",
+            padding: "10px",
+            borderRadius: "4px",
+         }}
       ></div>
    );
 }

@@ -190,6 +190,8 @@ function Documents() {
             >
                <Section
                   title="Mission Statements"
+                  padding={2}
+                  contentCard
                   sx={{ height: "100%", flexBasis: 0, flexGrow: 1 }}
                >
                   <List>
@@ -213,6 +215,8 @@ function Documents() {
 
                <Section
                   title="Tasks"
+                  padding={2}
+                  contentCard
                   sx={{ height: "100%", flexBasis: 0, flexGrow: 1 }}
                >
                   <List>
