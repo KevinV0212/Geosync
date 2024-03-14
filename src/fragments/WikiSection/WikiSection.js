@@ -11,7 +11,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Button from "@mui/material/Button";
 import Select from "react-select";
 import FormControl from "@mui/material/FormControl";
-import { useLocalStorage } from "usehooks-ts";
+import { useLocalStorage, useSessionStorage } from "usehooks-ts";
 import Level1 from "./Level1";
 import { createTheme } from "@mui/material/styles";
 import { getAllCountries } from "../../utils/country/countryUtil";
@@ -37,7 +37,10 @@ const ASCOPE = [
 ];
 
 function NewDesign() {
-   const [currentCountry, setCurrentCountry] = useState(null);
+   const [currentCountry, setCurrentCountry] = useSessionStorage(
+      "current_country",
+      null
+   );
    const [countries, setCountries] = useState([]);
 
    const [wikiEntries, setWikiEntries] = useState([]);

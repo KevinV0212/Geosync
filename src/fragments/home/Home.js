@@ -90,6 +90,8 @@ export default function Documents() {
             >
                <Section
                   title="Mission Statements"
+                  padding={2}
+                  contentCard
                   sx={{ height: "100%", flexBasis: 0, flexGrow: 1 }}
                >
                   <List>
@@ -113,6 +115,8 @@ export default function Documents() {
 
                <Section
                   title="Tasks"
+                  padding={2}
+                  contentCard
                   sx={{ height: "100%", flexBasis: 0, flexGrow: 1 }}
                >
                   <List>
@@ -136,24 +140,37 @@ export default function Documents() {
 
                <Section
                   title="Map"
+                  padding={2}
+                  contentCard
                   sx={{ height: "100%", flexBasis: 0, flexGrow: 1 }}
                >
-                  <List>
+                  <Stack
+                     justifyContent="flexStart"
+                     alignItems="center"
+                     sx={{ height: "100%" }}
+                  >
                      <Box
                         component="img"
                         src={aiLogo}
                         sx={{
-                           width: "400px",
+                           width: "100%",
                            display: { xs: "none", lg: "flex" },
                            mr: 1,
                            justify: "center",
+                           "&: hover": {
+                              cursor: "pointer",
+                              filter: "brightness(.8)",
+                           },
+                           "&: onclick": {
+                              filter: "brightness(.6)",
+                           },
                         }}
                         alt="Map logo"
                         onClick={() => {
                            navigateToMap();
                         }}
                      />
-                  </List>
+                  </Stack>
                </Section>
             </Stack>
          </Stack>

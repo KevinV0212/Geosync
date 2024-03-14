@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Select from "react-select";
-import { useLocalStorage } from "usehooks-ts";
+import { useLocalStorage, useSessionStorage } from "usehooks-ts";
 
 import "./MapFragment.css";
 import {
@@ -21,7 +21,7 @@ import CountryForm from "../../components/forms/CountryForm.js";
 import MapComponent from "../../components/map-component/MapComponent.js";
 import Controls from "../../components/reusable/Controls.js";
 
-import { Box, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
 import Section from "../../components/section/Section.js";
 
 export default function Map() {
@@ -30,7 +30,7 @@ export default function Map() {
    const handleViewChange = () => setManagerView(!managerView);
 
    // Data for country
-   const [currentCountry, setCurrentCountry] = useLocalStorage(
+   const [currentCountry, setCurrentCountry] = useSessionStorage(
       "current_country",
       null
    );
@@ -42,16 +42,24 @@ export default function Map() {
    }));
 
    // Data for mapPins
-   const [mapPins, setMapPins] = useState([]);
+   const [mapPins, setMapPins] = useState("mapPins", null);
 
    // Handling PMESII filters
+   const pmessiCats = [
+      "Political",
+      "Military",
+      "Economic",
+      "Social",
+      "Information",
+      "Infrastructure",
+   ];
    const [checkboxes, setCheckboxes] = useState({
-      checkbox1: true,
-      checkbox2: true,
-      checkbox3: true,
-      checkbox4: true,
-      checkbox5: true,
-      checkbox6: true,
+      Political: true,
+      Military: true,
+      Economic: true,
+      Social: true,
+      Information: true,
+      Infrastructure: true,
    });
 
    // Handling country form popup
@@ -300,12 +308,13 @@ export default function Map() {
          direction="row"
          spacing={2}
          alignItems="stretch"
+         sx={{ height: "100%" }}
       >
-         <Stack direction="column" spacing={2}>
+         <Stack direction="column" spacing={2} useFlexGap>
             <Section
                className="filters-container"
                padding={2}
-               sx={{ flexGrow: 1 }}
+               sx={{ flexBasis: 0, flexGrow: 1 }}
             >
                <Stack className="manager-controls" spacing={1}>
                   {renderManagerControls()}
@@ -316,39 +325,20 @@ export default function Map() {
                   ></Controls.Button>
                </Stack>
             </Section>
-            <Section title="Filters" padding={2} sx={{ flexGrow: 1 }}>
+            <Section
+               title="Filters"
+               padding={2}
+               sx={{ flexBasis: 0, flexGrow: 2 }}
+            >
                <Stack direction="column" spacing={0}>
-                  <Controls.Checkbox
-                     text="Political"
-                     checked={checkboxes.checkbox1}
-                     onChange={() => handleCheckboxChange("checkbox1")}
-                  />
-                  <Controls.Checkbox
-                     text="Military"
-                     checked={checkboxes.checkbox2}
-                     onChange={() => handleCheckboxChange("checkbox2")}
-                  />
-                  <Controls.Checkbox
-                     text="Economic"
-                     checked={checkboxes.checkbox3}
-                     onChange={() => handleCheckboxChange("checkbox3")}
-                  />
-                  <Controls.Checkbox
-                     text="Social"
-                     checked={checkboxes.checkbox4}
-                     onChange={() => handleCheckboxChange("checkbox4")}
-                  />
-                  <Controls.Checkbox
-                     text="Information"
-                     checked={checkboxes.checkbox5}
-                     onChange={() => handleCheckboxChange("checkbox5")}
-                  />
-
-                  <Controls.Checkbox
-                     text="Infrastructure"
-                     checked={checkboxes.checkbox6}
-                     onChange={() => handleCheckboxChange("checkbox6")}
-                  />
+                  {pmessiCats.map((cat, index) => (
+                     <Controls.Checkbox
+                        key={index}
+                        text={cat}
+                        checked={checkboxes[cat]}
+                        onChange={() => handleCheckboxChange(cat)}
+                     />
+                  ))}
                </Stack>
             </Section>
          </Stack>

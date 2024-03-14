@@ -111,7 +111,6 @@ export default function MapComponent({ mapPins }) {
             const graphicsArray = [];
             if (mapPins) {
                let len = mapPins.length;
-               console.log(mapPins);
                for (let i = 0; i < len; i++) {
                   let long = mapPins[i]["longitude"];
                   let lat = mapPins[i]["latitude"];

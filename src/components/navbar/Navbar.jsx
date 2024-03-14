@@ -21,6 +21,7 @@ import { navTheme } from "../../themes/theme";
 
 import styles from "./Navbar.module.css";
 import aiLogo from "../../assets/AIDIV-White.svg";
+import { useSessionStorage } from "usehooks-ts";
 
 const pages = [
    { title: "Home", link: "/" },
@@ -31,29 +32,18 @@ const pages = [
    { title: "FAQs", link: "/faq" },
 ];
 
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
-
 export default function Navbar() {
    const navigate = useNavigate();
 
    const [anchorElNav, setAnchorElNav] = React.useState(null);
-   const [anchorElUser, setAnchorElUser] = React.useState(null);
-   const { mode, toggleColorMode } = useThemeContext();
-   const [selected, setSelected] = useState(0);
+   const [selected, setSelected] = useSessionStorage(0);
 
    const handleOpenNavMenu = (event) => {
       setAnchorElNav(event.currentTarget);
    };
-   const handleOpenUserMenu = (event) => {
-      setAnchorElUser(event.currentTarget);
-   };
 
    const handleCloseNavMenu = () => {
       setAnchorElNav(null);
-   };
-
-   const handleCloseUserMenu = () => {
-      setAnchorElUser(null);
    };
 
    return (
@@ -175,51 +165,7 @@ export default function Navbar() {
                      ))}
                   </Box>
 
-                  <Box sx={{ flexGrow: 0 }}>
-                     {/* <Tooltip
-                        title={mode === "dark" ? "Light Mode" : "Dark Mode"}
-                     >
-                        <IconButton onClick={toggleColorMode}>
-                           {mode === "dark" ? (
-                              <LightModeIcon sx={{ color: "#FFFFFF" }} />
-                           ) : (
-                              <DarkModeIcon sx={{ color: "#FFFFFF" }} />
-                           )}
-                        </IconButton>
-                     </Tooltip>
-                     <Tooltip title="Account">
-                        <IconButton onClick={handleOpenUserMenu}>
-                           <AccountCircleIcon sx={{ color: "#FFFFFF" }} />
-                        </IconButton>
-                     </Tooltip> */}
-                     <Menu
-                        sx={{ mt: "45px" }}
-                        id="menu-appbar"
-                        anchorEl={anchorElUser}
-                        anchorOrigin={{
-                           vertical: "top",
-                           horizontal: "right",
-                        }}
-                        keepMounted
-                        transformOrigin={{
-                           vertical: "top",
-                           horizontal: "right",
-                        }}
-                        open={Boolean(anchorElUser)}
-                        onClose={handleCloseUserMenu}
-                     >
-                        {settings.map((setting) => (
-                           <MenuItem
-                              key={setting}
-                              onClick={handleCloseUserMenu}
-                           >
-                              <Typography textAlign="center">
-                                 {setting}
-                              </Typography>
-                           </MenuItem>
-                        ))}
-                     </Menu>
-                  </Box>
+                  <Box sx={{ flexGrow: 0 }}></Box>
                </Toolbar>
             </Container>
          </AppBar>
