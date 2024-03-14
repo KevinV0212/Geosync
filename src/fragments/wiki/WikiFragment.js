@@ -304,6 +304,31 @@ export default function WikiFragment () {
     setOpenForm(false);
  };
 
+ const renderEditButton = (entry) => {
+    return (
+        <>
+        <Controls.Button
+           text="Edit"
+           onClick={() => {
+            setRecordForEdit(entry);
+            setFormTitle("Edit Entry");
+            setOpenForm(true);
+         }}
+        />
+         <Controls.Popup
+            title={formTitle}
+            openPopup={openForm}
+            setOpenPopup={setOpenForm}
+        >
+            <EntryForm
+                addOrEdit={addOrEdit}
+                recordForEdit={recordForEdit}
+            />
+        </Controls.Popup>
+    </>
+    )
+ }
+
  // Function that renders manager specific controls
  const renderManagerControls = () => {
     if (managerView) {
@@ -356,6 +381,11 @@ export default function WikiFragment () {
        );
     }
  };
+
+    useEffect(() => {
+        loadCountries();
+        loadWikiEntries();
+    }, [currentCountry]);
 
 
      return(
@@ -459,7 +489,7 @@ export default function WikiFragment () {
               }
               onChange={handleCountrySelect}
            />
-           <WikiComponent selectedASCOPE = {selectedASCOPE} selectedPMESII = {selectedPMESII} entries = {wikiEntries}/>
+           <WikiComponent selectedASCOPE = {selectedASCOPE} selectedPMESII = {selectedPMESII} entries = {wikiEntries} editButtonFunction={renderEditButton} />
         </Section>
      </Stack>
      )

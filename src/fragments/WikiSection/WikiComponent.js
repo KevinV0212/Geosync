@@ -7,6 +7,9 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import Divider from "@mui/material/Divider";
 import { testEntries } from "../../test_data/wikiTest";
+import EntryForm from "../../components/forms/EntryForm";
+import Controls from "../../components/reusable/Controls.js";
+
 
 //selectedPMESII and selectedASCOPE useStates
 //Entries
@@ -28,6 +31,7 @@ export default function WikiComponent (props) {
         "People",
         "Events",
     ];
+
 
     return (
         <Box
@@ -79,18 +83,23 @@ export default function WikiComponent (props) {
                                     sx={{ borderBottomWidth: 1, borderColor: "black" }}
                                 />
                                 <AccordionDetails>
-                                {props.entries
+                                {testEntries
                                 .filter(
                                 (element) =>
                                     element[currentPMESII] === true &&
                                     element[currentASCOPE] === true
                                 )
                                 .map((entry, k) => (
-                                <Box sx={{}} key={k}>
+                                <Box sx={{display: "flex", justifyContent: "space-between"}}>
+                                    <Box>
                                     <Typography sx={{ textDecoration: "underline" }}>
                                         {entry.Title}
                                     </Typography>
                                     <Typography>{entry.Description} </Typography>
+                                    
+                                </Box>
+                            
+                                {props.editButtonFunction(entry)}
                                 </Box>
                                 ))}
                                 </AccordionDetails>
