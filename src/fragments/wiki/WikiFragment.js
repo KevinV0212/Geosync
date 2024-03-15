@@ -234,7 +234,7 @@ export default function WikiFragment() {
 
    // Function that sends request to delete country passed in as a parameter
    // After deleting, it closes country form and refreshes country lists
-   const handleCountryDelete = async (country) => {
+   const deleteCountry = async (country) => {
       if (!window.confirm("Are you sure you want to delete this country?")) {
          return;
       }
@@ -261,7 +261,42 @@ export default function WikiFragment() {
 
    // Function that sends request to delete entry passed in as a parameter
    // After deleting, it closes that entry's info box and refreshes wiki
-   const deleteEntry = () => {};
+   const deleteEntry = async (entry) => {
+      if (!window.confirm("Are you sure you want to delete this document?")) {
+         return;
+      }
+      // console.log("delete", entry.id);
+      await deleteWikiEntry(entry.id);
+      loadWikiEntries();
+      setRecordForEdit(null);
+      setOpenInfo(false);
+      // reload wiki
+   };
+
+   // const renderEditButton = (entry) => {
+   //    return (
+   //       <>
+   //          <Controls.Button
+   //             text="Edit"
+   //             onClick={() => {
+   //                setRecordForEdit(entry);
+   //                setFormTitle("Edit Entry");
+   //                setOpenForm(true);
+   //             }}
+   //          />
+   //          <Controls.Popup
+   //             title={formTitle}
+   //             openPopup={openForm}
+   //             setOpenPopup={setOpenForm}
+   //          >
+   //             <EntryForm
+   //                addOrEdit={addOrEditEntry}
+   //                recordForEdit={recordForEdit}
+   //             />
+   //          </Controls.Popup>
+   //       </>
+   //    );
+   // };
 
    // Function to handle country selector
    const handleCountrySelect = (country) => {
@@ -278,32 +313,6 @@ export default function WikiFragment() {
 
       setCurrentCountry(temp);
    };
-
-   const renderEditButton = (entry) => {
-      return (
-         <>
-            <Controls.Button
-               text="Edit"
-               onClick={() => {
-                  setRecordForEdit(entry);
-                  setFormTitle("Edit Entry");
-                  setOpenForm(true);
-               }}
-            />
-            <Controls.Popup
-               title={formTitle}
-               openPopup={openForm}
-               setOpenPopup={setOpenForm}
-            >
-               <EntryForm
-                  addOrEdit={addOrEditEntry}
-                  recordForEdit={recordForEdit}
-               />
-            </Controls.Popup>
-         </>
-      );
-   };
-
    // Function that renders manager specific controls
    const renderManagerControls = () => {
       if (managerView) {
@@ -330,7 +339,7 @@ export default function WikiFragment() {
                   <CountryForm
                      addOrEdit={addOrEditCountry}
                      recordForEdit={recordForCountry}
-                     handleCountryDelete={handleCountryDelete}
+                     deleteCountry={deleteCountry}
                   />
                </Controls.Popup>
 
@@ -392,7 +401,7 @@ export default function WikiFragment() {
                      <WikiEntryInfo
                         recordForView={recordForView}
                         openInForm={openEntryInForm}
-                        deleteDocument={deleteEntry}
+                        deleteEntry={deleteEntry}
                         editable={managerView}
                      />
                   </Controls.Popup>

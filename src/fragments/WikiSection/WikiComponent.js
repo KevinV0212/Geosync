@@ -20,10 +20,12 @@ export default function WikiComponent(props) {
       editButtonFunction,
       openInInfo,
    } = props;
+
+   // change economy to economic when api changes roll over
    const PMESII = [
       "political",
       "military",
-      "economic",
+      "economy",
       "social",
       "information",
       "infrastructure",
@@ -133,8 +135,10 @@ export default function WikiComponent(props) {
                                                    onClick={() =>
                                                       openInInfo({
                                                          ...entry,
-                                                         pmesiiCat: "political",
-                                                         ascopeCat: "area",
+                                                         pmesiiCat:
+                                                            currentPMESII,
+                                                         ascopeCat:
+                                                            currentASCOPE,
                                                       })
                                                    }
                                                 />

@@ -15,12 +15,7 @@ const initialInfo = {
 export default function WikiEntryInfo(props) {
    // Handling form data
    const [info, setInfo] = useState(initialInfo);
-   const {
-      recordForView,
-      openInForm,
-      deleteDocument,
-      editable = false,
-   } = props;
+   const { recordForView, openInForm, deleteEntry, editable = false } = props;
 
    function firstCharToCaps(str) {
       return str.charAt(0).toUpperCase() + str.slice(1);
@@ -57,7 +52,7 @@ export default function WikiEntryInfo(props) {
                   variant="outlined"
                   text="Delete"
                   startIcon={<DeleteIcon />}
-                  onClick={() => deleteDocument(recordForView)}
+                  onClick={() => deleteEntry(recordForView)}
                   fullWidth
                />
                <Controls.Button
