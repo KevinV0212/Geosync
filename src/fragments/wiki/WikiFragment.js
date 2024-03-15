@@ -164,7 +164,7 @@ export default function WikiFragment() {
    const [recordForCountry, setRecordForCountry] = useState(null);
 
    // Handling entry form and info popups
-   const [formTitle, setFormTitle] = useState("Add Entry");
+   const [EntryFormTitle, setFormTitle] = useState("Add Entry");
    const [recordForEdit, setRecordForEdit] = useState(null);
    const [recordForView, setRecordForView] = useState(null);
    const [openForm, setOpenForm] = useState(false);
@@ -253,11 +253,49 @@ export default function WikiFragment() {
    };
 
    // Function that opens entry add/edit form with data of currently selected pin
-   const openEntryInForm = () => {};
+   const openEntryInForm = (item) => {
+      setRecordForEdit({ ...item });
+      setFormTitle("Edit Entry");
+      setOpenInfo(false);
+      setOpenForm(true);
+   };
 
    // Function that sends request to add/edit form with data from entry
    // After the request, it resets the form and refreshes the wiki
-   const addOrEditEntry = async (entry, resetForm) => {};
+   const addOrEditEntry = async (entry, resetForm) => {
+      // fix area, structure, and event
+      let requestBody = {
+         countryID: currentCountry.countryID,
+         title: entry.title,
+         description: entry.description,
+         political: false,
+         military: false,
+         economic: false,
+         social: false,
+         information: false,
+         infrastructure: false,
+         area: false,
+         structure: false,
+         capabilities: false,
+         organization: false,
+         people: false,
+         event: false,
+      };
+      requestBody[entry.pmesiiCat] = true;
+      requestBody[entry.ASCOPE] = true;
+
+      if (entry.id) {
+         console.log("edit entry");
+         // await updateWikiEntry(requestBody);
+      } else {
+         console.log("add entry");
+         // await addWikiEntry(requestBody);
+      }
+      resetForm();
+      loadWikiEntries();
+      setRecordForEdit(null);
+      setOpenForm(false);
+   };
 
    // Function that sends request to delete entry passed in as a parameter
    // After deleting, it closes that entry's info box and refreshes wiki
@@ -285,7 +323,7 @@ export default function WikiFragment() {
    //             }}
    //          />
    //          <Controls.Popup
-   //             title={formTitle}
+   //             title={EntryFormTitle}
    //             openPopup={openForm}
    //             setOpenPopup={setOpenForm}
    //          >
@@ -353,7 +391,7 @@ export default function WikiFragment() {
                   disabled={currentCountry == null}
                />
                <Controls.Popup
-                  title={formTitle}
+                  title={EntryFormTitle}
                   openPopup={openForm}
                   setOpenPopup={setOpenForm}
                >

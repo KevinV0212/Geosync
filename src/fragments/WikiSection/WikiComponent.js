@@ -30,6 +30,7 @@ export default function WikiComponent(props) {
       "information",
       "infrastructure",
    ];
+   // fix these to plural
    const ASCOPE = [
       "area",
       "structure",
@@ -138,7 +139,14 @@ export default function WikiComponent(props) {
                                                          pmesiiCat:
                                                             currentPMESII,
                                                          ascopeCat:
-                                                            currentASCOPE,
+                                                            currentASCOPE ===
+                                                               "area" ||
+                                                            currentASCOPE ===
+                                                               "sctructure" ||
+                                                            currentASCOPE ===
+                                                               "event"
+                                                               ? `${currentASCOPE}s`
+                                                               : currentASCOPE,
                                                       })
                                                    }
                                                 />

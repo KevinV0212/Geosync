@@ -19,9 +19,9 @@ const pmesiiItems = [
 
 const ascopeItems = [
    { id: "areas", title: "Areas" },
-   { id: "structures", title: "Structures" },
+   { id: "structure", title: "Structures" },
    { id: "capabilities", title: "Capabilities" },
-   { id: "organizations", title: "Organizations" },
+   { id: "organization", title: "Organization" },
    { id: "people", title: "People" },
    { id: "events", title: "Events" },
 ];
@@ -30,8 +30,6 @@ const initialFormValues = {
    id: null,
    title: "",
    description: "",
-   latitude: 0,
-   longitude: 0,
    pmesiiCat: "",
    ascopeCat: "",
 };
@@ -77,8 +75,7 @@ export default function EntryForm(props) {
       e.preventDefault();
 
       if (validate()) {
-         // addOrEdit(formData, resetForm);
-         console.log(formData);
+         addOrEdit(formData, resetForm);
       }
    };
 
