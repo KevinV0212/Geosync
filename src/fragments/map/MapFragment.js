@@ -357,7 +357,11 @@ export default function MapFragment() {
                }
                onChange={handleCountrySelect}
             />
-            <MapComponent mapPins={mapPins} />
+            <MapComponent
+               mapPins={mapPins}
+               latitude={currentCountry ? currentCountry.latitude : 0}
+               longitude={currentCountry ? currentCountry.longitude : 0}
+            />
          </Section>
       </Stack>
    );

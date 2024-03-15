@@ -3,8 +3,9 @@ import Graphic from "@arcgis/core/Graphic";
 import Search from "@arcgis/core/widgets/Search";
 import { loadModules } from "esri-loader";
 import { useEffect, useRef } from "react";
+import { useSessionStorage } from "usehooks-ts";
 
-export default function MapComponent({ mapPins }) {
+export default function MapComponent({ mapPins, latitude, longitude }) {
    const mapDiv = useRef(null);
 
    // function that creates a pointGraphic from a latitude, longitude, and color
@@ -48,8 +49,8 @@ export default function MapComponent({ mapPins }) {
          symbol: {
             type: "picture-marker",
             url: symbolUrl,
-            width: "64px",
-            height: "64px",
+            width: "30px",
+            height: "30px",
          },
       });
 
@@ -78,8 +79,8 @@ export default function MapComponent({ mapPins }) {
 
             const view = new MapView({
                map: webmap, // An instance of a Map object to display in the view.
-               center: [0, 0],
-               zoom: 1, // Represents the map scale at the center of the view.
+               center: [longitude, latitude],
+               zoom: 2, // Represents the map scale at the center of the view.
                container: mapDiv.current, // The id or node representing the DOM element containing the view.
             });
 
@@ -89,25 +90,6 @@ export default function MapComponent({ mapPins }) {
                   '<b>Description:</b> {description}<br><Button variant="contained">Edit</Button>',
             };
 
-            // const graphicsLayer = new GraphicsLayer();
-            // graphicsLayer
-            //    .when(() => {
-            //       return graphicsLayer.queryExtent();
-            //    })
-            //    .then((response) => {
-            //       view.goTo(response.extent);
-            //    });
-            // const searchWidget = new Search({
-            //    view: view,
-            // });
-            // Adds the search widget below other elements in
-            // the top left corner of the view
-            // view.ui.add(searchWidget, {
-            //    position: "top-left",
-            //    index: 2,
-            // });
-
-            // webmap.add(graphicsLayer);
             const graphicsArray = [];
             if (mapPins) {
                let len = mapPins.length;
@@ -141,8 +123,16 @@ export default function MapComponent({ mapPins }) {
             const graphicsLayer = new GraphicsLayer({
                graphics: graphicsArray,
             });
-            webmap.add(graphicsLayer);
+            if (mapPins) {
+               graphicsLayer.when(function () {
+                  view.goTo(graphicsLayer.graphics.toArray()).then(function () {
+                     view.zoom = view.zoom - 1;
+                  });
+               });
+               webmap.add(graphicsLayer);
+            }
          });
+
          return () => view && view.destroy();
       }
    }, [mapPins]);
