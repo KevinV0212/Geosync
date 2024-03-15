@@ -282,14 +282,12 @@ export default function WikiFragment() {
          event: false,
       };
       requestBody[entry.pmesiiCat] = true;
-      requestBody[entry.ASCOPE] = true;
+      requestBody[entry.ascopeCat] = true;
 
       if (entry.id) {
-         console.log("edit entry");
-         // await updateWikiEntry(requestBody);
+         await updateWikiEntry(requestBody);
       } else {
-         console.log("add entry");
-         // await addWikiEntry(requestBody);
+         await addWikiEntry(requestBody);
       }
       resetForm();
       loadWikiEntries();
@@ -358,6 +356,7 @@ export default function WikiFragment() {
             <>
                <Controls.Button
                   text="Add Country"
+                  size="small"
                   onClick={() => {
                      setRecordForCountry(null);
                      setCountryFormTitle("Add Country");
@@ -366,6 +365,7 @@ export default function WikiFragment() {
                />
                <Controls.Button
                   text="Edit Country"
+                  size="small"
                   onClick={openCountryInForm}
                   disabled={currentCountry == null}
                />
@@ -383,6 +383,7 @@ export default function WikiFragment() {
 
                <Controls.Button
                   text="Add Entry"
+                  size="small"
                   onClick={() => {
                      setRecordForEdit(null);
                      setFormTitle("Add Entry");
@@ -417,34 +418,65 @@ export default function WikiFragment() {
          spacing={2}
          alignItems="stretch"
       >
-         <Stack direction="column" spacing={2}>
-            <Section
-               className="filters-container"
-               padding={2}
-               sx={{ flexGrow: 1 }}
-            >
-               <Stack className="manager-controls" spacing={1}>
-                  {renderManagerControls()}
-                  <Controls.Button
-                     variant="outlined"
-                     text={`${managerView ? "User view" : "Manager view"}`}
-                     onClick={handleViewChange}
-                  />
-
-                  <Controls.Popup
-                     title={recordForView ? recordForView.title : ""}
-                     openPopup={openInfo}
-                     setOpenPopup={setOpenInfo}
+         <Section
+            title="Filters"
+            padding={2}
+            contentCard
+            sx={{ overflowY: "auto" }}
+         >
+            {PMESII.map((item, i) => (
+               <div key={i}>
+                  <Accordion
+                     defaultExpanded
+                     sx={{
+                        background: "transparent",
+                        boxShadow: "none",
+                        disableGutters: "true",
+                        margin: "auto",
+                     }}
                   >
-                     <WikiEntryInfo
-                        recordForView={recordForView}
-                        openInForm={openEntryInForm}
-                        deleteEntry={deleteEntry}
-                        editable={managerView}
+                     <AccordionSummary
+                        expandIcon={<ArrowDropDownIcon />}
+                        aria-controls="panel1-content"
+                        id="panel1-header"
+                        sx={{ maxHeight: "30px" }}
+                     >
+                        <Controls.Checkbox
+                           text={item}
+                           checked={selectedPMESII[i] === true ? true : false}
+                           onClick={() => onClicker(i)}
+                        />
+                     </AccordionSummary>
+                     <Divider
+                        variant="middle"
+                        sx={{
+                           borderBottomWidth: 1,
+                           borderColor: "black",
+                        }}
                      />
-                  </Controls.Popup>
-               </Stack>
-            </Section>
+                     <AccordionDetails
+                        sx={{
+                           display: "flex",
+                           flexDirection: "column",
+                           alignSelf: "flex-start",
+                        }}
+                     >
+                        {ASCOPE.map((item, j) => (
+                           <Controls.Checkbox
+                              key={i + j}
+                              text={item}
+                              checked={selectedASCOPE[i * 6 + j] === true}
+                              onClick={() => filterASCOPE(i * 6 + j)}
+                              sx={{ marginLeft: "10px" }}
+                           />
+                        ))}
+                     </AccordionDetails>
+                  </Accordion>
+               </div>
+            ))}
+         </Section>
+
+         {/* <Stack direction="column" spacing={2}>
             <Box
                sx={{
                   overflowY: "scroll",
@@ -524,23 +556,53 @@ export default function WikiFragment() {
                   ))}
                </Stack>
             </Box>
-         </Stack>
+         </Stack> */}
 
          <Section padding={2} sx={{ minWidth: "500px", flexGrow: 1 }}>
-            <Select
-               className="country-selector"
-               placeholder="Select a Country"
-               options={listOptions}
-               value={
-                  currentCountry
-                     ? {
-                          value: currentCountry.countryID,
-                          label: currentCountry.countryName,
-                       }
-                     : null
-               }
-               onChange={handleCountrySelect}
-            />
+            <Stack
+               direction="row"
+               spacing={2}
+               sx={{ width: "100%", display: "flex" }}
+            >
+               <Box sx={{ flexGrow: 1 }}>
+                  <Select
+                     placeholder="Select a Country"
+                     options={listOptions}
+                     value={
+                        currentCountry
+                           ? {
+                                value: currentCountry.countryID,
+                                label: currentCountry.countryName,
+                             }
+                           : null
+                     }
+                     onChange={handleCountrySelect}
+                  />
+               </Box>
+               <Stack direction="row" spacing={1}>
+                  {renderManagerControls()}
+
+                  <Controls.Button
+                     variant="outlined"
+                     text={`${managerView ? "User view" : "Manager view"}`}
+                     onClick={handleViewChange}
+                  />
+
+                  <Controls.Popup
+                     title={recordForView ? recordForView.title : ""}
+                     openPopup={openInfo}
+                     setOpenPopup={setOpenInfo}
+                  >
+                     <WikiEntryInfo
+                        recordForView={recordForView}
+                        openInForm={openEntryInForm}
+                        deleteEntry={deleteEntry}
+                        editable={managerView}
+                     />
+                  </Controls.Popup>
+               </Stack>
+            </Stack>
+
             <WikiComponent
                selectedASCOPE={selectedASCOPE}
                selectedPMESII={selectedPMESII}

@@ -50,7 +50,7 @@ function App() {
                      boxSizing: "border-box",
                      maxHeight: "90vh",
                      paddingX: 3,
-                     paddingY: 5,
+                     paddingY: 3,
                      flexGrow: 1,
                      display: "flex",
                      flexDirection: "column",
