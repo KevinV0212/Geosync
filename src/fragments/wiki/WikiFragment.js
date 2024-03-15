@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useLocalStorage, useSessionStorage } from "usehooks-ts";
+import { useSessionStorage } from "usehooks-ts";
 import {
    addCountry,
    deleteCountry,
@@ -26,6 +26,7 @@ import Divider from "@mui/material/Divider";
 import WikiComponent from "../WikiSection/WikiComponent.js";
 import { Typography } from "@mui/material";
 import { useTheme } from "@emotion/react";
+import WikiEntryInfo from "../../components/info/WikiEntryInfo.js";
 
 export default function WikiFragment() {
    const theme = useTheme();
@@ -162,7 +163,7 @@ export default function WikiFragment() {
    const [countryFormTitle, setCountryFormTitle] = useState("Add Country");
    const [recordForCountry, setRecordForCountry] = useState(null);
 
-   // Handling form and info popups
+   // Handling entry form and info popups
    const [formTitle, setFormTitle] = useState("Add Entry");
    const [recordForEdit, setRecordForEdit] = useState(null);
    const [recordForView, setRecordForView] = useState(null);
@@ -190,22 +191,6 @@ export default function WikiFragment() {
       });
       setCountryFormTitle("Edit Country");
       setOpenCountryForm(true);
-   };
-
-   // Function to handle country selector
-   const handleCountrySelect = (country) => {
-      const countryInfo = countries.find(
-         (targetCountry) => targetCountry.id === country.value
-      );
-
-      const temp = {
-         countryID: countryInfo.id,
-         countryName: countryInfo.countryName,
-         latitude: countryInfo.latitude,
-         longitude: countryInfo.longitude,
-      };
-
-      setCurrentCountry(temp);
    };
 
    // Function that sends request to add/edit country with data from country
@@ -262,42 +247,36 @@ export default function WikiFragment() {
    };
 
    // Function that opens info form with data of item parameter
-   const openInInfo = (item) => {
+   const openEntryInInfo = (item) => {
       setRecordForView({ ...item });
       setOpenInfo(true);
    };
 
-   // Function that sends request to add/edit form with data from document
-   // After the request, it resets the form and refreshes the document lists
-   const addOrEdit = async (entry, resetForm) => {
-      let requestBody = {
-         countryID: currentCountry.countryID,
-         title: entry.title,
-         description: entry.description,
-         longitude: entry.longitude,
-         latitude: entry.latitude,
-         political: false,
-         military: false,
-         economic: false,
-         social: false,
-         information: false,
-         infrastructure: false,
-         area: false,
-         structure: false,
-         capabilities: false,
-         organization: false,
-         people: false,
-         events: false,
+   // Function that opens entry add/edit form with data of currently selected pin
+   const openEntryInForm = () => {};
+
+   // Function that sends request to add/edit form with data from entry
+   // After the request, it resets the form and refreshes the wiki
+   const addOrEditEntry = async (entry, resetForm) => {};
+
+   // Function that sends request to delete entry passed in as a parameter
+   // After deleting, it closes that entry's info box and refreshes wiki
+   const deleteEntry = () => {};
+
+   // Function to handle country selector
+   const handleCountrySelect = (country) => {
+      const countryInfo = countries.find(
+         (targetCountry) => targetCountry.id === country.value
+      );
+
+      const temp = {
+         countryID: countryInfo.id,
+         countryName: countryInfo.countryName,
+         latitude: countryInfo.latitude,
+         longitude: countryInfo.longitude,
       };
-      if (entry.id) {
-         await updateWikiEntry(requestBody);
-      } else {
-         await addWikiEntry(requestBody);
-      }
-      resetForm();
-      loadWikiEntries();
-      setRecordForEdit(null);
-      setOpenForm(false);
+
+      setCurrentCountry(temp);
    };
 
    const renderEditButton = (entry) => {
@@ -316,7 +295,10 @@ export default function WikiFragment() {
                openPopup={openForm}
                setOpenPopup={setOpenForm}
             >
-               <EntryForm addOrEdit={addOrEdit} recordForEdit={recordForEdit} />
+               <EntryForm
+                  addOrEdit={addOrEditEntry}
+                  recordForEdit={recordForEdit}
+               />
             </Controls.Popup>
          </>
       );
@@ -367,7 +349,7 @@ export default function WikiFragment() {
                   setOpenPopup={setOpenForm}
                >
                   <EntryForm
-                     addOrEdit={addOrEdit}
+                     addOrEdit={addOrEditEntry}
                      recordForEdit={recordForEdit}
                   />
                </Controls.Popup>
@@ -400,7 +382,20 @@ export default function WikiFragment() {
                      variant="outlined"
                      text={`${managerView ? "User view" : "Manager view"}`}
                      onClick={handleViewChange}
-                  ></Controls.Button>
+                  />
+
+                  <Controls.Popup
+                     title={recordForView ? recordForView.title : ""}
+                     openPopup={openInfo}
+                     setOpenPopup={setOpenInfo}
+                  >
+                     <WikiEntryInfo
+                        recordForView={recordForView}
+                        openInForm={openEntryInForm}
+                        deleteDocument={deleteEntry}
+                        editable={managerView}
+                     />
+                  </Controls.Popup>
                </Stack>
             </Section>
             <Box
@@ -503,7 +498,8 @@ export default function WikiFragment() {
                selectedASCOPE={selectedASCOPE}
                selectedPMESII={selectedPMESII}
                entries={wikiEntries}
-               editButtonFunction={renderEditButton}
+               // editButtonFunction={renderEditButton}
+               openInInfo={openEntryInInfo}
             />
          </Section>
       </Stack>

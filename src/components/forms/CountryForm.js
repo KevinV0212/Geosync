@@ -19,7 +19,7 @@ const initialFormValues = {
 
 // Form for a new country
 export default function CountryForm(props) {
-   const { addOrEdit, recordForEdit, handleCountryDelete } = props;
+   const { addOrEdit, recordForEdit, deleteCountry } = props;
 
    // validates formData and records any errors that show up
    const validate = (fieldData = formData) => {
@@ -158,7 +158,7 @@ export default function CountryForm(props) {
                   <Controls.Button
                      text="Delete"
                      startIcon={<DeleteIcon />}
-                     onClick={() => handleCountryDelete(recordForEdit)}
+                     onClick={() => deleteCountry(recordForEdit)}
                      disabled={formData.countryID == null}
                      sx={{ flexGrow: 1 }}
                      fullWidth

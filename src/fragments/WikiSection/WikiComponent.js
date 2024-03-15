@@ -13,8 +13,13 @@ import Controls from "../../components/reusable/Controls.js";
 //selectedPMESII and selectedASCOPE useStates
 //Entries
 export default function WikiComponent(props) {
-   const { selectedASCOPE, selectedPMESII, entries, editButtonFunction } =
-      props;
+   const {
+      selectedASCOPE,
+      selectedPMESII,
+      entries,
+      editButtonFunction,
+      openInInfo,
+   } = props;
    const PMESII = [
       "political",
       "military",
@@ -122,8 +127,18 @@ export default function WikiComponent(props) {
                                                       {entry.description}{" "}
                                                    </Typography>
                                                 </Box>
-
-                                                {editButtonFunction(entry)}
+                                                <Controls.Button
+                                                   text="Open"
+                                                   size="small"
+                                                   onClick={() =>
+                                                      openInInfo({
+                                                         ...entry,
+                                                         pmesiiCat: "political",
+                                                         ascopeCat: "area",
+                                                      })
+                                                   }
+                                                />
+                                                {/* {editButtonFunction(entry)} */}
                                              </Box>
                                           ))}
                                     </AccordionDetails>

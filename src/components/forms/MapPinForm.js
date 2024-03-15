@@ -29,7 +29,7 @@ const initialFormValues = {
 };
 // form for adding map pin to current country
 export default function MapPinForm(props) {
-   const { addOrEdit, recordForEdit, deleteMapPin } = props;
+   const { addOrEdit, recordForEdit, deletePin } = props;
 
    // validates formData and records any errors that show up
    const validate = (fieldData = formData) => {

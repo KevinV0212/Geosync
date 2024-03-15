@@ -157,7 +157,7 @@ function Documents() {
                }
                onClick={handleViewChange}
                text={`${managerView ? "User view" : "manager view"}`}
-            ></Controls.Button>
+            />
 
             <Controls.Popup
                title={recordForView ? recordForView.title : ""}

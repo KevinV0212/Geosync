@@ -154,7 +154,7 @@ export default function MapFragment() {
 
    // Function that sends request to delete country passed in as a parameter
    // After deleting, it closes country form and refreshes country lists
-   const handleCountryDelete = async (country) => {
+   const deleteCountry = async (country) => {
       if (!window.confirm("Are you sure you want to delete this country?")) {
          return;
       }
@@ -208,7 +208,7 @@ export default function MapFragment() {
 
    // Function that sends request to delete document passed in as a parameter
    // After deleting, it closes that document's info box and refreshes document lists
-   const handlePinDelete = async (pin) => {
+   const deletePin = async (pin) => {
       if (!window.confirm("Are you sure you want to delete this map pin?")) {
          return;
       }
@@ -269,7 +269,7 @@ export default function MapFragment() {
                   <CountryForm
                      addOrEdit={addOrEditCountry}
                      recordForEdit={recordForCountry}
-                     handleCountryDelete={handleCountryDelete}
+                     deleteCountry={deleteCountry}
                   />
                </Controls.Popup>
 
@@ -288,7 +288,7 @@ export default function MapFragment() {
                   <MapPinForm
                      addOrEdit={addOrEditPin}
                      recordForEdit={recordForPin}
-                     handlePinDelete={handlePinDelete}
+                     deletePin={deletePin}
                   />
                </Controls.Popup>
             </>
