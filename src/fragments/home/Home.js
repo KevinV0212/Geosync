@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 
-import { getAllTasks, updateTask } from "../../utils/document/task/taskDocUtil";
+import { getAllTasks } from "../../utils/document/task/taskDocUtil";
 
 import { getAllMissions } from "../../utils/document/mission/missionDocUtil";
 
@@ -11,17 +11,19 @@ import DocumentInfo from "../../components/info/DocumentInfo";
 import { List, ListItem, Stack } from "@mui/material";
 import Section from "../../components/section/Section";
 import aiLogo from "../../assets/map.png";
+import { useSessionStorage } from "usehooks-ts";
+import { useNavigate } from "react-router-dom";
 
 export default function Documents() {
+   const navigate = useNavigate();
+   const [currentPage, setCurrentPage] = useSessionStorage("currentPage", 0);
+
    // Data for document lists
    const [taskDocs, setTaskDocs] = useState([]);
    const [missionDocs, setMissionDocs] = useState([]);
 
-   // Handling form and info popups
-   const [formTitle, setFormTitle] = useState("Add Document");
-   const [recordForEdit, setRecordForEdit] = useState(null);
+   // Handling document info popups
    const [recordForView, setRecordForView] = useState(null);
-   const [openForm, setOpenForm] = useState(false);
    const [openInfo, setOpenInfo] = useState(false);
 
    // Function that fetches document lists
@@ -38,16 +40,9 @@ export default function Documents() {
       setOpenInfo(true);
    };
 
-   // Function that opens document add/edit form with data of item parameter
-   const openInForm = (item) => {
-      setRecordForEdit({ ...item });
-      setFormTitle("Edit Document");
-      setOpenInfo(false);
-      setOpenForm(true);
-   };
-
    function navigateToMap() {
-      window.location.href = "/map";
+      setCurrentPage(1);
+      navigate("/map");
    }
 
    useEffect(() => {
@@ -64,10 +59,7 @@ export default function Documents() {
             openPopup={openInfo}
             setOpenPopup={setOpenInfo}
          >
-            <DocumentInfo
-               recordForView={recordForView}
-               openInForm={openInForm}
-            />
+            <DocumentInfo recordForView={recordForView} />
          </Controls.Popup>
          <Stack
             id="documentsWrapper"

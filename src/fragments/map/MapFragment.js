@@ -247,51 +247,53 @@ export default function MapFragment() {
    const renderManagerControls = () => {
       if (managerView) {
          return (
-            <>
-               <Controls.Button
-                  text="Add Country"
-                  onClick={() => {
-                     setRecordForCountry(null);
-                     setCountryFormTitle("Add Country");
-                     setOpenCountryForm(true);
-                  }}
-               />
-               <Controls.Button
-                  text="Edit Country"
-                  onClick={openCountryInForm}
-                  disabled={currentCountry == null}
-               />
-               <Controls.Popup
-                  title={countryFormTitle}
-                  openPopup={openCountryForm}
-                  setOpenPopup={setOpenCountryForm}
-               >
-                  <CountryForm
-                     addOrEdit={addOrEditCountry}
-                     recordForEdit={recordForCountry}
-                     deleteCountry={deleteCountry}
+            <Section padding={2} sx={{ flexBasis: 0, flexGrow: 1 }}>
+               <Stack className="manager-controls" spacing={1}>
+                  <Controls.Button
+                     text="Add Country"
+                     onClick={() => {
+                        setRecordForCountry(null);
+                        setCountryFormTitle("Add Country");
+                        setOpenCountryForm(true);
+                     }}
                   />
-               </Controls.Popup>
+                  <Controls.Button
+                     text="Edit Country"
+                     onClick={openCountryInForm}
+                     disabled={currentCountry == null}
+                  />
+                  <Controls.Popup
+                     title={countryFormTitle}
+                     openPopup={openCountryForm}
+                     setOpenPopup={setOpenCountryForm}
+                  >
+                     <CountryForm
+                        addOrEdit={addOrEditCountry}
+                        recordForEdit={recordForCountry}
+                        deleteCountry={deleteCountry}
+                     />
+                  </Controls.Popup>
 
-               <Controls.Button
-                  text="Add Map Pin"
-                  onClick={() => {
-                     setOpenPinForm(true);
-                  }}
-                  disabled={currentCountry == null}
-               />
-               <Controls.Popup
-                  title={pinFormTitle}
-                  openPopup={openPinForm}
-                  setOpenPopup={setOpenPinForm}
-               >
-                  <MapPinForm
-                     addOrEdit={addOrEditPin}
-                     recordForEdit={recordForPin}
-                     deletePin={deletePin}
+                  <Controls.Button
+                     text="Add Map Pin"
+                     onClick={() => {
+                        setOpenPinForm(true);
+                     }}
+                     disabled={currentCountry == null}
                   />
-               </Controls.Popup>
-            </>
+                  <Controls.Popup
+                     title={pinFormTitle}
+                     openPopup={openPinForm}
+                     setOpenPopup={setOpenPinForm}
+                  >
+                     <MapPinForm
+                        addOrEdit={addOrEditPin}
+                        recordForEdit={recordForPin}
+                        deletePin={deletePin}
+                     />
+                  </Controls.Popup>
+               </Stack>
+            </Section>
          );
       }
    };
@@ -310,20 +312,8 @@ export default function MapFragment() {
          sx={{ height: "100%" }}
       >
          <Stack direction="column" spacing={2} useFlexGap>
-            <Section
-               className="filters-container"
-               padding={2}
-               sx={{ flexBasis: 0, flexGrow: 1 }}
-            >
-               <Stack className="manager-controls" spacing={1}>
-                  {renderManagerControls()}
-                  <Controls.Button
-                     variant="outlined"
-                     text={`${managerView ? "User view" : "Manager view"}`}
-                     onClick={handleViewChange}
-                  ></Controls.Button>
-               </Stack>
-            </Section>
+            {renderManagerControls()}
+
             <Section
                title="Filters"
                padding={2}
@@ -340,6 +330,11 @@ export default function MapFragment() {
                   ))}
                </Stack>
             </Section>
+            <Controls.Button
+               variant="outlined"
+               text={`${managerView ? "User view" : "Manager view"}`}
+               onClick={handleViewChange}
+            ></Controls.Button>
          </Stack>
 
          <Section padding={2} sx={{ minWidth: "500px", flexGrow: 1 }}>

@@ -72,66 +72,77 @@ export default function MapComponent({ mapPins, latitude, longitude }) {
                "esri/layers/FeatureLayer",
             ],
             { css: true }
-         ).then(([MapView, WebMap, Graphic, GraphicsLayer, FeatureLayer]) => {
-            const webmap = new WebMap({
-               basemap: "gray-vector",
-            });
+         ).then(
+            ([
+               MapView,
+               WebMap,
+               Graphic,
+               GraphicsLayer,
+               FeatureLayer,
+               Legend,
+            ]) => {
+               const webmap = new WebMap({
+                  basemap: "gray-vector",
+               });
 
-            const view = new MapView({
-               map: webmap, // An instance of a Map object to display in the view.
-               center: [longitude, latitude],
-               zoom: 2, // Represents the map scale at the center of the view.
-               container: mapDiv.current, // The id or node representing the DOM element containing the view.
-            });
+               const view = new MapView({
+                  map: webmap, // An instance of a Map object to display in the view.
+                  center: [longitude, latitude],
+                  zoom: 2, // Represents the map scale at the center of the view.
+                  container: mapDiv.current, // The id or node representing the DOM element containing the view.
+               });
 
-            const pinsPopup = {
-               title: "{title}",
-               content:
-                  '<b>Description:</b> {description}<br><Button variant="contained">Edit</Button>',
-            };
+               const pinsPopup = {
+                  title: "{title}",
+                  content:
+                     '<b>Description:</b> {description}<br><Button variant="contained">Edit</Button>',
+               };
 
-            const graphicsArray = [];
-            if (mapPins) {
-               let len = mapPins.length;
-               for (let i = 0; i < len; i++) {
-                  let long = mapPins[i]["longitude"];
-                  let lat = mapPins[i]["latitude"];
-                  let flag = "";
-                  if (mapPins[i]["political"]) {
-                     flag = "political";
-                  } else if (mapPins[i]["military"]) {
-                     flag = "military";
-                  } else if (mapPins[i]["economy"]) {
-                     flag = "economy";
-                  } else if (mapPins[i]["social"]) {
-                     flag = "social";
-                  } else if (mapPins[i]["information"]) {
-                     flag = "information";
-                  } else if (mapPins[i]["infrastructure"]) {
-                     flag = "infrastructure";
+               const graphicsArray = [];
+               if (mapPins) {
+                  let len = mapPins.length;
+                  for (let i = 0; i < len; i++) {
+                     let long = mapPins[i]["longitude"];
+                     let lat = mapPins[i]["latitude"];
+                     let flag = "";
+                     if (mapPins[i]["political"]) {
+                        flag = "political";
+                     } else if (mapPins[i]["military"]) {
+                        flag = "military";
+                     } else if (mapPins[i]["economy"]) {
+                        flag = "economy";
+                     } else if (mapPins[i]["social"]) {
+                        flag = "social";
+                     } else if (mapPins[i]["information"]) {
+                        flag = "information";
+                     } else if (mapPins[i]["infrastructure"]) {
+                        flag = "infrastructure";
+                     }
+                     const pointGraphic = createPointGraphic(
+                        lat,
+                        long,
+                        mapPins[i],
+                        pinsPopup,
+                        flag
+                     );
+                     graphicsArray.push(pointGraphic);
                   }
-                  const pointGraphic = createPointGraphic(
-                     lat,
-                     long,
-                     mapPins[i],
-                     pinsPopup,
-                     flag
-                  );
-                  graphicsArray.push(pointGraphic);
+               }
+               const graphicsLayer = new GraphicsLayer({
+                  graphics: graphicsArray,
+               });
+               if (mapPins) {
+                  graphicsLayer.when(function () {
+                     view
+                        .goTo(graphicsLayer.graphics.toArray())
+                        .then(function () {
+                           view.zoom = view.zoom - 1;
+                        });
+                  });
+                  webmap.add(graphicsLayer);
                }
             }
-            const graphicsLayer = new GraphicsLayer({
-               graphics: graphicsArray,
-            });
-            if (mapPins) {
-               graphicsLayer.when(function () {
-                  view.goTo(graphicsLayer.graphics.toArray()).then(function () {
-                     view.zoom = view.zoom - 1;
-                  });
-               });
-               webmap.add(graphicsLayer);
-            }
-         });
+         );
 
          return () => view && view.destroy();
       }

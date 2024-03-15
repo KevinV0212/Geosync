@@ -263,7 +263,6 @@ export default function WikiFragment() {
    // Function that sends request to add/edit form with data from entry
    // After the request, it resets the form and refreshes the wiki
    const addOrEditEntry = async (entry, resetForm) => {
-      // fix area, structure, and event
       let requestBody = {
          countryID: currentCountry.countryID,
          title: entry.title,
@@ -274,12 +273,12 @@ export default function WikiFragment() {
          social: false,
          information: false,
          infrastructure: false,
-         area: false,
-         structure: false,
+         areas: false,
+         structures: false,
          capabilities: false,
          organization: false,
          people: false,
-         event: false,
+         events: false,
       };
       requestBody[entry.pmesiiCat] = true;
       requestBody[entry.ascopeCat] = true;

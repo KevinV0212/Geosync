@@ -36,7 +36,7 @@ export default function Navbar() {
    const navigate = useNavigate();
 
    const [anchorElNav, setAnchorElNav] = React.useState(null);
-   const [selected, setSelected] = useSessionStorage(0);
+   const [currentPage, setCurrentPage] = useSessionStorage("currentPage", 0);
 
    const handleOpenNavMenu = (event) => {
       setAnchorElNav(event.currentTarget);
@@ -106,7 +106,7 @@ export default function Navbar() {
                            <MenuItem
                               key={i}
                               className={
-                                 selected === i
+                                 currentPage === i
                                     ? styles.selected
                                     : styles.menuItem
                               }
@@ -153,11 +153,13 @@ export default function Navbar() {
                         <MenuItem
                            key={i}
                            className={
-                              selected === i ? styles.selected : styles.menuItem
+                              currentPage === i
+                                 ? styles.selected
+                                 : styles.menuItem
                            }
                            onClick={() => {
                               navigate(page.link);
-                              setSelected(i);
+                              setCurrentPage(i);
                            }}
                         >
                            {page.title}

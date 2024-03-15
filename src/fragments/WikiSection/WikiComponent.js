@@ -21,23 +21,21 @@ export default function WikiComponent(props) {
       openInInfo,
    } = props;
 
-   // change economy to economic when api changes roll over
    const PMESII = [
       "political",
       "military",
-      "economy",
+      "economic",
       "social",
       "information",
       "infrastructure",
    ];
-   // fix these to plural
    const ASCOPE = [
-      "area",
-      "structure",
+      "areas",
+      "structures",
       "capabilities",
       "organization",
       "people",
-      "event",
+      "events",
    ];
 
    return (
@@ -139,14 +137,7 @@ export default function WikiComponent(props) {
                                                          pmesiiCat:
                                                             currentPMESII,
                                                          ascopeCat:
-                                                            currentASCOPE ===
-                                                               "area" ||
-                                                            currentASCOPE ===
-                                                               "sctructure" ||
-                                                            currentASCOPE ===
-                                                               "event"
-                                                               ? `${currentASCOPE}s`
-                                                               : currentASCOPE,
+                                                            currentASCOPE,
                                                       })
                                                    }
                                                 />
