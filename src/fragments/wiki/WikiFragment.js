@@ -36,7 +36,7 @@ export default function WikiFragment() {
 
    // Data for country
    const [currentCountry, setCurrentCountry] = useSessionStorage(
-      "current_country",
+      "currentCountry",
       null
    );
    const [countries, setCountries] = useState([]);
@@ -359,6 +359,7 @@ export default function WikiFragment() {
                      setFormTitle("Add Entry");
                      setOpenForm(true);
                   }}
+                  disabled={currentCountry == null}
                />
                <Controls.Popup
                   title={formTitle}
@@ -468,6 +469,7 @@ export default function WikiFragment() {
                            >
                               {ASCOPE.map((item, j) => (
                                  <Controls.Checkbox
+                                    key={i + j}
                                     text={item}
                                     checked={selectedASCOPE[i * 6 + j] === true}
                                     onClick={() => filterASCOPE(i * 6 + j)}

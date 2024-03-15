@@ -31,14 +31,6 @@ const initialFormValues = {
 export default function MapPinForm(props) {
    const { addOrEdit, recordForEdit, deleteMapPin } = props;
 
-   // get information of current country
-   // const [currentCountry, setCurrentCountry] = useLocalStorage(
-   //    "current_country",
-   //    null
-   // );
-   // let countryName = currentCountry ? currentCountry.countryName : null;
-   // let countryID = currentCountry ? currentCountry.countryID : null;
-
    // validates formData and records any errors that show up
    const validate = (fieldData = formData) => {
       let temp = { ...errors };

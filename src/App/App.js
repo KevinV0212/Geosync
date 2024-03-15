@@ -51,8 +51,6 @@ function App() {
                      maxHeight: "90vh",
                      paddingX: 3,
                      paddingY: 5,
-                     bgcolor: "plum",
-
                      flexGrow: 1,
                      display: "flex",
                      flexDirection: "column",

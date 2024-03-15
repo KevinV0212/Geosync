@@ -31,11 +31,10 @@ export default function MapFragment() {
 
    // Data for country
    const [currentCountry, setCurrentCountry] = useSessionStorage(
-      "current_country",
+      "currentCountry",
       null
    );
    const [countries, setCountries] = useState([]);
-   // const [currentCountry, setCurrentCountry] = useState(null);
    let listOptions = countries.map((country) => ({
       value: country.id,
       label: country.countryName,
@@ -103,7 +102,6 @@ export default function MapFragment() {
          return;
       }
       setMapPins([...pinList]);
-      console.log("loaded", pinList.length);
    };
 
    // Function that opens country form with data of current country

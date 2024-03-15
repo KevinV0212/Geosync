@@ -38,14 +38,6 @@ const initialFormValues = {
 
 export default function EntryForm(props) {
    const { addOrEdit, recordForEdit, handleCountryDelete } = props;
-
-   // const [currentCountry, setCurrentCountry] = useLocalStorage(
-   //    "current_country",
-   //    null
-   // );
-   // let countryName = currentCountry ? currentCountry.countryName : null;
-   // let countryID = currentCountry ? currentCountry.countryID : null
-
    // validates formData and records any errors that show up
    const validate = (fieldData = formData) => {
       let temp = { ...errors };

@@ -10,108 +10,132 @@ import { testEntries } from "../../test_data/wikiTest";
 import EntryForm from "../../components/forms/EntryForm";
 import Controls from "../../components/reusable/Controls.js";
 
-
 //selectedPMESII and selectedASCOPE useStates
 //Entries
-export default function WikiComponent (props) {
+export default function WikiComponent(props) {
+   const { selectedASCOPE, selectedPMESII, entries, editButtonFunction } =
+      props;
+   const PMESII = [
+      "political",
+      "military",
+      "economic",
+      "social",
+      "information",
+      "infrastructure",
+   ];
+   const ASCOPE = [
+      "area",
+      "structure",
+      "capabilities",
+      "organization",
+      "people",
+      "event",
+   ];
 
-    const PMESII = [
-        "Political",
-        "Military",
-        "Economic",
-        "Social",
-        "Information",
-        "Infrastructure",
-    ];
-    const ASCOPE = [
-        "Areas",
-        "Structure",
-        "Capabilities",
-        "Organization",
-        "People",
-        "Events",
-    ];
-
-
-    return (
-        <Box
-            component="main"
-            sx={{
+   return (
+      <Box
+         component="main"
+         sx={{
             flexGrow: 1,
             background: "#D7CEC7",
             overflowY: "scroll",
             maxHeight: "75vh",
-            }}
-        >
-            {PMESII.map((currentPMESII, i) => (
-            <div key={i}>
-                {props.selectedPMESII[i] && (
-                    <Accordion
-                        defaultExpanded
-                        sx={{ border: 1, borderColor: "black" }}
-                    >
-                        <AccordionSummary
+         }}
+      >
+         {PMESII.map((currentPMESII, i) => (
+            <div key={currentPMESII}>
+               {props.selectedPMESII[i] && (
+                  <Accordion
+                     defaultExpanded
+                     sx={{ border: 1, borderColor: "black" }}
+                  >
+                     <AccordionSummary
                         expandIcon={<ArrowDropDownIcon />}
                         aria-controls="panel1-content"
                         id="panel1-header"
+                     >
+                        <Typography
+                           sx={{
+                              fontWeight: "bold",
+                              textTransform: "capitalize",
+                           }}
                         >
-                        <Typography sx={{ fontWeight: "bold" }}>
-                            {currentPMESII}
+                           {currentPMESII}
                         </Typography>
-                        </AccordionSummary>
-                        <Divider
+                     </AccordionSummary>
+                     <Divider
                         variant="middle"
                         sx={{
-                            borderBottomWidth: 1,
-                            borderColor: "black",
+                           borderBottomWidth: 1,
+                           borderColor: "black",
                         }}
-                        />
-                        <AccordionDetails>
+                     />
+                     <AccordionDetails>
                         {ASCOPE.map((currentASCOPE, j) => (
-                        <div key={i}>
-                        {props.selectedASCOPE[i * 6 + j] && (
-                            <Accordion>
-                                <AccordionSummary
-                                    expandIcon={<ArrowDropDownIcon />}
-                                    aria-controls="panel1-content"
-                                    id="panel1-header"
-                                >
-                                    <Typography>{currentASCOPE}</Typography>
-                                </AccordionSummary>
-                                <Divider
-                                    variant="middle"
-                                    sx={{ borderBottomWidth: 1, borderColor: "black" }}
-                                />
-                                <AccordionDetails>
-                                {testEntries
-                                .filter(
-                                (element) =>
-                                    element[currentPMESII] === true &&
-                                    element[currentASCOPE] === true
-                                )
-                                .map((entry, k) => (
-                                <Box sx={{display: "flex", justifyContent: "space-between"}}>
-                                    <Box>
-                                    <Typography sx={{ textDecoration: "underline" }}>
-                                        {entry.Title}
-                                    </Typography>
-                                    <Typography>{entry.Description} </Typography>
-                                    
-                                </Box>
-                            
-                                {props.editButtonFunction(entry)}
-                                </Box>
-                                ))}
-                                </AccordionDetails>
-                            </Accordion>
-                        )}
-                        </div>
+                           <div key={`${currentPMESII}${currentASCOPE}`}>
+                              {props.selectedASCOPE[i * 6 + j] && (
+                                 <Accordion>
+                                    <AccordionSummary
+                                       expandIcon={<ArrowDropDownIcon />}
+                                       aria-controls="panel1-content"
+                                       id="panel1-header"
+                                    >
+                                       <Typography
+                                          sx={{ textTransform: "capitalize" }}
+                                       >
+                                          {currentASCOPE}
+                                       </Typography>
+                                    </AccordionSummary>
+                                    <Divider
+                                       variant="middle"
+                                       sx={{
+                                          borderBottomWidth: 1,
+                                          borderColor: "black",
+                                       }}
+                                    />
+                                    <AccordionDetails>
+                                       {entries
+                                          .filter(
+                                             (element) =>
+                                                element[currentPMESII] ===
+                                                   true &&
+                                                element[currentASCOPE] === true
+                                          )
+                                          .map((entry, k) => (
+                                             <Box
+                                                sx={{
+                                                   display: "flex",
+                                                   justifyContent:
+                                                      "space-between",
+                                                }}
+                                             >
+                                                <Box>
+                                                   <Typography
+                                                      sx={{
+                                                         textDecoration:
+                                                            "underline",
+                                                      }}
+                                                   >
+                                                      {entry.title}
+                                                   </Typography>
+                                                   <Typography>
+                                                      {entry.description}{" "}
+                                                   </Typography>
+                                                </Box>
+
+                                                {editButtonFunction(entry)}
+                                             </Box>
+                                          ))}
+                                    </AccordionDetails>
+                                 </Accordion>
+                              )}
+                           </div>
                         ))}
-                        </AccordionDetails>
-                    </Accordion>
-                )}
+                     </AccordionDetails>
+                  </Accordion>
+               )}
             </div>
-            ))}
-        </Box>
-    )
+         ))}
+      </Box>
+   );
 }
