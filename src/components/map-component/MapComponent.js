@@ -4,6 +4,7 @@ import Search from "@arcgis/core/widgets/Search";
 import { loadModules } from "esri-loader";
 import { useEffect, useRef } from "react";
 import { useSessionStorage } from "usehooks-ts";
+import * as reactiveUtils from "@arcgis/core/core/reactiveUtils.js";
 
 export default function MapComponent({ mapPins, latitude, longitude }) {
    const mapDiv = useRef(null);
@@ -92,10 +93,24 @@ export default function MapComponent({ mapPins, latitude, longitude }) {
                   container: mapDiv.current, // The id or node representing the DOM element containing the view.
                });
 
+               // Edit button
+               const editMapPin = {
+                  title: "EDIT",
+                  id: "edit",
+                  className: "esri-icon-edit"
+               };
+            
+               // Delete button
+               const delMapPin = {
+                  title: "DELETE",
+                  id: "del",
+                  className: "esri-icon-trash"
+               };
+
                const pinsPopup = {
                   title: "{title}",
-                  content:
-                     '<b>Description:</b> {description}<br><Button variant="contained">Edit</Button>',
+                  content: '<b>Description:</b> {description}',
+                  actions: [editMapPin, delMapPin]
                };
 
                const graphicsArray = [];
@@ -141,6 +156,19 @@ export default function MapComponent({ mapPins, latitude, longitude }) {
                   });
                   webmap.add(graphicsLayer);
                }
+
+               // define edit and delete functions above
+               reactiveUtils.on(
+                  () => view.popup,
+                  "trigger-action",
+                  (event) => {
+                     if (event.action.id === "edit") {
+                        //call edit function here
+                     }
+                     else if (event.action.id === "del") {
+                        //delete function here
+                     }
+               });
             }
          );
 
