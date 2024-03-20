@@ -3,6 +3,7 @@ import Graphic from "@arcgis/core/Graphic";
 import Search from "@arcgis/core/widgets/Search";
 import { loadModules } from "esri-loader";
 import { useEffect, useRef } from "react";
+import * as reactiveUtils from "@arcgis/core/core/reactiveUtils.js";
 
 export default function MapComponent({ mapPins }) {
    const mapDiv = useRef(null);
@@ -57,9 +58,24 @@ export default function MapComponent({ mapPins }) {
                container: mapDiv.current, // The id or node representing the DOM element containing the view.
             });
 
+            // Edit button
+            const editMapPin = {
+               title: "EDIT",
+               id: "edit",
+               className: "esri-icon-edit"
+             };
+            
+            // Delete button
+            const delMapPin = {
+               title: "DELETE",
+               id: "del",
+               className: "esri-icon-trash"
+            };
+
             const pinsPopup = {
                title: "{title}",
-               content: '<b>Description:</b> {description}<br><button>Edit</button>'
+               content: '<b>Description:</b> {description}',
+               actions: [editMapPin, delMapPin]
              };
 
             // const graphicsLayer = new GraphicsLayer();
@@ -79,8 +95,8 @@ export default function MapComponent({ mapPins }) {
             //    position: "top-left",
             //    index: 2,
             // });
-
             // webmap.add(graphicsLayer);
+
             const graphicsArray = [];
             if (mapPins) {
                let len = mapPins.length;
@@ -113,6 +129,31 @@ export default function MapComponent({ mapPins }) {
                graphics: graphicsArray
              });
             webmap.add(graphicsLayer);
+
+            function measureThis() {
+               // const geom = view.popup.selectedFeature.geometry;
+               // const initDistance = geometryEngine.geodesicLength(geom, "miles");
+               // const distance = parseFloat(Math.round(initDistance * 100) / 100).toFixed(2);
+               // view.popup.content =
+               //   view.popup.selectedFeature.attributes.name +
+               //   "<div style='background-color:DarkGray;color:white'>" +
+               //   distance +
+               //   " miles.</div>";
+             }
+             
+            // Event handler that fires each time an action is clicked.
+            reactiveUtils.on(
+               () => view.popup,
+               "trigger-action",
+               (event) => {
+                  if (event.action.id === "edit") {
+                     measureThis(); // replace with edit pin function
+                  }
+                  else if (event.action.id === "del") {
+                     //delete function here
+                  }
+            });
+
          });
          return () => view && view.destroy();
       }
