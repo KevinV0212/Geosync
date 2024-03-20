@@ -2,10 +2,13 @@ import React, { useEffect } from "react";
 import { useForm, Form } from "./useForm";
 import Controls from "../reusable/Controls";
 
-import { Divider, Stack, Typography } from "@mui/material";
+import { Divider, InputAdornment, Stack, Typography } from "@mui/material";
 import styles from "./forms.module.css";
 import CancelIcon from "@mui/icons-material/Cancel";
 import CheckIcon from "@mui/icons-material/Check";
+import TitleIcon from "@mui/icons-material/Title";
+import MessageIcon from "@mui/icons-material/Message";
+import PinDropIcon from "@mui/icons-material/PinDrop";
 
 const pmesiiItems = [
    { id: "political", title: "Political" },
@@ -26,15 +29,7 @@ const initialFormValues = {
 };
 // form for adding map pin to current country
 export default function MapPinForm(props) {
-   const { addOrEdit, recordForEdit, deleteMapPin } = props;
-
-   // get information of current country
-   // const [currentCountry, setCurrentCountry] = useLocalStorage(
-   //    "current_country",
-   //    null
-   // );
-   // let countryName = currentCountry ? currentCountry.countryName : null;
-   // let countryID = currentCountry ? currentCountry.countryID : null;
+   const { addOrEdit, recordForEdit, deletePin } = props;
 
    // validates formData and records any errors that show up
    const validate = (fieldData = formData) => {
@@ -46,16 +41,18 @@ export default function MapPinForm(props) {
             ? ""
             : "This field is required.";
       if ("latitude" in fieldData) {
-         temp.latitude =
-            fieldData.latitude || fieldData.latitude === 0
-               ? ""
-               : "This field is required.";
+         if (!fieldData.latitude && fieldData.latitude !== 0)
+            temp.latitude = "This field is required.";
+         else if (fieldData.latitude < -90 || fieldData.latitude > 90)
+            temp.latitude = "Valid Range: [-90,90]";
+         else temp.latitude = "";
       }
       if ("longitude" in fieldData) {
-         temp.longitude =
-            fieldData.longitude || fieldData.longitude === 0
-               ? ""
-               : "This field is required.";
+         if (!fieldData.longitude && fieldData.longitude !== 0)
+            temp.longitude = "This field is required.";
+         else if (fieldData.longitude < -180 || fieldData.longitude > 180)
+            temp.longitude = "Valid Range: [-180,180]";
+         else temp.longitude = "";
       }
 
       if ("pmesiiCat" in fieldData)
@@ -102,17 +99,49 @@ export default function MapPinForm(props) {
                name="title"
                label="Title"
                value={formData.title}
+               InputProps={{
+                  startAdornment: (
+                     <InputAdornment position="start">
+                        <TitleIcon />
+                     </InputAdornment>
+                  ),
+                  endAdornment: (
+                     <InputAdornment position="end">
+                        {`${formData.title.length} / 100`}
+                     </InputAdornment>
+                  ),
+               }}
+               inputProps={{
+                  maxlength: "100",
+               }}
                onChange={handleInputChange}
                error={errors.title}
+               required
                fullWidth
             />
             <Controls.Input
                name="description"
                label="Description"
                value={formData.description}
+               InputProps={{
+                  startAdornment: (
+                     <InputAdornment position="start">
+                        <MessageIcon />
+                     </InputAdornment>
+                  ),
+                  endAdornment: (
+                     <InputAdornment position="end">
+                        {`${formData.description.length} / 1000`}
+                     </InputAdornment>
+                  ),
+               }}
+               inputProps={{
+                  maxlength: "1000",
+               }}
                onChange={handleInputChange}
                error={errors.description}
                multiline
+               required
                fullWidth
             />
             <Stack direction="row" alignItems="center">
@@ -120,46 +149,46 @@ export default function MapPinForm(props) {
                   name="latitude"
                   label="Latitude"
                   value={formData.latitude}
-                  inputProps={{
+                  InputProps={{
                      type: "number",
-                     min: -90,
-                     max: 90,
                      step: "any",
+                     startAdornment: (
+                        <InputAdornment position="start">
+                           <PinDropIcon />
+                        </InputAdornment>
+                     ),
+                     endAdornment: (
+                        <InputAdornment position="end">{`deg (${formData.latitude >= 0 ? "North" : "South"})`}</InputAdornment>
+                     ),
                   }}
                   onChange={handleInputChange}
                   error={errors.latitude}
+                  required
                   fullWidth
                />
-               <Typography
-                  variant="h6"
-                  component="h3"
-                  className={styles.inputSideText}
-               >
-                  {formData.latitude >= 0 ? "North" : "South"}
-               </Typography>
             </Stack>
             <Stack direction="row" alignItems="center">
                <Controls.Input
                   name="longitude"
                   label="Longitude"
                   value={formData.longitude}
-                  inputProps={{
+                  InputProps={{
                      type: "number",
-                     min: -180,
-                     max: 180,
                      step: "any",
+                     startAdornment: (
+                        <InputAdornment position="start">
+                           <PinDropIcon />
+                        </InputAdornment>
+                     ),
+                     endAdornment: (
+                        <InputAdornment position="end">{`deg (${formData.longitude >= 0 ? "East" : "West"})`}</InputAdornment>
+                     ),
                   }}
                   onChange={handleInputChange}
                   error={errors.longitude}
+                  required
                   fullWidth
                />
-               <Typography
-                  variant="h6"
-                  component="h3"
-                  className={styles.inputSideText}
-               >
-                  {formData.longitude >= 0 ? "East" : "West"}
-               </Typography>
             </Stack>
             <Controls.RadioGroup
                name="pmesiiCat"
@@ -168,6 +197,7 @@ export default function MapPinForm(props) {
                onChange={handleInputChange}
                items={pmesiiItems}
                error={errors.pmesiiCat}
+               required
             />
             <Stack
                direction="row"

@@ -1,21 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useLocalStorage } from "usehooks-ts";
 import { Form, useForm } from "./useForm";
 import Controls from "../reusable/Controls";
 
-import { Button, FormControl } from "@mui/base";
-import {
-   Divider,
-   FormControlLabel,
-   FormGroup,
-   FormLabel,
-   Radio,
-   RadioGroup,
-   Stack,
-   TextField,
-} from "@mui/material";
+import { Divider, InputAdornment, Stack } from "@mui/material";
 import CancelIcon from "@mui/icons-material/Cancel";
 import CheckIcon from "@mui/icons-material/Check";
+import TitleIcon from "@mui/icons-material/Title";
+import MessageIcon from "@mui/icons-material/Message";
 
 const pmesiiItems = [
    { id: "political", title: "Political" },
@@ -28,9 +19,9 @@ const pmesiiItems = [
 
 const ascopeItems = [
    { id: "areas", title: "Areas" },
-   { id: "structures", title: "Structures" },
+   { id: "structure", title: "Structures" },
    { id: "capabilities", title: "Capabilities" },
-   { id: "organizations", title: "Organizations" },
+   { id: "organization", title: "Organization" },
    { id: "people", title: "People" },
    { id: "events", title: "Events" },
 ];
@@ -39,22 +30,12 @@ const initialFormValues = {
    id: null,
    title: "",
    description: "",
-   latitude: 0,
-   longitude: 0,
    pmesiiCat: "",
    ascopeCat: "",
 };
 
 export default function EntryForm(props) {
    const { addOrEdit, recordForEdit, handleCountryDelete } = props;
-
-   // const [currentCountry, setCurrentCountry] = useLocalStorage(
-   //    "current_country",
-   //    null
-   // );
-   // let countryName = currentCountry ? currentCountry.countryName : null;
-   // let countryID = currentCountry ? currentCountry.countryID : null
-
    // validates formData and records any errors that show up
    const validate = (fieldData = formData) => {
       let temp = { ...errors };
@@ -94,8 +75,7 @@ export default function EntryForm(props) {
       e.preventDefault();
 
       if (validate()) {
-         // addOrEdit(formData, resetForm);
-         console.log(formData);
+         addOrEdit(formData, resetForm);
       }
    };
 
@@ -106,23 +86,55 @@ export default function EntryForm(props) {
    }, [recordForEdit]);
 
    return (
-      <div>
+      <>
          <Form onSubmit={handleSubmit}>
             <Controls.Input
                name="title"
                label="Title"
                value={formData.title}
+               InputProps={{
+                  startAdornment: (
+                     <InputAdornment position="start">
+                        <TitleIcon />
+                     </InputAdornment>
+                  ),
+                  endAdornment: (
+                     <InputAdornment position="end">
+                        {`${formData.title.length} / 100`}
+                     </InputAdornment>
+                  ),
+               }}
+               inputProps={{
+                  maxlength: "100",
+               }}
                onChange={handleInputChange}
                error={errors.title}
+               required
                fullWidth
             />
             <Controls.Input
                name="description"
                label="Description"
                value={formData.description}
+               InputProps={{
+                  startAdornment: (
+                     <InputAdornment position="start">
+                        <MessageIcon />
+                     </InputAdornment>
+                  ),
+                  endAdornment: (
+                     <InputAdornment position="end">
+                        {`${formData.description.length} / 1000`}
+                     </InputAdornment>
+                  ),
+               }}
+               inputProps={{
+                  maxlength: "1000",
+               }}
                onChange={handleInputChange}
                error={errors.description}
                multiline
+               required
                fullWidth
             />
             <Controls.RadioGroup
@@ -132,6 +144,7 @@ export default function EntryForm(props) {
                onChange={handleInputChange}
                items={pmesiiItems}
                error={errors.pmesiiCat}
+               required
             />
             <Controls.RadioGroup
                name="ascopeCat"
@@ -140,6 +153,7 @@ export default function EntryForm(props) {
                onChange={handleInputChange}
                items={ascopeItems}
                error={errors.ascopeCat}
+               required
             />
 
             <Stack
@@ -164,6 +178,6 @@ export default function EntryForm(props) {
                />
             </Stack>
          </Form>
-      </div>
+      </>
    );
 }

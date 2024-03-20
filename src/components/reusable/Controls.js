@@ -4,6 +4,7 @@ import Popup from "./Popup";
 import Button from "./Button";
 import IconButton from "./IconButton";
 import ListItemButton from "./ListItemButton";
+import Checkbox from "./Checkbox";
 const Controls = {
    Input,
    RadioGroup,
@@ -11,6 +12,7 @@ const Controls = {
    Button,
    IconButton,
    ListItemButton,
+   Checkbox,
 };
 
 export default Controls;
