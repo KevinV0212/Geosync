@@ -22,7 +22,7 @@ import MapComponent from "../../components/map-component/MapComponent.js";
 import Controls from "../../components/reusable/Controls.js";
 
 import { Stack } from "@mui/material";
-import Section from "../../components/section/Section.js";
+import Section from "../../components/Section/Section.js";
 
 export default function MapFragment() {
    // Handling manager view
