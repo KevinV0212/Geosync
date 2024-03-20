@@ -3,8 +3,8 @@ import Graphic from "@arcgis/core/Graphic";
 import Search from "@arcgis/core/widgets/Search";
 import { loadModules } from "esri-loader";
 import { useEffect, useRef } from "react";
-import { useSessionStorage } from "usehooks-ts";
 import * as reactiveUtils from "@arcgis/core/core/reactiveUtils.js";
+import { useSessionStorage } from "usehooks-ts";
 
 export default function MapComponent({ mapPins, latitude, longitude }) {
    const mapDiv = useRef(null);
@@ -93,26 +93,26 @@ export default function MapComponent({ mapPins, latitude, longitude }) {
                   container: mapDiv.current, // The id or node representing the DOM element containing the view.
                });
 
-               // Edit button
-               const editMapPin = {
-                  title: "EDIT",
-                  id: "edit",
-                  className: "esri-icon-edit"
-               };
+            // Edit button
+            const editMapPin = {
+               title: "EDIT",
+               id: "edit",
+               className: "esri-icon-edit"
+             };
             
-               // Delete button
-               const delMapPin = {
-                  title: "DELETE",
-                  id: "del",
-                  className: "esri-icon-trash"
-               };
+            // Delete button
+            const delMapPin = {
+               title: "DELETE",
+               id: "del",
+               className: "esri-icon-trash"
+            };
 
-               const pinsPopup = {
-                  title: "{title}",
-                  content: '<b>Description:</b> {description}',
-                  actions: [editMapPin, delMapPin]
-               };
-
+            const pinsPopup = {
+               title: "{title}",
+               content: '<b>Description:</b> {description}',
+               actions: [editMapPin, delMapPin]
+             };
+              
                const graphicsArray = [];
                if (mapPins) {
                   let len = mapPins.length;
@@ -156,22 +156,34 @@ export default function MapComponent({ mapPins, latitude, longitude }) {
                   });
                   webmap.add(graphicsLayer);
                }
-
-               // define edit and delete functions above
-               reactiveUtils.on(
-                  () => view.popup,
-                  "trigger-action",
-                  (event) => {
-                     if (event.action.id === "edit") {
-                        //call edit function here
-                     }
-                     else if (event.action.id === "del") {
-                        //delete function here
-                     }
-               });
             }
-         );
 
+            function measureThis() {
+               // const geom = view.popup.selectedFeature.geometry;
+               // const initDistance = geometryEngine.geodesicLength(geom, "miles");
+               // const distance = parseFloat(Math.round(initDistance * 100) / 100).toFixed(2);
+               // view.popup.content =
+               //   view.popup.selectedFeature.attributes.name +
+               //   "<div style='background-color:DarkGray;color:white'>" +
+               //   distance +
+               //   " miles.</div>";
+             }
+             
+            // Event handler that fires each time an action is clicked.
+            reactiveUtils.on(
+               () => view.popup,
+               "trigger-action",
+               (event) => {
+                  if (event.action.id === "edit") {
+                     measureThis(); // replace with edit pin function
+                  }
+                  else if (event.action.id === "del") {
+                     //delete function here
+                  }
+            });
+
+         });
+     
          return () => view && view.destroy();
       }
    }, [mapPins]);
