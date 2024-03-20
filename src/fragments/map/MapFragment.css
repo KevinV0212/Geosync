@@ -10,7 +10,7 @@
 }
 
 .filters-form {
-   background-color: #D5D5D7;
+   background-color: #d5d5d7;
    padding: 10px;
    margin: 10px;
    margin-right: 0;
@@ -18,7 +18,7 @@
 }
 
 .button-div {
-   background-color: #D5D5D7;
+   background-color: #d5d5d7;
    padding: 10px;
    margin: 10px;
    margin-right: 0;
@@ -36,9 +36,9 @@
 .map-container {
    flex: 1;
    margin-left: 1px;
-   height: 73.5vh;
+   height: 100%;
    width: 100%;
-   background-color: #D5D5D7;
+   background-color: #d5d5d7;
    padding: 10px;
    margin: 10px;
    border-radius: 4px;

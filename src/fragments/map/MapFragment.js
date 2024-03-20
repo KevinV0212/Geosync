@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Select from "react-select";
-import { useLocalStorage } from "usehooks-ts";
+import { useSessionStorage } from "usehooks-ts";
 
 import "./MapFragment.css";
 import {
@@ -22,35 +22,43 @@ import MapComponent from "../../components/map-component/MapComponent.js";
 import Controls from "../../components/reusable/Controls.js";
 
 import { Stack } from "@mui/material";
+import Section from "../../components/Section/Section.js";
 
-export default function Map() {
+export default function MapFragment() {
    // Handling manager view
    const [managerView, setManagerView] = useState(true);
    const handleViewChange = () => setManagerView(!managerView);
 
    // Data for country
-   const [currentCountry, setCurrentCountry] = useLocalStorage(
-      "current_country",
+   const [currentCountry, setCurrentCountry] = useSessionStorage(
+      "currentCountry",
       null
    );
    const [countries, setCountries] = useState([]);
-   // const [currentCountry, setCurrentCountry] = useState(null);
    let listOptions = countries.map((country) => ({
       value: country.id,
       label: country.countryName,
    }));
 
    // Data for mapPins
-   const [mapPins, setMapPins] = useState([]);
+   const [mapPins, setMapPins] = useState("mapPins", null);
 
    // Handling PMESII filters
+   const pmessiCats = [
+      "Political",
+      "Military",
+      "Economic",
+      "Social",
+      "Information",
+      "Infrastructure",
+   ];
    const [checkboxes, setCheckboxes] = useState({
-      checkbox1: true,
-      checkbox2: true,
-      checkbox3: true,
-      checkbox4: true,
-      checkbox5: true,
-      checkbox6: true,
+      Political: true,
+      Military: true,
+      Economic: true,
+      Social: true,
+      Information: true,
+      Infrastructure: true,
    });
 
    // Handling country form popup
@@ -146,7 +154,7 @@ export default function Map() {
 
    // Function that sends request to delete country passed in as a parameter
    // After deleting, it closes country form and refreshes country lists
-   const handleCountryDelete = async (country) => {
+   const deleteCountry = async (country) => {
       if (!window.confirm("Are you sure you want to delete this country?")) {
          return;
       }
@@ -200,7 +208,7 @@ export default function Map() {
 
    // Function that sends request to delete document passed in as a parameter
    // After deleting, it closes that document's info box and refreshes document lists
-   const handlePinDelete = async (pin) => {
+   const deletePin = async (pin) => {
       if (!window.confirm("Are you sure you want to delete this map pin?")) {
          return;
       }
@@ -239,51 +247,53 @@ export default function Map() {
    const renderManagerControls = () => {
       if (managerView) {
          return (
-            <>
-               <Controls.Button
-                  text="Add Country"
-                  onClick={() => {
-                     setRecordForCountry(null);
-                     setCountryFormTitle("Add Country");
-                     setOpenCountryForm(true);
-                  }}
-               />
-               <Controls.Button
-                  text="Edit Country"
-                  onClick={openCountryInForm}
-                  disabled={currentCountry == null}
-               />
-               <Controls.Popup
-                  title={countryFormTitle}
-                  openPopup={openCountryForm}
-                  setOpenPopup={setOpenCountryForm}
-               >
-                  <CountryForm
-                     addOrEdit={addOrEditCountry}
-                     recordForEdit={recordForCountry}
-                     handleCountryDelete={handleCountryDelete}
+            <Section padding={2} sx={{ flexBasis: 0, flexGrow: 1 }}>
+               <Stack className="manager-controls" spacing={1}>
+                  <Controls.Button
+                     text="Add Country"
+                     onClick={() => {
+                        setRecordForCountry(null);
+                        setCountryFormTitle("Add Country");
+                        setOpenCountryForm(true);
+                     }}
                   />
-               </Controls.Popup>
+                  <Controls.Button
+                     text="Edit Country"
+                     onClick={openCountryInForm}
+                     disabled={currentCountry == null}
+                  />
+                  <Controls.Popup
+                     title={countryFormTitle}
+                     openPopup={openCountryForm}
+                     setOpenPopup={setOpenCountryForm}
+                  >
+                     <CountryForm
+                        addOrEdit={addOrEditCountry}
+                        recordForEdit={recordForCountry}
+                        deleteCountry={deleteCountry}
+                     />
+                  </Controls.Popup>
 
-               <Controls.Button
-                  text="Add Map Pin"
-                  onClick={() => {
-                     setOpenPinForm(true);
-                  }}
-                  disabled={currentCountry == null}
-               />
-               <Controls.Popup
-                  title={pinFormTitle}
-                  openPopup={openPinForm}
-                  setOpenPopup={setOpenPinForm}
-               >
-                  <MapPinForm
-                     addOrEdit={addOrEditPin}
-                     recordForEdit={recordForPin}
-                     handlePinDelete={handlePinDelete}
+                  <Controls.Button
+                     text="Add Map Pin"
+                     onClick={() => {
+                        setOpenPinForm(true);
+                     }}
+                     disabled={currentCountry == null}
                   />
-               </Controls.Popup>
-            </>
+                  <Controls.Popup
+                     title={pinFormTitle}
+                     openPopup={openPinForm}
+                     setOpenPopup={setOpenPinForm}
+                  >
+                     <MapPinForm
+                        addOrEdit={addOrEditPin}
+                        recordForEdit={recordForPin}
+                        deletePin={deletePin}
+                     />
+                  </Controls.Popup>
+               </Stack>
+            </Section>
          );
       }
    };
@@ -294,82 +304,40 @@ export default function Map() {
    }, [currentCountry, checkboxes]);
 
    return (
-      <div className="home">
-         <div className="filters-container">
-            <Stack className="button-div" spacing={1}>
-               {renderManagerControls()}
-               <Controls.Button
-                  variant="outlined"
-                  text={`${managerView ? "User view" : "Manager view"}`}
-                  onClick={handleViewChange}
-               ></Controls.Button>
-            </Stack>
+      <Stack
+         id="pageContainer"
+         direction="row"
+         spacing={2}
+         alignItems="stretch"
+         sx={{ height: "100%" }}
+      >
+         <Stack direction="column" spacing={2} useFlexGap>
+            {renderManagerControls()}
 
-            <form className="filters-form">
-               <h3 className="filter-title">Filters</h3>
-               <div className="filterPMESII">
-                  <label>
-                     <input
-                        type="checkbox"
-                        checked={checkboxes.checkbox1}
-                        onChange={() => handleCheckboxChange("checkbox1")}
+            <Section
+               title="Filters"
+               padding={2}
+               sx={{ flexBasis: 0, flexGrow: 2 }}
+            >
+               <Stack direction="column" spacing={0}>
+                  {pmessiCats.map((cat, index) => (
+                     <Controls.Checkbox
+                        key={index}
+                        text={cat}
+                        checked={checkboxes[cat]}
+                        onChange={() => handleCheckboxChange(cat)}
                      />
-                     Political
-                  </label>
-               </div>
-               <div className="filterPMESII">
-                  <label>
-                     <input
-                        type="checkbox"
-                        checked={checkboxes.checkbox2}
-                        onChange={() => handleCheckboxChange("checkbox2")}
-                     />
-                     Military
-                  </label>
-               </div>
-               <div className="filterPMESII">
-                  <label>
-                     <input
-                        type="checkbox"
-                        checked={checkboxes.checkbox3}
-                        onChange={() => handleCheckboxChange("checkbox3")}
-                     />
-                     Economic
-                  </label>
-               </div>
-               <div className="filterPMESII">
-                  <label>
-                     <input
-                        type="checkbox"
-                        checked={checkboxes.checkbox4}
-                        onChange={() => handleCheckboxChange("checkbox4")}
-                     />
-                     Social
-                  </label>
-               </div>
-               <div className="filterPMESII">
-                  <label>
-                     <input
-                        type="checkbox"
-                        checked={checkboxes.checkbox5}
-                        onChange={() => handleCheckboxChange("checkbox5")}
-                     />
-                     Information
-                  </label>
-               </div>
-               <div className="filterPMESII">
-                  <label>
-                     <input
-                        type="checkbox"
-                        checked={checkboxes.checkbox6}
-                        onChange={() => handleCheckboxChange("checkbox6")}
-                     />
-                     Infrastructure
-                  </label>
-               </div>
-            </form>
-         </div>
-         <div className="map-container">
+                  ))}
+               </Stack>
+            </Section>
+            <Controls.Button
+               variant="outlined"
+               text={`${managerView ? "User view" : "Manager view"}`}
+               onClick={handleViewChange}
+            ></Controls.Button>
+         </Stack>
+
+         <Section padding={2} sx={{ minWidth: "500px", flexGrow: 1 }}>
             <Select
                className="country-selector"
                placeholder="Select a Country"
@@ -384,9 +352,12 @@ export default function Map() {
                }
                onChange={handleCountrySelect}
             />
-            {/* <div className="map" ref={mapElem}></div> */}
-            <MapComponent mapPins={mapPins} />
-         </div>
-      </div>
+            <MapComponent
+               mapPins={mapPins}
+               latitude={currentCountry ? currentCountry.latitude : 0}
+               longitude={currentCountry ? currentCountry.longitude : 0}
+            />
+         </Section>
+      </Stack>
    );
 }

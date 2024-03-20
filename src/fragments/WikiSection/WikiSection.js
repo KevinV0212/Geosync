@@ -11,13 +11,10 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Button from "@mui/material/Button";
 import Select from "react-select";
 import FormControl from "@mui/material/FormControl";
-import { useLocalStorage } from "usehooks-ts";
-import Level1 from "./Level1";
+import { useLocalStorage, useSessionStorage } from "usehooks-ts";
 import { createTheme } from "@mui/material/styles";
 import { getAllCountries } from "../../utils/country/countryUtil";
 import { getWikiEntries } from "../../utils/wiki/wikiUtil";
-
-const numbers = [0, 1, 2, 3, 4, 5];
 
 const PMESII = [
    "Political",
@@ -37,7 +34,10 @@ const ASCOPE = [
 ];
 
 function NewDesign() {
-   const [currentCountry, setCurrentCountry] = useState(null);
+   const [currentCountry, setCurrentCountry] = useSessionStorage(
+      "current_country",
+      null
+   );
    const [countries, setCountries] = useState([]);
 
    const [wikiEntries, setWikiEntries] = useState([]);
@@ -148,6 +148,7 @@ function NewDesign() {
       setSelectedASCOPE(updated);
    }
    function onClicker(i) {
+      const numbers = [0, 1, 2, 3, 4, 5];
       filterPMESII(i);
       numbers.map((item, j) =>
          selectedPMESII[i] === false
@@ -455,13 +456,7 @@ function NewDesign() {
                                     }}
                                  />
                                  <AccordionDetails>
-                                    <Typography>
-                                       <Level1
-                                          currentPMESII={item}
-                                          selected={selectedASCOPE}
-                                          value={i}
-                                       />
-                                    </Typography>
+                                    <Typography></Typography>
                                  </AccordionDetails>
                               </Accordion>
                            )}

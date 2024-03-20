@@ -1,29 +1,25 @@
 import React, { useEffect, useState } from "react";
 import Controls from "../reusable/Controls";
 import { Divider, Stack, Typography } from "@mui/material";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 const initialInfo = {
    id: "",
-   link: "",
    title: "",
    description: "",
-   docType: "",
+   pmesiiCat: "",
+   ascopeCat: "",
 };
 
-export default function DocumentInfo(props) {
+export default function WikiEntryInfo(props) {
    // Handling form data
    const [info, setInfo] = useState(initialInfo);
-   const {
-      recordForView,
-      openInForm,
-      deleteDocument,
-      editable = false,
-   } = props;
+   const { recordForView, openInForm, deleteEntry, editable = false } = props;
 
+   function firstCharToCaps(str) {
+      return str.charAt(0).toUpperCase() + str.slice(1);
+   }
    useEffect(() => {
       if (recordForView != null) {
          setInfo({ ...recordForView });
@@ -32,6 +28,9 @@ export default function DocumentInfo(props) {
 
    return (
       <Stack spacing={2}>
+         <Typography align="left" width={1} noWrap>
+            {`${firstCharToCaps(info.pmesiiCat)} / ${firstCharToCaps(info.ascopeCat)}`}
+         </Typography>
          <Typography
             align="left"
             width={1}
@@ -40,19 +39,6 @@ export default function DocumentInfo(props) {
          >
             {info.description}
          </Typography>
-         <Stack direction="row" alignItems="center" justifyContent="center">
-            <Typography align="left" width={1} noWrap>
-               {info.link}
-            </Typography>
-            {/* <Controls.IconButton>
-               <ContentCopyIcon />
-            </Controls.IconButton> */}
-            <a href={info.link} target="_blank" rel="noreferrer">
-               <Controls.IconButton>
-                  <OpenInNewIcon />
-               </Controls.IconButton>
-            </a>
-         </Stack>
 
          {editable ? (
             <Stack
@@ -66,7 +52,7 @@ export default function DocumentInfo(props) {
                   variant="outlined"
                   text="Delete"
                   startIcon={<DeleteIcon />}
-                  onClick={() => deleteDocument(recordForView)}
+                  onClick={() => deleteEntry(recordForView)}
                   fullWidth
                />
                <Controls.Button

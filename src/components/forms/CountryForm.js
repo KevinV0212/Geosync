@@ -1,12 +1,14 @@
 import React, { useEffect } from "react";
 import { useForm, Form } from "./useForm";
 import Controls from "../reusable/Controls";
-import { Divider, Stack, Typography } from "@mui/material";
+import { Divider, InputAdornment, Stack } from "@mui/material";
 import styles from "./forms.module.css";
 
 import DeleteIcon from "@mui/icons-material/Delete";
 import CancelIcon from "@mui/icons-material/Cancel";
 import CheckIcon from "@mui/icons-material/Check";
+import TitleIcon from "@mui/icons-material/Title";
+import PinDropIcon from "@mui/icons-material/PinDrop";
 
 const initialFormValues = {
    countryID: null,
@@ -17,7 +19,7 @@ const initialFormValues = {
 
 // Form for a new country
 export default function CountryForm(props) {
-   const { addOrEdit, recordForEdit, handleCountryDelete } = props;
+   const { addOrEdit, recordForEdit, deleteCountry } = props;
 
    // validates formData and records any errors that show up
    const validate = (fieldData = formData) => {
@@ -27,16 +29,18 @@ export default function CountryForm(props) {
             ? ""
             : "This field is required.";
       if ("latitude" in fieldData) {
-         temp.latitude =
-            fieldData.latitude || fieldData.latitude === 0
-               ? ""
-               : "This field is required.";
+         if (!fieldData.latitude && fieldData.latitude !== 0)
+            temp.latitude = "This field is required.";
+         else if (fieldData.latitude < -90 || fieldData.latitude > 90)
+            temp.latitude = "Valid Range: [-90,90]";
+         else temp.latitude = "";
       }
       if ("longitude" in fieldData) {
-         temp.longitude =
-            fieldData.longitude || fieldData.longitude === 0
-               ? ""
-               : "This field is required.";
+         if (!fieldData.longitude && fieldData.longitude !== 0)
+            temp.longitude = "This field is required.";
+         else if (fieldData.longitude < -180 || fieldData.longitude > 180)
+            temp.longitude = "Valid Range: [-180,180]";
+         else temp.longitude = "";
       }
 
       setErrors({
@@ -76,8 +80,24 @@ export default function CountryForm(props) {
                name="countryName"
                label="Country Name"
                value={formData.countryName}
+               InputProps={{
+                  startAdornment: (
+                     <InputAdornment position="start">
+                        <TitleIcon />
+                     </InputAdornment>
+                  ),
+                  endAdornment: (
+                     <InputAdornment position="end">
+                        {`${formData.countryName.length} / 100`}
+                     </InputAdornment>
+                  ),
+               }}
+               inputProps={{
+                  maxLength: 100,
+               }}
                onChange={handleInputChange}
                error={errors.countryName}
+               required
                fullWidth
             />
             <Stack direction="row" alignItems="center">
@@ -85,46 +105,46 @@ export default function CountryForm(props) {
                   name="latitude"
                   label="Latitude"
                   value={formData.latitude}
-                  inputProps={{
+                  InputProps={{
                      type: "number",
-                     min: -90,
-                     max: 90,
                      step: "any",
+                     startAdornment: (
+                        <InputAdornment position="start">
+                           <PinDropIcon />
+                        </InputAdornment>
+                     ),
+                     endAdornment: (
+                        <InputAdornment position="end">{`deg (${formData.latitude >= 0 ? "North" : "South"})`}</InputAdornment>
+                     ),
                   }}
                   onChange={handleInputChange}
                   error={errors.latitude}
+                  required
                   fullWidth
                />
-               <Typography
-                  variant="h6"
-                  component="h3"
-                  className={styles.inputSideText}
-               >
-                  {formData.latitude >= 0 ? "North" : "South"}
-               </Typography>
             </Stack>
             <Stack direction="row" alignItems="center">
                <Controls.Input
                   name="longitude"
                   label="Longitude"
                   value={formData.longitude}
-                  inputProps={{
+                  InputProps={{
                      type: "number",
-                     min: -180,
-                     max: 180,
                      step: "any",
+                     startAdornment: (
+                        <InputAdornment position="start">
+                           <PinDropIcon />
+                        </InputAdornment>
+                     ),
+                     endAdornment: (
+                        <InputAdornment position="end">{`deg (${formData.longitude >= 0 ? "East" : "West"})`}</InputAdornment>
+                     ),
                   }}
                   onChange={handleInputChange}
                   error={errors.longitude}
+                  required
                   fullWidth
                />
-               <Typography
-                  variant="h6"
-                  component="h3"
-                  className={styles.inputSideText}
-               >
-                  {formData.longitude >= 0 ? "East" : "West"}
-               </Typography>
             </Stack>
 
             <Stack
@@ -138,7 +158,7 @@ export default function CountryForm(props) {
                   <Controls.Button
                      text="Delete"
                      startIcon={<DeleteIcon />}
-                     onClick={() => handleCountryDelete(recordForEdit)}
+                     onClick={() => deleteCountry(recordForEdit)}
                      disabled={formData.countryID == null}
                      sx={{ flexGrow: 1 }}
                      fullWidth

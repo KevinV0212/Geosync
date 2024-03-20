@@ -24,7 +24,7 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import Section from "../../components/Section/Section";
 
-export default function Documents() {
+function Documents() {
    // Handling manager view
    const [managerView, setManagerView] = useState(true);
    const handleViewChange = () => setManagerView(!managerView);
@@ -44,6 +44,9 @@ export default function Documents() {
    const loadDocuments = async () => {
       const tasks = await getAllTasks();
       const missions = await getAllMissions();
+      if (missions == null || tasks == null) {
+         return;
+      }
       setTaskDocs(tasks);
       setMissionDocs(missions);
    };
@@ -154,7 +157,7 @@ export default function Documents() {
                }
                onClick={handleViewChange}
                text={`${managerView ? "User view" : "manager view"}`}
-            ></Controls.Button>
+            />
 
             <Controls.Popup
                title={recordForView ? recordForView.title : ""}
@@ -190,6 +193,8 @@ export default function Documents() {
             >
                <Section
                   title="Mission Statements"
+                  padding={2}
+                  contentCard
                   sx={{ height: "100%", flexBasis: 0, flexGrow: 1 }}
                >
                   <List>
@@ -213,6 +218,8 @@ export default function Documents() {
 
                <Section
                   title="Tasks"
+                  padding={2}
+                  contentCard
                   sx={{ height: "100%", flexBasis: 0, flexGrow: 1 }}
                >
                   <List>
@@ -238,3 +245,5 @@ export default function Documents() {
       </Stack>
    );
 }
+
+export default Documents;
