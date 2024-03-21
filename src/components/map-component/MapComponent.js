@@ -8,6 +8,13 @@ import * as reactiveUtils from "@arcgis/core/core/reactiveUtils.js";
 
 export default function MapComponent({ mapPins, latitude, longitude }) {
    const mapDiv = useRef(null);
+   const politicalSymbol = "https://static.thenounproject.com/png/955295-200.png";
+   const militarySymbol = "https://static.thenounproject.com/png/2005533-200.png";
+   const economySymbol = "https://static.thenounproject.com/png/3734368-200.png";
+   const socialSymbol = "https://static.thenounproject.com/png/3583844-200.png";
+   const informationSymbol = "https://static.thenounproject.com/png/38005-200.png";
+   const infrastructureSymbol = "https://static.thenounproject.com/png/2496421-200.png";
+
 
    // function that creates a pointGraphic from a latitude, longitude, and color
    const createPointGraphic = (latitude, longitude, elem, template, filter) => {
@@ -20,22 +27,22 @@ export default function MapComponent({ mapPins, latitude, longitude }) {
       let symbolUrl;
       switch (filter) {
          case "political":
-            symbolUrl = "https://static.thenounproject.com/png/955295-200.png";
+            symbolUrl = politicalSymbol;
             break;
          case "military":
-            symbolUrl = "https://static.thenounproject.com/png/2005533-200.png";
+            symbolUrl = militarySymbol;
             break;
          case "economy":
-            symbolUrl = "https://static.thenounproject.com/png/3734368-200.png";
+            symbolUrl = economySymbol;
             break;
          case "social":
-            symbolUrl = "https://static.thenounproject.com/png/3583844-200.png";
+            symbolUrl = socialSymbol;
             break;
          case "information":
-            symbolUrl = "https://static.thenounproject.com/png/38005-200.png";
+            symbolUrl = informationSymbol;
             break;
          case "infrastructure":
-            symbolUrl = "https://static.thenounproject.com/png/2496421-200.png";
+            symbolUrl = infrastructureSymbol;
             break;
          default:
             // Default symbol URL
@@ -187,4 +194,4 @@ export default function MapComponent({ mapPins, latitude, longitude }) {
          }}
       ></div>
    );
-}
+} 
