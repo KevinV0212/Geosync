@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Select from "react-select";
 import { useSessionStorage } from "usehooks-ts";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 
 import "./MapFragment.css";
 import {
@@ -25,6 +27,13 @@ import { Stack } from "@mui/material";
 import Section from "../../components/Section/Section.js";
 
 export default function MapFragment() {
+   const politicalSymbol = "https://static.thenounproject.com/png/955295-200.png";
+   const militarySymbol = "https://static.thenounproject.com/png/2005533-200.png";
+   const economySymbol = "https://static.thenounproject.com/png/3734368-200.png";
+   const socialSymbol = "https://static.thenounproject.com/png/3583844-200.png";
+   const informationSymbol = "https://static.thenounproject.com/png/38005-200.png";
+   const infrastructureSymbol = "https://static.thenounproject.com/png/2496421-200.png";
+   
    // Handling manager view
    const [managerView, setManagerView] = useState(true);
    const handleViewChange = () => setManagerView(!managerView);
@@ -328,6 +337,105 @@ export default function MapFragment() {
                         onChange={() => handleCheckboxChange(cat)}
                      />
                   ))}
+               </Stack>
+            </Section>
+
+            <Section
+               title="Map Key"
+               padding={2}
+               sx={{ flexBasis: 0, flexGrow: 2 }}
+            >
+               <Stack direction="column" spacing={1}>
+                  <Stack direction="row" spacing={0} alignItems="center">
+                     <Box
+                        component="img"
+                        src={politicalSymbol}
+                        sx={{
+                           width: "40px",
+                           display: { xs: "none", lg: "flex" },
+                           mr: 1,
+                        }}
+                        alt="Political logo"
+                     />
+                     <Typography>
+                        Political
+                     </Typography>
+                  </Stack>
+                  <Stack direction="row" spacing={0} alignItems="center">
+                     <Box
+                        component="img"
+                        src={militarySymbol}
+                        sx={{
+                           width: "40px",
+                           display: { xs: "none", lg: "flex" },
+                           mr: 1,
+                        }}
+                        alt="Military logo"
+                     />
+                     <Typography>
+                        Military
+                     </Typography>
+                  </Stack>
+                  <Stack direction="row" spacing={0} alignItems="center">
+                     <Box
+                        component="img"
+                        src={economySymbol}
+                        sx={{
+                           width: "40px",
+                           display: { xs: "none", lg: "flex" },
+                           mr: 1,
+                        }}
+                        alt="Economy logo"
+                     />
+                     <Typography>
+                        Economic
+                     </Typography>
+                  </Stack>
+                  <Stack direction="row" spacing={0} alignItems="center">
+                     <Box
+                        component="img"
+                        src={socialSymbol}
+                        sx={{
+                           width: "40px",
+                           display: { xs: "none", lg: "flex" },
+                           mr: 1,
+                        }}
+                        alt="Social logo"
+                     />
+                     <Typography>
+                        Social
+                     </Typography>
+                  </Stack>
+                  <Stack direction="row" spacing={0} alignItems="center">
+                     <Box
+                        component="img"
+                        src={informationSymbol}
+                        sx={{
+                           width: "40px",
+                           display: { xs: "none", lg: "flex" },
+                           mr: 1,
+                        }}
+                        alt="Information logo"
+                     />
+                     <Typography>
+                        Information
+                     </Typography>
+                  </Stack>
+                  <Stack direction="row" spacing={0} alignItems="center">
+                     <Box
+                        component="img"
+                        src={infrastructureSymbol}
+                        sx={{
+                           width: "40px",
+                           display: { xs: "none", lg: "flex" },
+                           mr: 1,
+                        }}
+                        alt="Infrastructure logo"
+                     />
+                     <Typography>
+                        Infrastructure
+                     </Typography>
+                  </Stack>
                </Stack>
             </Section>
             <Controls.Button
