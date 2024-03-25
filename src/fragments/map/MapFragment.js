@@ -24,16 +24,21 @@ import MapComponent from "../../components/map-component/MapComponent.js";
 import Controls from "../../components/reusable/Controls.js";
 
 import { Stack } from "@mui/material";
-import Section from "../../components/Section/Section.js";
+import Section from "../../components/section/Section.js";
 
 export default function MapFragment() {
-   const politicalSymbol = "https://static.thenounproject.com/png/955295-200.png";
-   const militarySymbol = "https://static.thenounproject.com/png/2005533-200.png";
-   const economySymbol = "https://static.thenounproject.com/png/3734368-200.png";
+   const politicalSymbol =
+      "https://static.thenounproject.com/png/955295-200.png";
+   const militarySymbol =
+      "https://static.thenounproject.com/png/2005533-200.png";
+   const economySymbol =
+      "https://static.thenounproject.com/png/3734368-200.png";
    const socialSymbol = "https://static.thenounproject.com/png/3583844-200.png";
-   const informationSymbol = "https://static.thenounproject.com/png/38005-200.png";
-   const infrastructureSymbol = "https://static.thenounproject.com/png/2496421-200.png";
-   
+   const informationSymbol =
+      "https://static.thenounproject.com/png/38005-200.png";
+   const infrastructureSymbol =
+      "https://static.thenounproject.com/png/2496421-200.png";
+
    // Handling manager view
    const [managerView, setManagerView] = useState(true);
    const handleViewChange = () => setManagerView(!managerView);
@@ -357,9 +362,7 @@ export default function MapFragment() {
                         }}
                         alt="Political logo"
                      />
-                     <Typography>
-                        Political
-                     </Typography>
+                     <Typography>Political</Typography>
                   </Stack>
                   <Stack direction="row" spacing={0} alignItems="center">
                      <Box
@@ -372,9 +375,7 @@ export default function MapFragment() {
                         }}
                         alt="Military logo"
                      />
-                     <Typography>
-                        Military
-                     </Typography>
+                     <Typography>Military</Typography>
                   </Stack>
                   <Stack direction="row" spacing={0} alignItems="center">
                      <Box
@@ -387,9 +388,7 @@ export default function MapFragment() {
                         }}
                         alt="Economy logo"
                      />
-                     <Typography>
-                        Economic
-                     </Typography>
+                     <Typography>Economic</Typography>
                   </Stack>
                   <Stack direction="row" spacing={0} alignItems="center">
                      <Box
@@ -402,9 +401,7 @@ export default function MapFragment() {
                         }}
                         alt="Social logo"
                      />
-                     <Typography>
-                        Social
-                     </Typography>
+                     <Typography>Social</Typography>
                   </Stack>
                   <Stack direction="row" spacing={0} alignItems="center">
                      <Box
@@ -417,9 +414,7 @@ export default function MapFragment() {
                         }}
                         alt="Information logo"
                      />
-                     <Typography>
-                        Information
-                     </Typography>
+                     <Typography>Information</Typography>
                   </Stack>
                   <Stack direction="row" spacing={0} alignItems="center">
                      <Box
@@ -432,9 +427,7 @@ export default function MapFragment() {
                         }}
                         alt="Infrastructure logo"
                      />
-                     <Typography>
-                        Infrastructure
-                     </Typography>
+                     <Typography>Infrastructure</Typography>
                   </Stack>
                </Stack>
             </Section>

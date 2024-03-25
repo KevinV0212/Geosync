@@ -13,7 +13,7 @@ import {
    updateWikiEntry,
 } from "../../utils/wiki/wikiUtil.js";
 import { Box, Stack } from "@mui/material";
-import Section from "../../components/Section/Section.js";
+import Section from "../../components/section/Section.js";
 import Controls from "../../components/reusable/Controls.js";
 import EntryForm from "../../components/forms/EntryForm.js";
 import CountryForm from "../../components/forms/CountryForm.js";
