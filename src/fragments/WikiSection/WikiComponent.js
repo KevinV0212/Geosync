@@ -13,13 +13,7 @@ import Controls from "../../components/reusable/Controls.js";
 //selectedPMESII and selectedASCOPE useStates
 //Entries
 export default function WikiComponent(props) {
-   const {
-      selectedASCOPE,
-      selectedPMESII,
-      entries,
-      editButtonFunction,
-      openInInfo,
-   } = props;
+   const { entries, openInInfo } = props;
 
    const PMESII = [
       "political",

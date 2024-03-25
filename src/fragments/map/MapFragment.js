@@ -7,13 +7,13 @@ import Typography from "@mui/material/Typography";
 import "./MapFragment.css";
 import {
    addCountry,
-   deleteCountry,
+   deleteCountry as delCountry,
    getAllCountries,
    updateCountry,
 } from "../../utils/country/countryUtil.js";
 import {
    addMapPin,
-   deleteMapPin,
+   deleteMapPin as delMapPin,
    getMapPins,
    updateMapPin,
 } from "../../utils/map/mapUtil.js";
@@ -172,7 +172,7 @@ export default function MapFragment() {
       if (!window.confirm("Are you sure you want to delete this country?")) {
          return;
       }
-      await deleteCountry(country.countryID);
+      await delCountry(country.countryID);
       loadCountries();
       loadMapPins();
       setCurrentCountry(null);
@@ -181,9 +181,9 @@ export default function MapFragment() {
    };
 
    // Function that opens pin add/edit form with data of currently selected pin
-   const openPinInForm = () => {
-      setRecordForCountry({
-         ...currentPin,
+   const openPinInForm = (item) => {
+      setRecordForPin({
+         ...item,
       });
       setPinFormTitle("Edit Map Pin");
       setOpenPinForm(true);
@@ -193,6 +193,7 @@ export default function MapFragment() {
    // After the request, it resets the form, then refreshes pins and map
    const addOrEditPin = async (pin, resetForm) => {
       let requestBody = {
+         id: pin.id || null,
          countryID: currentCountry.countryID,
          title: pin.title,
          description: pin.description,
@@ -210,6 +211,7 @@ export default function MapFragment() {
 
       if (pin.id) {
          await updateMapPin(requestBody);
+         console.log(requestBody);
       } else {
          await addMapPin(requestBody);
       }
@@ -226,7 +228,7 @@ export default function MapFragment() {
       if (!window.confirm("Are you sure you want to delete this map pin?")) {
          return;
       }
-      await deleteMapPin(pin.id);
+      await delMapPin(pin.id);
       setCurrentPin(null);
       loadMapPins();
       setRecordForPin(null);
@@ -291,6 +293,8 @@ export default function MapFragment() {
                   <Controls.Button
                      text="Add Map Pin"
                      onClick={() => {
+                        setRecordForPin(null);
+                        setPinFormTitle("Add Map Pin");
                         setOpenPinForm(true);
                      }}
                      disabled={currentCountry == null}
@@ -457,6 +461,8 @@ export default function MapFragment() {
                mapPins={mapPins}
                latitude={currentCountry ? currentCountry.latitude : 0}
                longitude={currentCountry ? currentCountry.longitude : 0}
+               deletePin={deletePin}
+               openPinInForm={openPinInForm}
             />
          </Section>
       </Stack>
