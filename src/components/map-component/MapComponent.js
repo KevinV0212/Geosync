@@ -1,20 +1,23 @@
 import React from "react";
 import Graphic from "@arcgis/core/Graphic";
-import Search from "@arcgis/core/widgets/Search";
 import { loadModules } from "esri-loader";
 import { useEffect, useRef } from "react";
-import { useSessionStorage } from "usehooks-ts";
 import * as reactiveUtils from "@arcgis/core/core/reactiveUtils.js";
 
-export default function MapComponent({ mapPins, latitude, longitude }) {
+export default function MapComponent(props) {
+   const { mapPins, latitude, longitude, deletePin, openPinInForm } = props;
    const mapDiv = useRef(null);
-   const politicalSymbol = "https://static.thenounproject.com/png/955295-200.png";
-   const militarySymbol = "https://static.thenounproject.com/png/2005533-200.png";
-   const economySymbol = "https://static.thenounproject.com/png/3734368-200.png";
+   const politicalSymbol =
+      "https://static.thenounproject.com/png/955295-200.png";
+   const militarySymbol =
+      "https://static.thenounproject.com/png/2005533-200.png";
+   const economySymbol =
+      "https://static.thenounproject.com/png/3734368-200.png";
    const socialSymbol = "https://static.thenounproject.com/png/3583844-200.png";
-   const informationSymbol = "https://static.thenounproject.com/png/38005-200.png";
-   const infrastructureSymbol = "https://static.thenounproject.com/png/2496421-200.png";
-
+   const informationSymbol =
+      "https://static.thenounproject.com/png/38005-200.png";
+   const infrastructureSymbol =
+      "https://static.thenounproject.com/png/2496421-200.png";
 
    // function that creates a pointGraphic from a latitude, longitude, and color
    const createPointGraphic = (latitude, longitude, elem, template, filter) => {
@@ -104,20 +107,20 @@ export default function MapComponent({ mapPins, latitude, longitude }) {
                const editMapPin = {
                   title: "EDIT",
                   id: "edit",
-                  className: "esri-icon-edit"
+                  className: "esri-icon-edit",
                };
-            
+
                // Delete button
                const delMapPin = {
                   title: "DELETE",
                   id: "del",
-                  className: "esri-icon-trash"
+                  className: "esri-icon-trash",
                };
 
                const pinsPopup = {
                   title: "{title}",
-                  content: '<b>Description:</b> {description}',
-                  actions: [editMapPin, delMapPin]
+                  content: "<b>Description:</b> {description}",
+                  actions: [editMapPin, delMapPin],
                };
 
                const graphicsArray = [];
@@ -169,13 +172,21 @@ export default function MapComponent({ mapPins, latitude, longitude }) {
                   () => view.popup,
                   "trigger-action",
                   (event) => {
-                     if (event.action.id === "edit") {
-                        //call edit function here
+                     const pin = view.popup.selectedFeature.attributes;
+                     let pmesiiCat;
+                     for (const property in pin) {
+                        if (pin[property] === true) pmesiiCat = property;
                      }
-                     else if (event.action.id === "del") {
-                        //delete function here
-                     }
-               });
+                     if (pin)
+                        if (event.action.id === "edit") {
+                           //call edit function here
+                           openPinInForm({ ...pin, pmesiiCat: pmesiiCat });
+                        } else if (event.action.id === "del") {
+                           //delete function here
+                           deletePin(pin);
+                        }
+                  }
+               );
             }
          );
 
@@ -194,4 +205,4 @@ export default function MapComponent({ mapPins, latitude, longitude }) {
          }}
       ></div>
    );
-} 
+}

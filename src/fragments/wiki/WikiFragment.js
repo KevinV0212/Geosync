@@ -24,7 +24,6 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import Divider from "@mui/material/Divider";
 import WikiComponent from "../WikiSection/WikiComponent.js";
-import { Typography } from "@mui/material";
 import { useTheme } from "@emotion/react";
 import WikiEntryInfo from "../../components/info/WikiEntryInfo.js";
 
@@ -264,6 +263,7 @@ export default function WikiFragment() {
    // After the request, it resets the form and refreshes the wiki
    const addOrEditEntry = async (entry, resetForm) => {
       let requestBody = {
+         id: entry.id || null,
          countryID: currentCountry.countryID,
          title: entry.title,
          description: entry.description,
@@ -307,31 +307,6 @@ export default function WikiFragment() {
       setOpenInfo(false);
       // reload wiki
    };
-
-   // const renderEditButton = (entry) => {
-   //    return (
-   //       <>
-   //          <Controls.Button
-   //             text="Edit"
-   //             onClick={() => {
-   //                setRecordForEdit(entry);
-   //                setFormTitle("Edit Entry");
-   //                setOpenForm(true);
-   //             }}
-   //          />
-   //          <Controls.Popup
-   //             title={EntryFormTitle}
-   //             openPopup={openForm}
-   //             setOpenPopup={setOpenForm}
-   //          >
-   //             <EntryForm
-   //                addOrEdit={addOrEditEntry}
-   //                recordForEdit={recordForEdit}
-   //             />
-   //          </Controls.Popup>
-   //       </>
-   //    );
-   // };
 
    // Function to handle country selector
    const handleCountrySelect = (country) => {
