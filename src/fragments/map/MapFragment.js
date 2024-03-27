@@ -321,7 +321,6 @@ export default function MapFragment() {
          id="pageContainer"
          direction="row"
          spacing={2}
-         alignItems="stretch"
          sx={{ height: "100%" }}
       >
          <Stack direction="column" spacing={2} useFlexGap>
@@ -367,7 +366,15 @@ export default function MapFragment() {
             ></Controls.Button>
          </Stack>
 
-         <Section padding={2} sx={{ minWidth: "500px", flexGrow: 1 }}>
+         <Section
+            padding={2}
+            sx={{
+               minWidth: "500px",
+               flexGrow: 1,
+               height: "100",
+               overflowY: "scroll",
+            }}
+         >
             <Select
                className="country-selector"
                placeholder="Select a Country"

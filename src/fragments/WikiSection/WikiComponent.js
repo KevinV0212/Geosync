@@ -1,13 +1,11 @@
-import { Box, ThemeProvider } from "@mui/system";
-import React, { useEffect, useState } from "react";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { Typography } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import AccordionSummary from "@mui/material/AccordionSummary";
 import Divider from "@mui/material/Divider";
-import { testEntries } from "../../test_data/wikiTest";
-import EntryForm from "../../components/forms/EntryForm";
+import { Box } from "@mui/system";
+import React from "react";
 import Controls from "../../components/reusable/Controls.js";
 
 //selectedPMESII and selectedASCOPE useStates
@@ -38,8 +36,7 @@ export default function WikiComponent(props) {
          sx={{
             flexGrow: 1,
             background: "#D7CEC7",
-            overflowY: "scroll",
-            maxHeight: "75vh",
+            overflowY: "auto",
          }}
       >
          {PMESII.map((currentPMESII, i) => (

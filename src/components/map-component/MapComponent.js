@@ -13,7 +13,8 @@ const pinIcons = {
    infrastructure: "https://static.thenounproject.com/png/2496421-200.png",
 };
 export default function MapComponent(props) {
-   const { mapPins, latitude, longitude, deletePin, openPinInForm } = props;
+   const { mapPins, latitude, longitude, zoom, deletePin, openPinInForm } =
+      props;
    const mapDiv = useRef(null);
 
    // function that creates a pointGraphic from a latitude, longitude, and color
@@ -72,7 +73,7 @@ export default function MapComponent(props) {
                const view = new MapView({
                   map: webmap, // An instance of a Map object to display in the view.
                   center: [longitude, latitude],
-                  zoom: 3, // Represents the map scale at the center of the view.
+                  zoom: zoom || 3, // Represents the map scale at the center of the view.
                   container: mapDiv.current, // The id or node representing the DOM element containing the view.
                });
 
@@ -97,7 +98,6 @@ export default function MapComponent(props) {
                };
 
                const graphicsArray = [];
-               console.log(mapPins);
                if (mapPins) {
                   let len = mapPins.length;
                   for (let i = 0; i < len; i++) {
