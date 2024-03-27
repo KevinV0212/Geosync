@@ -19,6 +19,7 @@ export default function FAQ() {
    return (
       <Stack
          style={{
+            maxHeight: "80vh",
             overflowY: "auto",
          }}
       >
