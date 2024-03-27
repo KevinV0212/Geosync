@@ -9,7 +9,7 @@ import Controls from "../../components/reusable/Controls";
 import DocumentInfo from "../../components/info/DocumentInfo";
 
 import { List, ListItem, Stack } from "@mui/material";
-import Section from "../../components/Section/Section";
+import Section from "../../components/section/Section";
 import aiLogo from "../../assets/map.png";
 import { useSessionStorage } from "usehooks-ts";
 import { useNavigate } from "react-router-dom";

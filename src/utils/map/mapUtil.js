@@ -95,7 +95,7 @@ async function updateMapPin(requestBody) {
    let obj = requestBody;
 
    let config = {
-      method: "post",
+      method: "put",
       url: url,
       headers: {
          headers: {

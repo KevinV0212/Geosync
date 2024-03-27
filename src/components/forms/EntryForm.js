@@ -19,7 +19,7 @@ const pmesiiItems = [
 
 const ascopeItems = [
    { id: "areas", title: "Areas" },
-   { id: "structure", title: "Structures" },
+   { id: "structures", title: "Structures" },
    { id: "capabilities", title: "Capabilities" },
    { id: "organization", title: "Organization" },
    { id: "people", title: "People" },
@@ -35,7 +35,7 @@ const initialFormValues = {
 };
 
 export default function EntryForm(props) {
-   const { addOrEdit, recordForEdit, handleCountryDelete } = props;
+   const { addOrEdit, recordForEdit } = props;
    // validates formData and records any errors that show up
    const validate = (fieldData = formData) => {
       let temp = { ...errors };

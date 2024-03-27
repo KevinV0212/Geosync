@@ -2,8 +2,7 @@ import React, { useEffect } from "react";
 import { useForm, Form } from "./useForm";
 import Controls from "../reusable/Controls";
 
-import { Divider, InputAdornment, Stack, Typography } from "@mui/material";
-import styles from "./forms.module.css";
+import { Divider, InputAdornment, Stack } from "@mui/material";
 import CancelIcon from "@mui/icons-material/Cancel";
 import CheckIcon from "@mui/icons-material/Check";
 import TitleIcon from "@mui/icons-material/Title";
@@ -29,7 +28,7 @@ const initialFormValues = {
 };
 // form for adding map pin to current country
 export default function MapPinForm(props) {
-   const { addOrEdit, recordForEdit, deletePin } = props;
+   const { addOrEdit, recordForEdit } = props;
 
    // validates formData and records any errors that show up
    const validate = (fieldData = formData) => {
