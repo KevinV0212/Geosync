@@ -72,7 +72,7 @@ export default function MapComponent(props) {
                const view = new MapView({
                   map: webmap, // An instance of a Map object to display in the view.
                   center: [longitude, latitude],
-                  zoom: 2, // Represents the map scale at the center of the view.
+                  zoom: 3, // Represents the map scale at the center of the view.
                   container: mapDiv.current, // The id or node representing the DOM element containing the view.
                });
 
