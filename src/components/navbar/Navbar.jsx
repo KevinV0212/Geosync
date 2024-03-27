@@ -1,27 +1,23 @@
-import React, { useState } from "react";
+import React from "react";
 
-import { useThemeContext } from "../../themes/ThemeContextProvider";
 import { useNavigate } from "react-router-dom";
 
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import Tooltip from "@mui/material/Tooltip";
-import LightModeIcon from "@mui/icons-material/LightMode";
-import DarkModeIcon from "@mui/icons-material/DarkMode";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+
 import MenuIcon from "@mui/icons-material/Menu";
 
 import { Container, ThemeProvider } from "@mui/material";
 import { navTheme } from "../../themes/theme";
 
-import styles from "./Navbar.module.css";
-import aiLogo from "../../assets/AIDIV-White.svg";
 import { useSessionStorage } from "usehooks-ts";
+import aiLogo from "../../assets/AIDIV-White.svg";
+import styles from "./Navbar.module.css";
 
 const pages = [
    { title: "Home", link: "/" },

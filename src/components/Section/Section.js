@@ -1,5 +1,4 @@
-import React from "react";
-import styles from "./Section.module.css";
+import { useTheme } from "@emotion/react";
 import {
    Box,
    Card,
@@ -8,7 +7,7 @@ import {
    Stack,
    Typography,
 } from "@mui/material";
-import { useTheme } from "@emotion/react";
+import React from "react";
 
 export default function Section(props) {
    const theme = useTheme();

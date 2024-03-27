@@ -15,6 +15,7 @@ export default function Checkbox(props) {
             />
          }
          label={text || ""}
+         sx={{ marginRight: 0 }}
       ></FormControlLabel>
    );
 }

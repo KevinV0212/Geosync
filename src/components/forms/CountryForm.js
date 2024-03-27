@@ -2,8 +2,6 @@ import React, { useEffect } from "react";
 import { useForm, Form } from "./useForm";
 import Controls from "../reusable/Controls";
 import { Divider, InputAdornment, Stack } from "@mui/material";
-import styles from "./forms.module.css";
-
 import DeleteIcon from "@mui/icons-material/Delete";
 import CancelIcon from "@mui/icons-material/Cancel";
 import CheckIcon from "@mui/icons-material/Check";
@@ -170,7 +168,14 @@ export default function CountryForm(props) {
                   variant="outlined"
                   text="Clear"
                   startIcon={<CancelIcon />}
-                  onClick={resetForm}
+                  onClick={() =>
+                     setFormData({
+                        ...formData,
+                        countryName: "",
+                        longitude: 0,
+                        latitude: 0,
+                     })
+                  }
                   fullWidth
                />
                <Controls.Button
