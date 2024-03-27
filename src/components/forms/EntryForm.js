@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Form, useForm } from "./useForm";
 import Controls from "../reusable/Controls";
 
@@ -167,7 +167,15 @@ export default function EntryForm(props) {
                   variant="outlined"
                   text="Clear"
                   startIcon={<CancelIcon />}
-                  onClick={resetForm}
+                  onClick={() => {
+                     setFormData({
+                        ...formData,
+                        title: "",
+                        description: "",
+                        pmesiiCat: "",
+                        ascopeCat: "",
+                     });
+                  }}
                   fullWidth
                />
                <Controls.Button

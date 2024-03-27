@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Select from "react-select";
 import { useSessionStorage } from "usehooks-ts";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 
 import "./MapFragment.css";
 import {
@@ -23,22 +21,24 @@ import CountryForm from "../../components/forms/CountryForm.js";
 import MapComponent from "../../components/map-component/MapComponent.js";
 import Controls from "../../components/reusable/Controls.js";
 
+<<<<<<< HEAD
 import { Stack } from "@mui/material";
 import Section from "../../components/Section/Section.js";
+=======
+import { Box, Stack, Tooltip } from "@mui/material";
+import Section from "../../components/section/Section.js";
+>>>>>>> 38d53d5fc615a6388b5fca4f801638db8ae70a23
+
+const tooltipIcons = {
+   political: "https://static.thenounproject.com/png/955295-200.png",
+   military: "https://static.thenounproject.com/png/2005533-200.png",
+   economic: "https://static.thenounproject.com/png/3734368-200.png",
+   social: "https://static.thenounproject.com/png/3583844-200.png",
+   information: "https://static.thenounproject.com/png/38005-200.png",
+   infrastructure: "https://static.thenounproject.com/png/2496421-200.png",
+};
 
 export default function MapFragment() {
-   const politicalSymbol =
-      "https://static.thenounproject.com/png/955295-200.png";
-   const militarySymbol =
-      "https://static.thenounproject.com/png/2005533-200.png";
-   const economySymbol =
-      "https://static.thenounproject.com/png/3734368-200.png";
-   const socialSymbol = "https://static.thenounproject.com/png/3583844-200.png";
-   const informationSymbol =
-      "https://static.thenounproject.com/png/38005-200.png";
-   const infrastructureSymbol =
-      "https://static.thenounproject.com/png/2496421-200.png";
-
    // Handling manager view
    const [managerView, setManagerView] = useState(true);
    const handleViewChange = () => setManagerView(!managerView);
@@ -59,20 +59,20 @@ export default function MapFragment() {
 
    // Handling PMESII filters
    const pmessiCats = [
-      "Political",
-      "Military",
-      "Economic",
-      "Social",
-      "Information",
-      "Infrastructure",
+      "political",
+      "military",
+      "economic",
+      "social",
+      "information",
+      "infrastructure",
    ];
    const [checkboxes, setCheckboxes] = useState({
-      Political: true,
-      Military: true,
-      Economic: true,
-      Social: true,
-      Information: true,
-      Infrastructure: true,
+      political: true,
+      military: true,
+      economic: true,
+      social: true,
+      information: true,
+      infrastructure: true,
    });
 
    // Handling country form popup
@@ -105,7 +105,7 @@ export default function MapFragment() {
       if (!currentCountry) {
          return;
       }
-      const countryID = currentCountry.countryID;
+      const countryID = currentCountry.id;
       const filters = [];
       for (const checkbox in checkboxes) {
          filters.push(checkboxes[checkbox]);
@@ -131,19 +131,18 @@ export default function MapFragment() {
    // After the request, it resets the form and refreshes the country lists
    const addOrEditCountry = async (country, resetForm) => {
       const requestBody = {
-         id: country.countryID || null,
          countryName: country.countryName,
          latitude: +country.latitude,
          longitude: +country.longitude,
       };
-      console.log(requestBody);
+      if (country.id) requestBody.id = country.id;
 
       if (requestBody.id) {
          await updateCountry(requestBody);
          const newCountry = await addCountry(requestBody);
          if (newCountry) {
             setCurrentCountry({
-               countryID: requestBody.id,
+               id: requestBody.id,
                countryName: newCountry.countryName,
                latitude: +newCountry.latitude,
                longitude: +newCountry.longitude,
@@ -152,12 +151,7 @@ export default function MapFragment() {
       } else {
          const newCountry = await addCountry(requestBody);
          if (newCountry && currentCountry == null) {
-            setCurrentCountry({
-               countryID: requestBody.id,
-               countryName: newCountry.countryName,
-               latitude: +newCountry.latitude,
-               longitude: +newCountry.longitude,
-            });
+            setCurrentCountry({ ...newCountry });
          }
       }
       resetForm();
@@ -169,10 +163,13 @@ export default function MapFragment() {
    // Function that sends request to delete country passed in as a parameter
    // After deleting, it closes country form and refreshes country lists
    const deleteCountry = async (country) => {
-      if (!window.confirm("Are you sure you want to delete this country?")) {
+      if (
+         !country ||
+         !window.confirm("Are you sure you want to delete this country?")
+      ) {
          return;
       }
-      await delCountry(country.countryID);
+      await delCountry(country.id);
       loadCountries();
       loadMapPins();
       setCurrentCountry(null);
@@ -193,8 +190,7 @@ export default function MapFragment() {
    // After the request, it resets the form, then refreshes pins and map
    const addOrEditPin = async (pin, resetForm) => {
       let requestBody = {
-         id: pin.id || null,
-         countryID: currentCountry.countryID,
+         countryID: currentCountry.id,
          title: pin.title,
          description: pin.description,
          longitude: +pin.longitude,
@@ -206,13 +202,14 @@ export default function MapFragment() {
          information: false,
          infrastructure: false,
       };
-
+      if (pin.id) requestBody.id = pin.id;
       requestBody[pin.pmesiiCat] = true;
 
       if (pin.id) {
          await updateMapPin(requestBody);
          console.log(requestBody);
       } else {
+         console.log(requestBody);
          await addMapPin(requestBody);
       }
       resetForm();
@@ -242,7 +239,7 @@ export default function MapFragment() {
       );
 
       const temp = {
-         countryID: countryInfo.id,
+         id: countryInfo.id,
          countryName: countryInfo.countryName,
          latitude: countryInfo.latitude,
          longitude: countryInfo.longitude,
@@ -263,7 +260,7 @@ export default function MapFragment() {
    const renderManagerControls = () => {
       if (managerView) {
          return (
-            <Section padding={2} sx={{ flexBasis: 0, flexGrow: 1 }}>
+            <Section padding={2}>
                <Stack className="manager-controls" spacing={1}>
                   <Controls.Button
                      text="Add Country"
@@ -326,7 +323,6 @@ export default function MapFragment() {
          id="pageContainer"
          direction="row"
          spacing={2}
-         alignItems="stretch"
          sx={{ height: "100%" }}
       >
          <Stack direction="column" spacing={2} useFlexGap>
@@ -337,112 +333,50 @@ export default function MapFragment() {
                padding={2}
                sx={{ flexBasis: 0, flexGrow: 2 }}
             >
-               <Stack direction="column" spacing={0}>
+               <Stack direction="column" spacing={0} alignItems="flex-start">
                   {pmessiCats.map((cat, index) => (
-                     <Controls.Checkbox
+                     <Tooltip
+                        title={
+                           <Box
+                              component="img"
+                              src={tooltipIcons[cat]}
+                              sx={{
+                                 width: "30px",
+                              }}
+                              alt={`${cat} icon`}
+                           />
+                        }
+                        placement="right-start"
                         key={index}
-                        text={cat}
-                        checked={checkboxes[cat]}
-                        onChange={() => handleCheckboxChange(cat)}
-                     />
+                     >
+                        <div>
+                           <Controls.Checkbox
+                              text={cat}
+                              checked={checkboxes[cat]}
+                              onChange={() => handleCheckboxChange(cat)}
+                           />
+                        </div>
+                     </Tooltip>
                   ))}
                </Stack>
             </Section>
 
-            <Section
-               title="Map Key"
-               padding={2}
-               sx={{ flexBasis: 0, flexGrow: 2 }}
-            >
-               <Stack direction="column" spacing={1}>
-                  <Stack direction="row" spacing={0} alignItems="center">
-                     <Box
-                        component="img"
-                        src={politicalSymbol}
-                        sx={{
-                           width: "40px",
-                           display: { xs: "none", lg: "flex" },
-                           mr: 1,
-                        }}
-                        alt="Political logo"
-                     />
-                     <Typography>Political</Typography>
-                  </Stack>
-                  <Stack direction="row" spacing={0} alignItems="center">
-                     <Box
-                        component="img"
-                        src={militarySymbol}
-                        sx={{
-                           width: "40px",
-                           display: { xs: "none", lg: "flex" },
-                           mr: 1,
-                        }}
-                        alt="Military logo"
-                     />
-                     <Typography>Military</Typography>
-                  </Stack>
-                  <Stack direction="row" spacing={0} alignItems="center">
-                     <Box
-                        component="img"
-                        src={economySymbol}
-                        sx={{
-                           width: "40px",
-                           display: { xs: "none", lg: "flex" },
-                           mr: 1,
-                        }}
-                        alt="Economy logo"
-                     />
-                     <Typography>Economic</Typography>
-                  </Stack>
-                  <Stack direction="row" spacing={0} alignItems="center">
-                     <Box
-                        component="img"
-                        src={socialSymbol}
-                        sx={{
-                           width: "40px",
-                           display: { xs: "none", lg: "flex" },
-                           mr: 1,
-                        }}
-                        alt="Social logo"
-                     />
-                     <Typography>Social</Typography>
-                  </Stack>
-                  <Stack direction="row" spacing={0} alignItems="center">
-                     <Box
-                        component="img"
-                        src={informationSymbol}
-                        sx={{
-                           width: "40px",
-                           display: { xs: "none", lg: "flex" },
-                           mr: 1,
-                        }}
-                        alt="Information logo"
-                     />
-                     <Typography>Information</Typography>
-                  </Stack>
-                  <Stack direction="row" spacing={0} alignItems="center">
-                     <Box
-                        component="img"
-                        src={infrastructureSymbol}
-                        sx={{
-                           width: "40px",
-                           display: { xs: "none", lg: "flex" },
-                           mr: 1,
-                        }}
-                        alt="Infrastructure logo"
-                     />
-                     <Typography>Infrastructure</Typography>
-                  </Stack>
-               </Stack>
-            </Section>
             <Controls.Button
                variant="outlined"
                text={`${managerView ? "User view" : "Manager view"}`}
                onClick={handleViewChange}
-            ></Controls.Button>
+            />
          </Stack>
 
-         <Section padding={2} sx={{ minWidth: "500px", flexGrow: 1 }}>
+         <Section
+            padding={2}
+            sx={{
+               minWidth: "500px",
+               flexGrow: 1,
+               height: "100",
+               overflowY: "auto",
+            }}
+         >
             <Select
                className="country-selector"
                placeholder="Select a Country"

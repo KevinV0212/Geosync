@@ -34,7 +34,16 @@ const theme = createTheme({
          xl: 1440,
       },
    },
-   components: {},
+   components: {
+      MuiTooltip: {
+         styleOverrides: {
+            tooltip: {
+               color: "black",
+               backgroundColor: "white",
+            },
+         },
+      },
+   },
 });
 
 export const navTheme = createTheme({
@@ -127,6 +136,7 @@ export const getDesignTokens = (mode) => ({
                     },
                  },
               },
+
               // MuiButton: {
               //   styleOverrides: {
               //     root: {

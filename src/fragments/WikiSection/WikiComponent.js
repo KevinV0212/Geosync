@@ -1,13 +1,11 @@
-import { Box, ThemeProvider } from "@mui/system";
-import React, { useEffect, useState } from "react";
-import { Typography } from "@mui/material";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import { Stack, Typography } from "@mui/material";
+import Accordion from "@mui/material/Accordion";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import AccordionSummary from "@mui/material/AccordionSummary";
 import Divider from "@mui/material/Divider";
-import { testEntries } from "../../test_data/wikiTest";
-import EntryForm from "../../components/forms/EntryForm";
+import { Box } from "@mui/system";
+import React from "react";
 import Controls from "../../components/reusable/Controls.js";
 
 //selectedPMESII and selectedASCOPE useStates
@@ -33,22 +31,20 @@ export default function WikiComponent(props) {
    ];
 
    return (
-      <Box
+      <Stack
+         spacing={2}
          component="main"
          sx={{
-            flexGrow: 1,
-            background: "#D7CEC7",
-            overflowY: "scroll",
-            maxHeight: "75vh",
+            display: "flex",
+            flexGrow: 0,
+            flexWrap: "nowrap",
+            overflowY: "auto",
          }}
       >
          {PMESII.map((currentPMESII, i) => (
             <div key={currentPMESII}>
                {props.selectedPMESII[i] && (
-                  <Accordion
-                     defaultExpanded
-                     sx={{ border: 1, borderColor: "black" }}
-                  >
+                  <Accordion defaultExpanded>
                      <AccordionSummary
                         expandIcon={<ArrowDropDownIcon />}
                         aria-controls="panel1-content"
@@ -135,7 +131,6 @@ export default function WikiComponent(props) {
                                                       })
                                                    }
                                                 />
-                                                {/* {editButtonFunction(entry)} */}
                                              </Box>
                                           ))}
                                     </AccordionDetails>
@@ -148,6 +143,6 @@ export default function WikiComponent(props) {
                )}
             </div>
          ))}
-      </Box>
+      </Stack>
    );
 }

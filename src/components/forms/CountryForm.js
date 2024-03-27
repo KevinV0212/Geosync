@@ -2,8 +2,6 @@ import React, { useEffect } from "react";
 import { useForm, Form } from "./useForm";
 import Controls from "../reusable/Controls";
 import { Divider, InputAdornment, Stack } from "@mui/material";
-import styles from "./forms.module.css";
-
 import DeleteIcon from "@mui/icons-material/Delete";
 import CancelIcon from "@mui/icons-material/Cancel";
 import CheckIcon from "@mui/icons-material/Check";
@@ -11,7 +9,7 @@ import TitleIcon from "@mui/icons-material/Title";
 import PinDropIcon from "@mui/icons-material/PinDrop";
 
 const initialFormValues = {
-   countryID: null,
+   id: null,
    countryName: "",
    longitude: 0,
    latitude: 0,
@@ -154,12 +152,12 @@ export default function CountryForm(props) {
                justifyContent="center"
                divider={<Divider orientation="vertical" flexItem />}
             >
-               {formData.countryID != null ? (
+               {formData.id != null ? (
                   <Controls.Button
                      text="Delete"
                      startIcon={<DeleteIcon />}
                      onClick={() => deleteCountry(recordForEdit)}
-                     disabled={formData.countryID == null}
+                     disabled={formData.id == null}
                      sx={{ flexGrow: 1 }}
                      fullWidth
                   />
@@ -170,7 +168,14 @@ export default function CountryForm(props) {
                   variant="outlined"
                   text="Clear"
                   startIcon={<CancelIcon />}
-                  onClick={resetForm}
+                  onClick={() =>
+                     setFormData({
+                        ...formData,
+                        countryName: "",
+                        longitude: 0,
+                        latitude: 0,
+                     })
+                  }
                   fullWidth
                />
                <Controls.Button

@@ -28,7 +28,7 @@ export default function WikiEntryInfo(props) {
 
    return (
       <Stack spacing={2}>
-         <Typography align="left" width={1} noWrap>
+         <Typography align="left" width={1} sx={{ fontWeight: "bold" }} noWrap>
             {`${firstCharToCaps(info.pmesiiCat)} / ${firstCharToCaps(info.ascopeCat)}`}
          </Typography>
          <Typography

@@ -4,20 +4,18 @@ import { loadModules } from "esri-loader";
 import { useEffect, useRef } from "react";
 import * as reactiveUtils from "@arcgis/core/core/reactiveUtils.js";
 
+const pinIcons = {
+   political: "https://static.thenounproject.com/png/955295-200.png",
+   military: "https://static.thenounproject.com/png/2005533-200.png",
+   economic: "https://static.thenounproject.com/png/3734368-200.png",
+   social: "https://static.thenounproject.com/png/3583844-200.png",
+   information: "https://static.thenounproject.com/png/38005-200.png",
+   infrastructure: "https://static.thenounproject.com/png/2496421-200.png",
+};
 export default function MapComponent(props) {
-   const { mapPins, latitude, longitude, deletePin, openPinInForm } = props;
+   const { mapPins, latitude, longitude, zoom, deletePin, openPinInForm } =
+      props;
    const mapDiv = useRef(null);
-   const politicalSymbol =
-      "https://static.thenounproject.com/png/955295-200.png";
-   const militarySymbol =
-      "https://static.thenounproject.com/png/2005533-200.png";
-   const economySymbol =
-      "https://static.thenounproject.com/png/3734368-200.png";
-   const socialSymbol = "https://static.thenounproject.com/png/3583844-200.png";
-   const informationSymbol =
-      "https://static.thenounproject.com/png/38005-200.png";
-   const infrastructureSymbol =
-      "https://static.thenounproject.com/png/2496421-200.png";
 
    // function that creates a pointGraphic from a latitude, longitude, and color
    const createPointGraphic = (latitude, longitude, elem, template, filter) => {
@@ -27,31 +25,7 @@ export default function MapComponent(props) {
          longitude: longitude,
       };
       // Set symbol URL based on the filter
-      let symbolUrl;
-      switch (filter) {
-         case "political":
-            symbolUrl = politicalSymbol;
-            break;
-         case "military":
-            symbolUrl = militarySymbol;
-            break;
-         case "economy":
-            symbolUrl = economySymbol;
-            break;
-         case "social":
-            symbolUrl = socialSymbol;
-            break;
-         case "information":
-            symbolUrl = informationSymbol;
-            break;
-         case "infrastructure":
-            symbolUrl = infrastructureSymbol;
-            break;
-         default:
-            // Default symbol URL
-            symbolUrl = "https://static.thenounproject.com/png/368360-200.png";
-            break;
-      }
+      const symbolUrl = pinIcons[filter];
 
       const pointGraphic = new Graphic({
          geometry: point,
@@ -99,7 +73,7 @@ export default function MapComponent(props) {
                const view = new MapView({
                   map: webmap, // An instance of a Map object to display in the view.
                   center: [longitude, latitude],
-                  zoom: 2, // Represents the map scale at the center of the view.
+                  zoom: zoom || 3, // Represents the map scale at the center of the view.
                   container: mapDiv.current, // The id or node representing the DOM element containing the view.
                });
 
@@ -134,8 +108,8 @@ export default function MapComponent(props) {
                         flag = "political";
                      } else if (mapPins[i]["military"]) {
                         flag = "military";
-                     } else if (mapPins[i]["economy"]) {
-                        flag = "economy";
+                     } else if (mapPins[i]["economic"]) {
+                        flag = "economic";
                      } else if (mapPins[i]["social"]) {
                         flag = "social";
                      } else if (mapPins[i]["information"]) {

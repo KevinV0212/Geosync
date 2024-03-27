@@ -1,5 +1,4 @@
-import React from "react";
-import styles from "./Section.module.css";
+import { useTheme } from "@emotion/react";
 import {
    Box,
    Card,
@@ -8,7 +7,7 @@ import {
    Stack,
    Typography,
 } from "@mui/material";
-import { useTheme } from "@emotion/react";
+import React from "react";
 
 export default function Section(props) {
    const theme = useTheme();
@@ -33,6 +32,7 @@ export default function Section(props) {
                   width: "100%",
                   padding: padding || 0 ? padding : 0,
                   display: "flex",
+                  flexWrap: "noWrap",
                   flexDirection: "column",
                   alignItems: "stretch",
                }}

@@ -69,11 +69,11 @@ function Documents() {
    // After the request, it resets the form and refreshes the document lists
    const addOrEdit = async (document, resetForm) => {
       const requestBody = {
-         id: document.id || null,
          title: document.title,
          description: document.description,
          link: document.link,
       };
+      if (document.id) requestBody.id = document.id;
       if (document.id) {
          if (document.docType === "mission") {
             await updateMission(document);

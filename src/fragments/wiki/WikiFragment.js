@@ -1,17 +1,30 @@
-import React, { useState, useEffect } from "react";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import { Box, Stack } from "@mui/material";
+import Accordion from "@mui/material/Accordion";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import Divider from "@mui/material/Divider";
+import React, { useEffect, useState } from "react";
+import Select from "react-select";
 import { useSessionStorage } from "usehooks-ts";
+import CountryForm from "../../components/forms/CountryForm.js";
+import EntryForm from "../../components/forms/EntryForm.js";
+import WikiEntryInfo from "../../components/info/WikiEntryInfo.js";
+import Controls from "../../components/reusable/Controls.js";
+import Section from "../../components/section/Section.js";
 import {
    addCountry,
-   deleteCountry,
+   deleteCountry as delCountry,
    getAllCountries,
    updateCountry,
 } from "../../utils/country/countryUtil.js";
 import {
-   getWikiEntries,
    addWikiEntry,
    deleteWikiEntry,
+   getWikiEntries,
    updateWikiEntry,
 } from "../../utils/wiki/wikiUtil.js";
+<<<<<<< HEAD
 import { Box, Stack } from "@mui/material";
 import Section from "../../components/Section/Section.js";
 import Controls from "../../components/reusable/Controls.js";
@@ -23,13 +36,11 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import Divider from "@mui/material/Divider";
+=======
+>>>>>>> 38d53d5fc615a6388b5fca4f801638db8ae70a23
 import WikiComponent from "../WikiSection/WikiComponent.js";
-import { useTheme } from "@emotion/react";
-import WikiEntryInfo from "../../components/info/WikiEntryInfo.js";
 
 export default function WikiFragment() {
-   const theme = useTheme();
-
    // Handling manager view
    const [managerView, setManagerView] = useState(true);
    const handleViewChange = () => setManagerView(!managerView);
@@ -149,7 +160,7 @@ export default function WikiFragment() {
       if (!currentCountry) {
          return;
       }
-      const countryID = currentCountry.countryID;
+      const countryID = currentCountry.id;
       const entryList = await getWikiEntries(countryID);
       if (entryList === null) {
          return;
@@ -196,19 +207,19 @@ export default function WikiFragment() {
    // After the request, it resets the form and refreshes the country lists
    const addOrEditCountry = async (country, resetForm) => {
       const requestBody = {
-         id: country.countryID || null,
          countryName: country.countryName,
          latitude: +country.latitude,
          longitude: +country.longitude,
       };
-      console.log(requestBody);
+      if (country.id) requestBody.id = country.id;
 
       if (requestBody.id) {
          await updateCountry(requestBody);
          const newCountry = await addCountry(requestBody);
          if (newCountry) {
             setCurrentCountry({
-               countryID: requestBody.id,
+               ...currentCountry,
+               id: requestBody.id,
                countryName: newCountry.countryName,
                latitude: +newCountry.latitude,
                longitude: +newCountry.longitude,
@@ -217,12 +228,7 @@ export default function WikiFragment() {
       } else {
          const newCountry = await addCountry(requestBody);
          if (newCountry && currentCountry == null) {
-            setCurrentCountry({
-               countryID: requestBody.id,
-               countryName: newCountry.countryName,
-               latitude: +newCountry.latitude,
-               longitude: +newCountry.longitude,
-            });
+            setCurrentCountry({ ...newCountry });
          }
       }
       resetForm();
@@ -234,10 +240,13 @@ export default function WikiFragment() {
    // Function that sends request to delete country passed in as a parameter
    // After deleting, it closes country form and refreshes country lists
    const deleteCountry = async (country) => {
-      if (!window.confirm("Are you sure you want to delete this country?")) {
+      if (
+         !country ||
+         !window.confirm("Are you sure you want to delete this country?")
+      ) {
          return;
       }
-      await deleteCountry(country.countryID);
+      await delCountry(country.id);
       loadCountries();
       loadWikiEntries();
       setCurrentCountry(null);
@@ -263,8 +272,7 @@ export default function WikiFragment() {
    // After the request, it resets the form and refreshes the wiki
    const addOrEditEntry = async (entry, resetForm) => {
       let requestBody = {
-         id: entry.id || null,
-         countryID: currentCountry.countryID,
+         countryID: currentCountry.id,
          title: entry.title,
          description: entry.description,
          political: false,
@@ -280,6 +288,8 @@ export default function WikiFragment() {
          people: false,
          events: false,
       };
+      if (entry.id) requestBody.id = entry.id;
+
       requestBody[entry.pmesiiCat] = true;
       requestBody[entry.ascopeCat] = true;
 
@@ -315,7 +325,7 @@ export default function WikiFragment() {
       );
 
       const temp = {
-         countryID: countryInfo.id,
+         id: countryInfo.id,
          countryName: countryInfo.countryName,
          latitude: countryInfo.latitude,
          longitude: countryInfo.longitude,
@@ -391,17 +401,17 @@ export default function WikiFragment() {
          direction="row"
          spacing={2}
          alignItems="stretch"
+         sx={{ height: "100%", display: "flex" }}
       >
          <Section
             title="Filters"
             padding={2}
             contentCard
-            sx={{ overflowY: "auto" }}
+            sx={{ height: "100%", overflowY: "auto" }}
          >
             {PMESII.map((item, i) => (
                <div key={i}>
                   <Accordion
-                     defaultExpanded
                      sx={{
                         background: "transparent",
                         boxShadow: "none",
@@ -450,140 +460,64 @@ export default function WikiFragment() {
             ))}
          </Section>
 
-         {/* <Stack direction="column" spacing={2}>
-            <Box
-               sx={{
-                  overflowY: "scroll",
-                  maxHeight: "60vh",
-                  backgroundColor: theme.palette.lightGray.main,
-               }}
-            >
-               <Stack direction="column" spacing={0}>
-                  <Box
-                     sx={{
-                        m: 2,
-                        padding: 1,
-                        bgcolor: "black",
-                        borderRadius: 1,
-                     }}
-                  >
-                     <Typography
-                        variant="h6"
-                        component="h2"
-                        align="center"
-                        color="common.white"
-                     >
-                        Filters
-                     </Typography>
-                  </Box>
-                  {PMESII.map((item, i) => (
-                     <div key={i}>
-                        <Accordion
-                           defaultExpanded
-                           sx={{
-                              background: "transparent",
-                              boxShadow: "none",
-                              disableGutters: "true",
-                              margin: "auto",
-                           }}
-                        >
-                           <AccordionSummary
-                              expandIcon={<ArrowDropDownIcon />}
-                              aria-controls="panel1-content"
-                              id="panel1-header"
-                              sx={{ maxHeight: "30px" }}
-                           >
-                              <Controls.Checkbox
-                                 text={item}
-                                 checked={
-                                    selectedPMESII[i] === true ? true : false
-                                 }
-                                 onClick={() => onClicker(i)}
-                              />
-                           </AccordionSummary>
-                           <Divider
-                              variant="middle"
-                              sx={{
-                                 borderBottomWidth: 1,
-                                 borderColor: "black",
-                              }}
-                           />
-                           <AccordionDetails
-                              sx={{
-                                 display: "flex",
-                                 flexDirection: "column",
-                                 alignSelf: "flex-start",
-                              }}
-                           >
-                              {ASCOPE.map((item, j) => (
-                                 <Controls.Checkbox
-                                    key={i + j}
-                                    text={item}
-                                    checked={selectedASCOPE[i * 6 + j] === true}
-                                    onClick={() => filterASCOPE(i * 6 + j)}
-                                    sx={{ marginLeft: "10px" }}
-                                 />
-                              ))}
-                           </AccordionDetails>
-                        </Accordion>
-                     </div>
-                  ))}
-               </Stack>
-            </Box>
-         </Stack> */}
-
-         <Section padding={2} sx={{ minWidth: "500px", flexGrow: 1 }}>
-            <Stack
-               direction="row"
-               spacing={2}
-               sx={{ width: "100%", display: "flex" }}
-            >
-               <Box sx={{ flexGrow: 1 }}>
-                  <Select
-                     placeholder="Select a Country"
-                     options={listOptions}
-                     value={
-                        currentCountry
-                           ? {
-                                value: currentCountry.countryID,
-                                label: currentCountry.countryName,
-                             }
-                           : null
-                     }
-                     onChange={handleCountrySelect}
-                  />
-               </Box>
-               <Stack direction="row" spacing={1}>
-                  {renderManagerControls()}
-
-                  <Controls.Button
-                     variant="outlined"
-                     text={`${managerView ? "User view" : "Manager view"}`}
-                     onClick={handleViewChange}
-                  />
-
-                  <Controls.Popup
-                     title={recordForView ? recordForView.title : ""}
-                     openPopup={openInfo}
-                     setOpenPopup={setOpenInfo}
-                  >
-                     <WikiEntryInfo
-                        recordForView={recordForView}
-                        openInForm={openEntryInForm}
-                        deleteEntry={deleteEntry}
-                        editable={managerView}
+         <Section
+            padding={2}
+            sx={{
+               minWidth: "500px",
+               flexGrow: 1,
+            }}
+         >
+            <Stack spacing={2} sx={{ maxHeight: "80vh" }}>
+               <Stack
+                  direction="row"
+                  spacing={2}
+                  sx={{ width: "100%", display: "flex" }}
+               >
+                  <Box sx={{ flexGrow: 1 }}>
+                     <Select
+                        placeholder="Select a Country"
+                        options={listOptions}
+                        value={
+                           currentCountry
+                              ? {
+                                   value: currentCountry.id,
+                                   label: currentCountry.countryName,
+                                }
+                              : null
+                        }
+                        onChange={handleCountrySelect}
                      />
-                  </Controls.Popup>
-               </Stack>
-            </Stack>
+                  </Box>
+                  <Stack id="controlButtons" direction="row" spacing={1}>
+                     {renderManagerControls()}
 
-            <WikiComponent
-               selectedASCOPE={selectedASCOPE}
-               selectedPMESII={selectedPMESII}
-               entries={wikiEntries}
-               // editButtonFunction={renderEditButton}
-               openInInfo={openEntryInInfo}
-            />
+                     <Controls.Button
+                        variant="outlined"
+                        text={`${managerView ? "User view" : "Manager view"}`}
+                        onClick={handleViewChange}
+                     />
+
+                     <Controls.Popup
+                        title={recordForView ? recordForView.title : ""}
+                        openPopup={openInfo}
+                        setOpenPopup={setOpenInfo}
+                     >
+                        <WikiEntryInfo
+                           recordForView={recordForView}
+                           openInForm={openEntryInForm}
+                           deleteEntry={deleteEntry}
+                           editable={managerView}
+                        />
+                     </Controls.Popup>
+                  </Stack>
+               </Stack>
+               <WikiComponent
+                  selectedASCOPE={selectedASCOPE}
+                  selectedPMESII={selectedPMESII}
+                  entries={wikiEntries}
+                  openInInfo={openEntryInInfo}
+               />
+            </Stack>
          </Section>
       </Stack>
    );

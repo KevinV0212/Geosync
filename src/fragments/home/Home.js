@@ -1,22 +1,31 @@
 import React, { useEffect, useState } from "react";
-import Box from "@mui/material/Box";
 
 import { getAllTasks } from "../../utils/document/task/taskDocUtil";
 
 import { getAllMissions } from "../../utils/document/mission/missionDocUtil";
 
-import Controls from "../../components/reusable/Controls";
 import DocumentInfo from "../../components/info/DocumentInfo";
+import Controls from "../../components/reusable/Controls";
 
 import { List, ListItem, Stack } from "@mui/material";
+<<<<<<< HEAD
 import Section from "../../components/Section/Section";
 import aiLogo from "../../assets/map.png";
 import { useSessionStorage } from "usehooks-ts";
+=======
+>>>>>>> 38d53d5fc615a6388b5fca4f801638db8ae70a23
 import { useNavigate } from "react-router-dom";
+import { useSessionStorage } from "usehooks-ts";
+import MapComponent from "../../components/map-component/MapComponent";
+import Section from "../../components/section/Section";
 
 export default function Documents() {
    const navigate = useNavigate();
    const [currentPage, setCurrentPage] = useSessionStorage("currentPage", 0);
+   const [currentCountry, setCurrentCountry] = useSessionStorage(
+      "currentCountry",
+      null
+   );
 
    // Data for document lists
    const [taskDocs, setTaskDocs] = useState([]);
@@ -47,7 +56,7 @@ export default function Documents() {
 
    useEffect(() => {
       loadDocuments();
-   }, []);
+   }, [currentCountry]);
 
    return (
       <Stack
@@ -133,36 +142,10 @@ export default function Documents() {
                <Section
                   title="Map"
                   padding={2}
-                  contentCard
                   sx={{ height: "100%", flexBasis: 0, flexGrow: 1 }}
                >
-                  <Stack
-                     justifyContent="flexStart"
-                     alignItems="center"
-                     sx={{ height: "100%" }}
-                  >
-                     <Box
-                        component="img"
-                        src={aiLogo}
-                        sx={{
-                           width: "100%",
-                           display: { xs: "none", lg: "flex" },
-                           mr: 1,
-                           justify: "center",
-                           "&: hover": {
-                              cursor: "pointer",
-                              filter: "brightness(.8)",
-                           },
-                           "&: onclick": {
-                              filter: "brightness(.6)",
-                           },
-                        }}
-                        alt="Map logo"
-                        onClick={() => {
-                           navigateToMap();
-                        }}
-                     />
-                  </Stack>
+                  <MapComponent zoom={1} latitude={0} longitude={0} />
+                  <Controls.Button text="Open Map" onClick={navigateToMap} />
                </Section>
             </Stack>
          </Stack>
