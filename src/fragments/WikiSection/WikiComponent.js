@@ -1,5 +1,5 @@
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import { Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -31,21 +31,20 @@ export default function WikiComponent(props) {
    ];
 
    return (
-      <Box
+      <Stack
+         spacing={2}
          component="main"
          sx={{
-            flexGrow: 1,
-            background: "#D7CEC7",
+            display: "flex",
+            flexGrow: 0,
+            flexWrap: "nowrap",
             overflowY: "auto",
          }}
       >
          {PMESII.map((currentPMESII, i) => (
             <div key={currentPMESII}>
                {props.selectedPMESII[i] && (
-                  <Accordion
-                     defaultExpanded
-                     sx={{ border: 1, borderColor: "black" }}
-                  >
+                  <Accordion defaultExpanded>
                      <AccordionSummary
                         expandIcon={<ArrowDropDownIcon />}
                         aria-controls="panel1-content"
@@ -132,7 +131,6 @@ export default function WikiComponent(props) {
                                                       })
                                                    }
                                                 />
-                                                {/* {editButtonFunction(entry)} */}
                                              </Box>
                                           ))}
                                     </AccordionDetails>
@@ -145,6 +143,6 @@ export default function WikiComponent(props) {
                )}
             </div>
          ))}
-      </Box>
+      </Stack>
    );
 }

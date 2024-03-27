@@ -391,17 +391,17 @@ export default function WikiFragment() {
          direction="row"
          spacing={2}
          alignItems="stretch"
+         sx={{ height: "100%", display: "flex" }}
       >
          <Section
             title="Filters"
             padding={2}
             contentCard
-            sx={{ overflowY: "auto" }}
+            sx={{ height: "100%", overflowY: "auto" }}
          >
             {PMESII.map((item, i) => (
                <div key={i}>
                   <Accordion
-                     defaultExpanded
                      sx={{
                         background: "transparent",
                         boxShadow: "none",
@@ -450,140 +450,64 @@ export default function WikiFragment() {
             ))}
          </Section>
 
-         {/* <Stack direction="column" spacing={2}>
-            <Box
-               sx={{
-                  overflowY: "scroll",
-                  maxHeight: "60vh",
-                  backgroundColor: theme.palette.lightGray.main,
-               }}
-            >
-               <Stack direction="column" spacing={0}>
-                  <Box
-                     sx={{
-                        m: 2,
-                        padding: 1,
-                        bgcolor: "black",
-                        borderRadius: 1,
-                     }}
-                  >
-                     <Typography
-                        variant="h6"
-                        component="h2"
-                        align="center"
-                        color="common.white"
-                     >
-                        Filters
-                     </Typography>
-                  </Box>
-                  {PMESII.map((item, i) => (
-                     <div key={i}>
-                        <Accordion
-                           defaultExpanded
-                           sx={{
-                              background: "transparent",
-                              boxShadow: "none",
-                              disableGutters: "true",
-                              margin: "auto",
-                           }}
-                        >
-                           <AccordionSummary
-                              expandIcon={<ArrowDropDownIcon />}
-                              aria-controls="panel1-content"
-                              id="panel1-header"
-                              sx={{ maxHeight: "30px" }}
-                           >
-                              <Controls.Checkbox
-                                 text={item}
-                                 checked={
-                                    selectedPMESII[i] === true ? true : false
-                                 }
-                                 onClick={() => onClicker(i)}
-                              />
-                           </AccordionSummary>
-                           <Divider
-                              variant="middle"
-                              sx={{
-                                 borderBottomWidth: 1,
-                                 borderColor: "black",
-                              }}
-                           />
-                           <AccordionDetails
-                              sx={{
-                                 display: "flex",
-                                 flexDirection: "column",
-                                 alignSelf: "flex-start",
-                              }}
-                           >
-                              {ASCOPE.map((item, j) => (
-                                 <Controls.Checkbox
-                                    key={i + j}
-                                    text={item}
-                                    checked={selectedASCOPE[i * 6 + j] === true}
-                                    onClick={() => filterASCOPE(i * 6 + j)}
-                                    sx={{ marginLeft: "10px" }}
-                                 />
-                              ))}
-                           </AccordionDetails>
-                        </Accordion>
-                     </div>
-                  ))}
-               </Stack>
-            </Box>
-         </Stack> */}
-
-         <Section padding={2} sx={{ minWidth: "500px", flexGrow: 1 }}>
-            <Stack
-               direction="row"
-               spacing={2}
-               sx={{ width: "100%", display: "flex" }}
-            >
-               <Box sx={{ flexGrow: 1 }}>
-                  <Select
-                     placeholder="Select a Country"
-                     options={listOptions}
-                     value={
-                        currentCountry
-                           ? {
-                                value: currentCountry.countryID,
-                                label: currentCountry.countryName,
-                             }
-                           : null
-                     }
-                     onChange={handleCountrySelect}
-                  />
-               </Box>
-               <Stack direction="row" spacing={1}>
-                  {renderManagerControls()}
-
-                  <Controls.Button
-                     variant="outlined"
-                     text={`${managerView ? "User view" : "Manager view"}`}
-                     onClick={handleViewChange}
-                  />
-
-                  <Controls.Popup
-                     title={recordForView ? recordForView.title : ""}
-                     openPopup={openInfo}
-                     setOpenPopup={setOpenInfo}
-                  >
-                     <WikiEntryInfo
-                        recordForView={recordForView}
-                        openInForm={openEntryInForm}
-                        deleteEntry={deleteEntry}
-                        editable={managerView}
+         <Section
+            padding={2}
+            sx={{
+               minWidth: "500px",
+               flexGrow: 1,
+            }}
+         >
+            <Stack spacing={2} sx={{ maxHeight: "80vh" }}>
+               <Stack
+                  direction="row"
+                  spacing={2}
+                  sx={{ width: "100%", display: "flex", position: "sticky" }}
+               >
+                  <Box sx={{ flexGrow: 1 }}>
+                     <Select
+                        placeholder="Select a Country"
+                        options={listOptions}
+                        value={
+                           currentCountry
+                              ? {
+                                   value: currentCountry.countryID,
+                                   label: currentCountry.countryName,
+                                }
+                              : null
+                        }
+                        onChange={handleCountrySelect}
                      />
-                  </Controls.Popup>
-               </Stack>
-            </Stack>
+                  </Box>
+                  <Stack id="controlButtons" direction="row" spacing={1}>
+                     {renderManagerControls()}
 
-            <WikiComponent
-               selectedASCOPE={selectedASCOPE}
-               selectedPMESII={selectedPMESII}
-               entries={wikiEntries}
-               // editButtonFunction={renderEditButton}
-               openInInfo={openEntryInInfo}
-            />
+                     <Controls.Button
+                        variant="outlined"
+                        text={`${managerView ? "User view" : "Manager view"}`}
+                        onClick={handleViewChange}
+                     />
+
+                     <Controls.Popup
+                        title={recordForView ? recordForView.title : ""}
+                        openPopup={openInfo}
+                        setOpenPopup={setOpenInfo}
+                     >
+                        <WikiEntryInfo
+                           recordForView={recordForView}
+                           openInForm={openEntryInForm}
+                           deleteEntry={deleteEntry}
+                           editable={managerView}
+                        />
+                     </Controls.Popup>
+                  </Stack>
+               </Stack>
+               <WikiComponent
+                  selectedASCOPE={selectedASCOPE}
+                  selectedPMESII={selectedPMESII}
+                  entries={wikiEntries}
+                  openInInfo={openEntryInInfo}
+               />
+            </Stack>
          </Section>
       </Stack>
    );

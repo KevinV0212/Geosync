@@ -32,6 +32,7 @@ export default function Section(props) {
                   width: "100%",
                   padding: padding || 0 ? padding : 0,
                   display: "flex",
+                  flexWrap: "noWrap",
                   flexDirection: "column",
                   alignItems: "stretch",
                }}

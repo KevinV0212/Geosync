@@ -48,7 +48,7 @@ function App() {
                   maxWidth="xl"
                   sx={{
                      boxSizing: "border-box",
-                     maxHeight: "90vh",
+                     height: "90vh",
                      paddingX: 3,
                      paddingY: 3,
                      flexGrow: 1,
