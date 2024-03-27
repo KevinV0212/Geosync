@@ -1,35 +1,32 @@
-import React, { useState, useEffect } from "react";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import { Box, Stack } from "@mui/material";
+import Accordion from "@mui/material/Accordion";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import Divider from "@mui/material/Divider";
+import React, { useEffect, useState } from "react";
+import Select from "react-select";
 import { useSessionStorage } from "usehooks-ts";
+import CountryForm from "../../components/forms/CountryForm.js";
+import EntryForm from "../../components/forms/EntryForm.js";
+import WikiEntryInfo from "../../components/info/WikiEntryInfo.js";
+import Controls from "../../components/reusable/Controls.js";
+import Section from "../../components/section/Section.js";
 import {
    addCountry,
-   deleteCountry,
+   deleteCountry as delCountry,
    getAllCountries,
    updateCountry,
 } from "../../utils/country/countryUtil.js";
 import {
-   getWikiEntries,
    addWikiEntry,
    deleteWikiEntry,
+   getWikiEntries,
    updateWikiEntry,
 } from "../../utils/wiki/wikiUtil.js";
-import { Box, Stack } from "@mui/material";
-import Section from "../../components/section/Section.js";
-import Controls from "../../components/reusable/Controls.js";
-import EntryForm from "../../components/forms/EntryForm.js";
-import CountryForm from "../../components/forms/CountryForm.js";
-import Select from "react-select";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import Divider from "@mui/material/Divider";
 import WikiComponent from "../WikiSection/WikiComponent.js";
-import { useTheme } from "@emotion/react";
-import WikiEntryInfo from "../../components/info/WikiEntryInfo.js";
 
 export default function WikiFragment() {
-   const theme = useTheme();
-
    // Handling manager view
    const [managerView, setManagerView] = useState(true);
    const handleViewChange = () => setManagerView(!managerView);
@@ -149,7 +146,7 @@ export default function WikiFragment() {
       if (!currentCountry) {
          return;
       }
-      const countryID = currentCountry.countryID;
+      const countryID = currentCountry.id;
       const entryList = await getWikiEntries(countryID);
       if (entryList === null) {
          return;
@@ -196,19 +193,19 @@ export default function WikiFragment() {
    // After the request, it resets the form and refreshes the country lists
    const addOrEditCountry = async (country, resetForm) => {
       const requestBody = {
-         id: country.countryID || null,
          countryName: country.countryName,
          latitude: +country.latitude,
          longitude: +country.longitude,
       };
-      console.log(requestBody);
+      if (country.id) requestBody.id = country.id;
 
       if (requestBody.id) {
          await updateCountry(requestBody);
          const newCountry = await addCountry(requestBody);
          if (newCountry) {
             setCurrentCountry({
-               countryID: requestBody.id,
+               ...currentCountry,
+               id: requestBody.id,
                countryName: newCountry.countryName,
                latitude: +newCountry.latitude,
                longitude: +newCountry.longitude,
@@ -217,12 +214,7 @@ export default function WikiFragment() {
       } else {
          const newCountry = await addCountry(requestBody);
          if (newCountry && currentCountry == null) {
-            setCurrentCountry({
-               countryID: requestBody.id,
-               countryName: newCountry.countryName,
-               latitude: +newCountry.latitude,
-               longitude: +newCountry.longitude,
-            });
+            setCurrentCountry({ ...newCountry });
          }
       }
       resetForm();
@@ -234,10 +226,13 @@ export default function WikiFragment() {
    // Function that sends request to delete country passed in as a parameter
    // After deleting, it closes country form and refreshes country lists
    const deleteCountry = async (country) => {
-      if (!window.confirm("Are you sure you want to delete this country?")) {
+      if (
+         !country ||
+         !window.confirm("Are you sure you want to delete this country?")
+      ) {
          return;
       }
-      await deleteCountry(country.countryID);
+      await delCountry(country.id);
       loadCountries();
       loadWikiEntries();
       setCurrentCountry(null);
@@ -263,8 +258,7 @@ export default function WikiFragment() {
    // After the request, it resets the form and refreshes the wiki
    const addOrEditEntry = async (entry, resetForm) => {
       let requestBody = {
-         id: entry.id || null,
-         countryID: currentCountry.countryID,
+         countryID: currentCountry.id,
          title: entry.title,
          description: entry.description,
          political: false,
@@ -280,6 +274,8 @@ export default function WikiFragment() {
          people: false,
          events: false,
       };
+      if (entry.id) requestBody.id = entry.id;
+
       requestBody[entry.pmesiiCat] = true;
       requestBody[entry.ascopeCat] = true;
 
@@ -315,7 +311,7 @@ export default function WikiFragment() {
       );
 
       const temp = {
-         countryID: countryInfo.id,
+         id: countryInfo.id,
          countryName: countryInfo.countryName,
          latitude: countryInfo.latitude,
          longitude: countryInfo.longitude,
@@ -461,7 +457,7 @@ export default function WikiFragment() {
                <Stack
                   direction="row"
                   spacing={2}
-                  sx={{ width: "100%", display: "flex", position: "sticky" }}
+                  sx={{ width: "100%", display: "flex" }}
                >
                   <Box sx={{ flexGrow: 1 }}>
                      <Select
@@ -470,7 +466,7 @@ export default function WikiFragment() {
                         value={
                            currentCountry
                               ? {
-                                   value: currentCountry.countryID,
+                                   value: currentCountry.id,
                                    label: currentCountry.countryName,
                                 }
                               : null

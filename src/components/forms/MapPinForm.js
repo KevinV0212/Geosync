@@ -209,7 +209,16 @@ export default function MapPinForm(props) {
                   variant="outlined"
                   text="Clear"
                   startIcon={<CancelIcon />}
-                  onClick={resetForm}
+                  onClick={() =>
+                     setFormData({
+                        ...formData,
+                        title: "",
+                        description: "",
+                        latitude: 0,
+                        longitude: 0,
+                        pmesiiCat: "",
+                     })
+                  }
                   fullWidth
                />
                <Controls.Button

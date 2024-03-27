@@ -100,7 +100,7 @@ export default function MapFragment() {
       if (!currentCountry) {
          return;
       }
-      const countryID = currentCountry.countryID;
+      const countryID = currentCountry.id;
       const filters = [];
       for (const checkbox in checkboxes) {
          filters.push(checkboxes[checkbox]);
@@ -130,15 +130,14 @@ export default function MapFragment() {
          latitude: +country.latitude,
          longitude: +country.longitude,
       };
-      if (country.countryID) requestBody.id = country.countryID;
-      console.log(requestBody);
+      if (country.id) requestBody.id = country.id;
 
       if (requestBody.id) {
          await updateCountry(requestBody);
          const newCountry = await addCountry(requestBody);
          if (newCountry) {
             setCurrentCountry({
-               countryID: requestBody.id,
+               id: requestBody.id,
                countryName: newCountry.countryName,
                latitude: +newCountry.latitude,
                longitude: +newCountry.longitude,
@@ -147,12 +146,7 @@ export default function MapFragment() {
       } else {
          const newCountry = await addCountry(requestBody);
          if (newCountry && currentCountry == null) {
-            setCurrentCountry({
-               countryID: requestBody.id,
-               countryName: newCountry.countryName,
-               latitude: +newCountry.latitude,
-               longitude: +newCountry.longitude,
-            });
+            setCurrentCountry({ ...newCountry });
          }
       }
       resetForm();
@@ -164,10 +158,13 @@ export default function MapFragment() {
    // Function that sends request to delete country passed in as a parameter
    // After deleting, it closes country form and refreshes country lists
    const deleteCountry = async (country) => {
-      if (!window.confirm("Are you sure you want to delete this country?")) {
+      if (
+         !country ||
+         !window.confirm("Are you sure you want to delete this country?")
+      ) {
          return;
       }
-      await delCountry(country.countryID);
+      await delCountry(country.id);
       loadCountries();
       loadMapPins();
       setCurrentCountry(null);
@@ -188,7 +185,7 @@ export default function MapFragment() {
    // After the request, it resets the form, then refreshes pins and map
    const addOrEditPin = async (pin, resetForm) => {
       let requestBody = {
-         countryID: currentCountry.countryID,
+         countryID: currentCountry.id,
          title: pin.title,
          description: pin.description,
          longitude: +pin.longitude,
@@ -237,7 +234,7 @@ export default function MapFragment() {
       );
 
       const temp = {
-         countryID: countryInfo.id,
+         id: countryInfo.id,
          countryName: countryInfo.countryName,
          latitude: countryInfo.latitude,
          longitude: countryInfo.longitude,
@@ -258,7 +255,7 @@ export default function MapFragment() {
    const renderManagerControls = () => {
       if (managerView) {
          return (
-            <Section padding={2} sx={{ flexBasis: 0, flexGrow: 1 }}>
+            <Section padding={2}>
                <Stack className="manager-controls" spacing={1}>
                   <Controls.Button
                      text="Add Country"
@@ -363,7 +360,7 @@ export default function MapFragment() {
                variant="outlined"
                text={`${managerView ? "User view" : "Manager view"}`}
                onClick={handleViewChange}
-            ></Controls.Button>
+            />
          </Stack>
 
          <Section
@@ -372,7 +369,7 @@ export default function MapFragment() {
                minWidth: "500px",
                flexGrow: 1,
                height: "100",
-               overflowY: "scroll",
+               overflowY: "auto",
             }}
          >
             <Select

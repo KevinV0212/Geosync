@@ -167,7 +167,15 @@ export default function EntryForm(props) {
                   variant="outlined"
                   text="Clear"
                   startIcon={<CancelIcon />}
-                  onClick={resetForm}
+                  onClick={() => {
+                     setFormData({
+                        ...formData,
+                        title: "",
+                        description: "",
+                        pmesiiCat: "",
+                        ascopeCat: "",
+                     });
+                  }}
                   fullWidth
                />
                <Controls.Button

@@ -9,7 +9,7 @@ import TitleIcon from "@mui/icons-material/Title";
 import PinDropIcon from "@mui/icons-material/PinDrop";
 
 const initialFormValues = {
-   countryID: null,
+   id: null,
    countryName: "",
    longitude: 0,
    latitude: 0,
@@ -152,12 +152,12 @@ export default function CountryForm(props) {
                justifyContent="center"
                divider={<Divider orientation="vertical" flexItem />}
             >
-               {formData.countryID != null ? (
+               {formData.id != null ? (
                   <Controls.Button
                      text="Delete"
                      startIcon={<DeleteIcon />}
                      onClick={() => deleteCountry(recordForEdit)}
-                     disabled={formData.countryID == null}
+                     disabled={formData.id == null}
                      sx={{ flexGrow: 1 }}
                      fullWidth
                   />
