@@ -8,12 +8,6 @@ import DocumentInfo from "../../components/info/DocumentInfo";
 import Controls from "../../components/reusable/Controls";
 
 import { List, ListItem, Stack } from "@mui/material";
-<<<<<<< HEAD
-import Section from "../../components/Section/Section";
-import aiLogo from "../../assets/map.png";
-import { useSessionStorage } from "usehooks-ts";
-=======
->>>>>>> 38d53d5fc615a6388b5fca4f801638db8ae70a23
 import { useNavigate } from "react-router-dom";
 import { useSessionStorage } from "usehooks-ts";
 import MapComponent from "../../components/map-component/MapComponent";

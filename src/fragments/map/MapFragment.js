@@ -21,13 +21,8 @@ import CountryForm from "../../components/forms/CountryForm.js";
 import MapComponent from "../../components/map-component/MapComponent.js";
 import Controls from "../../components/reusable/Controls.js";
 
-<<<<<<< HEAD
-import { Stack } from "@mui/material";
-import Section from "../../components/Section/Section.js";
-=======
 import { Box, Stack, Tooltip } from "@mui/material";
 import Section from "../../components/section/Section.js";
->>>>>>> 38d53d5fc615a6388b5fca4f801638db8ae70a23
 
 const tooltipIcons = {
    political: "https://static.thenounproject.com/png/955295-200.png",

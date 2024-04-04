@@ -24,20 +24,6 @@ import {
    getWikiEntries,
    updateWikiEntry,
 } from "../../utils/wiki/wikiUtil.js";
-<<<<<<< HEAD
-import { Box, Stack } from "@mui/material";
-import Section from "../../components/Section/Section.js";
-import Controls from "../../components/reusable/Controls.js";
-import EntryForm from "../../components/forms/EntryForm.js";
-import CountryForm from "../../components/forms/CountryForm.js";
-import Select from "react-select";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import Divider from "@mui/material/Divider";
-=======
->>>>>>> 38d53d5fc615a6388b5fca4f801638db8ae70a23
 import WikiComponent from "../WikiSection/WikiComponent.js";
 
 export default function WikiFragment() {
