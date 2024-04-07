@@ -20,6 +20,7 @@ import MapPinForm from "../../components/forms/MapPinForm.js";
 import CountryForm from "../../components/forms/CountryForm.js";
 import MapComponent from "../../components/map-component/MapComponent.js";
 import Controls from "../../components/reusable/Controls.js";
+import { forward, inverse, toPoint } from '../mgrs';
 
 import { Box, Stack, Tooltip } from "@mui/material";
 import Section from "../../components/section/Section.js";
@@ -190,6 +191,7 @@ export default function MapFragment() {
          description: pin.description,
          longitude: +pin.longitude,
          latitude: +pin.latitude,
+         //MGRS: 
          political: false,
          military: false,
          economic: false,
