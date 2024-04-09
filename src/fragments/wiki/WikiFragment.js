@@ -454,7 +454,7 @@ export default function WikiFragment() {
                maxWidth: "80%"
             }}
          >
-            <Stack spacing={2} sx={{ maxHeight: "80vh" }}>
+            <Stack spacing={2} sx={{ maxHeight: "85vh" }}>
                <Stack
                   direction="row"
                   spacing={2}

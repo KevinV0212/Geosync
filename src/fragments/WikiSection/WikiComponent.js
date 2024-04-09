@@ -118,9 +118,12 @@ export default function WikiComponent(props) {
                                                       {entry.description}{" "}
                                                    </Typography>
                                                 </Box>
+                                                <Box
+                                                sx={{alignSelf: 'center', pl: '10px'}}>
                                                 <Controls.Button
                                                    text="Open"
                                                    size="small"
+                                                   
                                                    onClick={() =>
                                                       openInInfo({
                                                          ...entry,
@@ -131,6 +134,7 @@ export default function WikiComponent(props) {
                                                       })
                                                    }
                                                 />
+                                                </Box>
                                              </Box>
                                           ))}
                                     </AccordionDetails>
