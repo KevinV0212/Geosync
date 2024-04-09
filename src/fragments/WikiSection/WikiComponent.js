@@ -94,64 +94,67 @@ export default function WikiComponent(props) {
                                           }}
                                        />
                                        <AccordionDetails>
-                                          {entries
-                                             .filter(
-                                                (element) =>
-                                                   element[currentPMESII] ===
-                                                      true &&
-                                                   element[currentASCOPE] ===
-                                                      true
-                                             )
-                                             .map((entry, k) => (
-                                                <Box
-                                                   sx={{
-                                                      width: "100%",
-                                                      display: "flex",
-                                                      justifyContent:
-                                                         "space-between",
-                                                   }}
-                                                >
+                                          <Stack spacing={2}>
+                                             {entries
+                                                .filter(
+                                                   (element) =>
+                                                      element[currentPMESII] ===
+                                                         true &&
+                                                      element[currentASCOPE] ===
+                                                         true
+                                                )
+                                                .map((entry, k) => (
                                                    <Box
                                                       sx={{
-                                                         maxWidth: "80%",
-                                                         flexGrow: 1,
+                                                         width: "100%",
+                                                         display: "flex",
+                                                         justifyContent:
+                                                            "space-between",
                                                       }}
                                                    >
-                                                      <Typography
+                                                      <Box
                                                          sx={{
-                                                            textDecoration:
-                                                               "underline",
+                                                            maxWidth: "80%",
+                                                            flexGrow: 1,
                                                          }}
                                                       >
-                                                         {entry.title}
-                                                      </Typography>
-                                                      <Typography
-                                                         sx={{
-                                                            whiteSpace:
-                                                               "nowrap",
-                                                            textOverflow:
-                                                               "ellipsis",
-                                                            overflow: "hidden",
-                                                         }}
-                                                      >
-                                                         {entry.description}
-                                                      </Typography>
+                                                         <Typography
+                                                            sx={{
+                                                               textDecoration:
+                                                                  "underline",
+                                                            }}
+                                                         >
+                                                            {entry.title}
+                                                         </Typography>
+                                                         <Typography
+                                                            sx={{
+                                                               whiteSpace:
+                                                                  "nowrap",
+                                                               textOverflow:
+                                                                  "ellipsis",
+                                                               overflow:
+                                                                  "hidden",
+                                                            }}
+                                                         >
+                                                            {entry.description}
+                                                         </Typography>
+                                                      </Box>
+                                                      <Controls.Button
+                                                         text="Open"
+                                                         size="small"
+                                                         onClick={() =>
+                                                            openInInfo({
+                                                               ...entry,
+                                                               pmesiiCat:
+                                                                  currentPMESII,
+                                                               ascopeCat:
+                                                                  currentASCOPE,
+                                                            })
+                                                         }
+                                                      />
                                                    </Box>
-                                                   <Controls.Button
-                                                      text="Open"
-                                                      size="small"
-                                                      onClick={() =>
-                                                         openInInfo({
-                                                            ...entry,
-                                                            pmesiiCat:
-                                                               currentPMESII,
-                                                            ascopeCat:
-                                                               currentASCOPE,
-                                                         })
-                                                      }
-                                                   />
-                                                </Box>
-                                             ))}
+                                                ))}
+                                          </Stack>
                                        </AccordionDetails>
                                     </Accordion>
                                  )}
