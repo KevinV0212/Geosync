@@ -15,6 +15,7 @@ import {
    useThemeContext,
 } from "../themes/ThemeContextProvider";
 
+//keep App folder capitalized
 function App() {
    const { theme } = useThemeContext();
    useEffect(() => {
