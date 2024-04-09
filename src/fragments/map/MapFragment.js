@@ -346,7 +346,7 @@ export default function MapFragment() {
                      >
                         <div>
                            <Controls.Checkbox
-                              text={cat}
+                              text={cat.charAt(0).toUpperCase() + cat.slice(1)}
                               checked={checkboxes[cat]}
                               onChange={() => handleCheckboxChange(cat)}
                            />

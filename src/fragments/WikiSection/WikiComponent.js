@@ -67,77 +67,97 @@ export default function WikiComponent(props) {
                         }}
                      />
                      <AccordionDetails>
-                        {ASCOPE.map((currentASCOPE, j) => (
-                           <div key={`${currentPMESII}${currentASCOPE}`}>
-                              {props.selectedASCOPE[i * 6 + j] && (
-                                 <Accordion>
-                                    <AccordionSummary
-                                       expandIcon={<ArrowDropDownIcon />}
-                                       aria-controls="panel1-content"
-                                       id="panel1-header"
-                                    >
-                                       <Typography
-                                          sx={{ textTransform: "capitalize" }}
+                        <Stack spacing={2}>
+                           {ASCOPE.map((currentASCOPE, j) => (
+                              <div key={`${currentPMESII}${currentASCOPE}`}>
+                                 {props.selectedASCOPE[i * 6 + j] && (
+                                    <Accordion>
+                                       <AccordionSummary
+                                          expandIcon={<ArrowDropDownIcon />}
+                                          aria-controls="panel1-content"
+                                          id="panel1-header"
                                        >
-                                          {currentASCOPE}
-                                       </Typography>
-                                    </AccordionSummary>
-                                    <Divider
-                                       variant="middle"
-                                       sx={{
-                                          borderBottomWidth: 1,
-                                          borderColor: "black",
-                                       }}
-                                    />
-                                    <AccordionDetails>
-                                       {entries
-                                          .filter(
-                                             (element) =>
-                                                element[currentPMESII] ===
-                                                   true &&
-                                                element[currentASCOPE] === true
-                                          )
-                                          .map((entry, k) => (
-                                             <Box
-                                                sx={{
-                                                   display: "flex",
-                                                   justifyContent:
-                                                      "space-between",
-                                                }}
-                                             >
-                                                <Box>
-                                                   <Typography
+                                          <Typography
+                                             sx={{
+                                                fontWeight: "bold",
+                                                textTransform: "capitalize",
+                                             }}
+                                          >
+                                             {currentASCOPE}
+                                          </Typography>
+                                       </AccordionSummary>
+                                       <Divider
+                                          variant="middle"
+                                          sx={{
+                                             borderBottomWidth: 1,
+                                             borderColor: "black",
+                                          }}
+                                       />
+                                       <AccordionDetails>
+                                          {entries
+                                             .filter(
+                                                (element) =>
+                                                   element[currentPMESII] ===
+                                                      true &&
+                                                   element[currentASCOPE] ===
+                                                      true
+                                             )
+                                             .map((entry, k) => (
+                                                <Box
+                                                   sx={{
+                                                      width: "100%",
+                                                      display: "flex",
+                                                      justifyContent:
+                                                         "space-between",
+                                                   }}
+                                                >
+                                                   <Box
                                                       sx={{
-                                                         textDecoration:
-                                                            "underline",
+                                                         maxWidth: "80%",
+                                                         flexGrow: 1,
                                                       }}
                                                    >
-                                                      {entry.title}
-                                                   </Typography>
-                                                   <Typography>
-                                                      {entry.description}{" "}
-                                                   </Typography>
+                                                      <Typography
+                                                         sx={{
+                                                            textDecoration:
+                                                               "underline",
+                                                         }}
+                                                      >
+                                                         {entry.title}
+                                                      </Typography>
+                                                      <Typography
+                                                         sx={{
+                                                            whiteSpace:
+                                                               "nowrap",
+                                                            textOverflow:
+                                                               "ellipsis",
+                                                            overflow: "hidden",
+                                                         }}
+                                                      >
+                                                         {entry.description}
+                                                      </Typography>
+                                                   </Box>
+                                                   <Controls.Button
+                                                      text="Open"
+                                                      size="small"
+                                                      onClick={() =>
+                                                         openInInfo({
+                                                            ...entry,
+                                                            pmesiiCat:
+                                                               currentPMESII,
+                                                            ascopeCat:
+                                                               currentASCOPE,
+                                                         })
+                                                      }
+                                                   />
                                                 </Box>
-                                                <Controls.Button
-                                                   text="Open"
-                                                   size="small"
-                                                   onClick={() =>
-                                                      openInInfo({
-                                                         ...entry,
-                                                         pmesiiCat:
-                                                            currentPMESII,
-                                                         ascopeCat:
-                                                            currentASCOPE,
-                                                      })
-                                                   }
-                                                />
-                                             </Box>
-                                          ))}
-                                    </AccordionDetails>
-                                 </Accordion>
-                              )}
-                           </div>
-                        ))}
+                                             ))}
+                                       </AccordionDetails>
+                                    </Accordion>
+                                 )}
+                              </div>
+                           ))}
+                        </Stack>
                      </AccordionDetails>
                   </Accordion>
                )}
