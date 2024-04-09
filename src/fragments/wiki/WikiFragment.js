@@ -451,6 +451,7 @@ export default function WikiFragment() {
             sx={{
                minWidth: "500px",
                flexGrow: 1,
+               maxWidth: "80%"
             }}
          >
             <Stack spacing={2} sx={{ maxHeight: "80vh" }}>
