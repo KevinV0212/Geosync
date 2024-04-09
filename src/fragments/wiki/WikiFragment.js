@@ -387,7 +387,7 @@ export default function WikiFragment() {
          direction="row"
          spacing={2}
          alignItems="stretch"
-         sx={{ height: "100%", display: "flex" }}
+         sx={{ height: "100%", display: "flex", maxHeight: "90vh" }}
       >
          <Section
             title="Filters"
@@ -454,7 +454,7 @@ export default function WikiFragment() {
                maxWidth: "80%"
             }}
          >
-            <Stack spacing={2} sx={{ maxHeight: "80vh" }}>
+            <Stack spacing={2} >
                <Stack
                   direction="row"
                   spacing={2}
